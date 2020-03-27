@@ -1,0 +1,20 @@
+{
+    "nombreApp" : "Componentes",
+    "rutas" : [
+        {
+            "ruta" : "ranking",
+            "icon" : "star",
+            "texto": "Ranking"
+        },
+        {
+            "ruta" : "avatar",
+            "icon" : "collab",
+            "texto": "Colaborar"
+        },
+        {
+            "ruta" : "card",
+            "icon" : "smile",
+            "texto": "Amigos"
+        }
+    ]
+}
