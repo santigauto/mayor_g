@@ -8,10 +8,7 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        drawer: Container(
-          width: 250,
-          child: SideMenuWidget()
-        ),
+        drawer: Container(width: 300, child: SideMenuWidget()),
         appBar: AppBar(
           backgroundColor: Colors.green[900],
           title: Text('MayorG App'),
@@ -30,6 +27,14 @@ class MenuPage extends StatelessWidget {
                 children: <Widget>[
                   Stack(
                     children: <Widget>[
+                      Opacity(
+                        opacity: 0.8,
+                        child: Container(
+                          height: 265,
+                          width: 210,
+                          child: Image.asset('assets/mayor.png',color: Colors.black,),
+                        ),
+                      ),
                       Container(
                         height: 250,
                         width: 210,
@@ -68,7 +73,14 @@ class MenuPage extends StatelessWidget {
                     textColor: Colors.white,
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     splashColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.black),
+                    ),
                   ),
+                  SizedBox(
+                    height: 40,
+                  )
                 ],
               ),
             ),

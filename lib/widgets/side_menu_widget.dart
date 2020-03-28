@@ -19,10 +19,10 @@ class SideMenuWidget extends StatelessWidget {
               child: ListTile(
                 leading: Icon(
                   Icons.power_settings_new,
-                  color: Colors.red,
+                  color: Colors.red[400],
                 ),
-                title: Text('Log Out', style: TextStyle(color: Colors.red)),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.red),
+                title: Text('Log Out', style: TextStyle(color: Colors.red[400])),
+                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.red[400]),
               ),
             )
           ],
@@ -58,10 +58,10 @@ class SideMenuWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text('SV Gauto',
-                        style: TextStyle(fontSize: 12, color: Colors.white)),
+                        style: TextStyle(fontSize: 15, color: Colors.white)),
                     Text(
                       'Santiago Tomas',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
+                      style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ],
                 ),
