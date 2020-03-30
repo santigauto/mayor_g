@@ -7,12 +7,12 @@
             "texto": "Ranking"
         },
         {
-            "ruta" : "avatar",
+            "ruta" : "collab",
             "icon" : "collab",
             "texto": "Colaborar"
         },
         {
-            "ruta" : "card",
+            "ruta" : "friends",
             "icon" : "smile",
             "texto": "Amigos"
         }

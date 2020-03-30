@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/views/new_match_page.dart';
 import 'package:mayor_g/widgets/side_menu_widget.dart';
 
 class MenuPage extends StatelessWidget {
@@ -68,7 +69,13 @@ class MenuPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      var route = MaterialPageRoute(
+                        builder:(context){
+                          return NewMatchPage();
+                        });
+                        Navigator.push(context, route);
+                    },
                     color: Colors.green[900],
                     textColor: Colors.white,
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
