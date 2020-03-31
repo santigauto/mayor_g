@@ -1,3 +1,4 @@
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 
 class NewMatchPage extends StatelessWidget {
@@ -23,39 +24,149 @@ class NewMatchPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
-                  RaisedButton(
-                    child: Container(
-                      width: 150,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("¡JUGAR!", style: TextStyle(fontSize: 20)),
-                        ],
-                      ),
-                    ),
-                    onPressed: () {
-                      var route = MaterialPageRoute(builder: (context) {
-                        return NewMatchPage();
-                      });
-                      Navigator.push(context, route);
-                    },
-                    color: Colors.green[900],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    splashColor: Colors.grey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.black),
-                    ),
+                  _initMatchButton(),
+                  SizedBox(
+                    height: 20,
                   ),
-
+                  _modoDeJuego(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  _seleccionOponente()
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _initMatchButton() {
+    return RaisedButton(
+      child: Container(
+        height: 200,
+        width: 200,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage('assets/shape15.png'),
+        )),
+        child: Center(
+            child: Text(
+          '¡JUGAR!',
+          style: TextStyle(fontSize: 35, color: Colors.white),
+        )),
+      ),
+      onPressed: () {
+        
+      },
+      shape: CircleBorder(),
+    );
+  }
+
+  Widget _modoDeJuego() {
+    return Column(
+      children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: BorderedText(
+              strokeColor: Colors.white,
+              child: Text(
+                'Modo de Juego',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
+                    decorationColor: Colors.white),
+              ),
+            )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            RaisedButton(
+              child: Container(
+                child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
+              ),
+              onPressed: () {},
+              color: Colors.green[900],
+              textColor: Colors.white,
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              splashColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(8.0),
+                side: BorderSide(color: Colors.black),
+              ),
+            ),
+            RaisedButton(
+              child: Container(
+                child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
+              ),
+              onPressed: () {},
+              color: Colors.green[900],
+              textColor: Colors.white,
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              splashColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(8.0),
+                side: BorderSide(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _seleccionOponente() {
+    return Column(
+      children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: BorderedText(
+              strokeColor: Colors.white,
+              child: Text(
+                'Oponente',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
+                    decorationColor: Colors.white),
+              ),
+            )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            RaisedButton(
+              child: Container(
+                child: Text("AMIGOS", style: TextStyle(fontSize: 20)),
+              ),
+              onPressed: () {},
+              color: Colors.green[900],
+              textColor: Colors.white,
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              splashColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(8.0),
+                side: BorderSide(color: Colors.black),
+              ),
+            ),
+            RaisedButton(
+              child: Container(
+                child: Text("AL AZAR", style: TextStyle(fontSize: 20)),
+              ),
+              onPressed: () {},
+              color: Colors.green[900],
+              textColor: Colors.white,
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              splashColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(8.0),
+                side: BorderSide(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

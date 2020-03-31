@@ -83,12 +83,12 @@ class SideMenuWidget extends StatelessWidget {
       future: menuProvider.cargarData(),
       initialData: [],
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        return Column(children: _crearItems(snapshot.data));
+        return Column(children: _crearItems(snapshot.data, context));
       },
     );
   }
 
-  List<Widget> _crearItems(List<dynamic> data) {
+  List<Widget> _crearItems(List<dynamic> data, BuildContext context) {
     final List<Widget> opciones = [];
 
     data.forEach((item) {

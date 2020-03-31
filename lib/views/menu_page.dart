@@ -33,7 +33,10 @@ class MenuPage extends StatelessWidget {
                         child: Container(
                           height: 265,
                           width: 210,
-                          child: Image.asset('assets/mayor.png',color: Colors.black,),
+                          child: Image.asset(
+                            'assets/mayor.png',
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                       Container(
@@ -70,11 +73,8 @@ class MenuPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      var route = MaterialPageRoute(
-                        builder:(context){
-                          return NewMatchPage();
-                        });
-                        Navigator.push(context, route);
+                      var route = MaterialPageRoute(builder: (context) => NewMatchPage());
+                      Navigator.push(context, route);
                     },
                     color: Colors.green[900],
                     textColor: Colors.white,
