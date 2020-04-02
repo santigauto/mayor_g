@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/views/menu_page.dart';
+import 'package:mayor_g/routes/routes.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -10,8 +11,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Mayor G Flutter',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          appBarTheme: AppBarTheme(color:Colors.green[900]),
+          primarySwatch: Colors.green,
+          primaryColor: Colors.green[900]
         ),
-        home: MenuPage());
+        initialRoute: 'splash',
+        routes: getApplicationRoutes(), 
+        );
+        
   }
 }

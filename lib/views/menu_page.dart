@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/views/new_match_page.dart';
+import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/side_menu_widget.dart';
 
 class MenuPage extends StatelessWidget {
@@ -11,17 +12,11 @@ class MenuPage extends StatelessWidget {
       child: Scaffold(
         drawer: Container(width: 300, child: SideMenuWidget()),
         appBar: AppBar(
-          backgroundColor: Colors.green[900],
           title: Text('MayorG App'),
         ),
         body: Stack(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/background_myg.jpeg'),
-                      fit: BoxFit.fill)),
-            ),
+            BackgroundWidget(),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

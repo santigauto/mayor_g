@@ -1,5 +1,6 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/widgets/background_widget.dart';
 
 class NewMatchPage extends StatelessWidget {
   const NewMatchPage({Key key}) : super(key: key);
@@ -14,12 +15,7 @@ class NewMatchPage extends StatelessWidget {
         ),
         body: Stack(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/background_myg.jpeg'),
-                      fit: BoxFit.fill)),
-            ),
+            BackgroundWidget(),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
