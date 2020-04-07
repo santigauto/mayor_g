@@ -20,7 +20,7 @@ class NewMatchPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _initMatchButton(),
+                  _initMatchButton(context),
                   SizedBox(
                     height: 20,
                   ),
@@ -38,7 +38,7 @@ class NewMatchPage extends StatelessWidget {
     );
   }
 
-  Widget _initMatchButton() {
+  Widget _initMatchButton(context) {
     return RaisedButton(
       child: Container(
         height: 200,
@@ -54,7 +54,7 @@ class NewMatchPage extends StatelessWidget {
         )),
       ),
       onPressed: () {
-        
+        Navigator.pushNamed(context, 'question');
       },
       shape: CircleBorder(),
     );

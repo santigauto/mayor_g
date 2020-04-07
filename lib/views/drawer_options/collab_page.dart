@@ -31,15 +31,16 @@ class CollabPage extends StatelessWidget {
                   width: size.width*0.9,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withOpacity(0.6),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      style: TextStyle(fontSize: 18),
                       maxLines: 7,
                       decoration: InputDecoration(
-                          hintText: 'Comente aquí',
-                          ),
+                        hintText: 'Comente aquí',
+                        ),
                     ),
                   ),
                 ),

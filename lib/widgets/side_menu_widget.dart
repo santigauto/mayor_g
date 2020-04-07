@@ -12,8 +12,8 @@ class SideMenuWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             _drawerProfile(),
-            Container(child: _lista(), color: Colors.lightGreen[200],),
-            Expanded(child: Container(color: Colors.lightGreen[200],)),
+            Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
+            Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
             Container(
               color: Colors.brown[200],
               child: ListTile(
