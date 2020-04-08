@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class TimerWidget extends StatefulWidget {
-  AnimationController controller;
+  final AnimationController controller;
   TimerWidget({Key key,@required this.controller}) : super(key: key);
 
   @override
