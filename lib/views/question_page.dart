@@ -21,6 +21,8 @@ List<Map<String,dynamic>> respuestas = [
   {'respuesta':'respuesta 3','bool':true}, 
   {'respuesta':'Respuesta 4','bool':false}];
 
+String imagen = '';
+
   @override
   void initState() {
     super.initState();
@@ -48,21 +50,16 @@ List<Map<String,dynamic>> respuestas = [
                     height: size.height*0.12,
                     child: TimerWidget(controller: controller)),
                 ),
-                Container(height: size.height*0.15,
+                Container(height: (imagen == '') ? size.height*0.3 : size.height*0.15,
                   child: Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                     child: Center(child: Text(
-                      'Pregunta pregunta pregunta pregunta Pregunta pregunta pregunta pregunta Pregunta pregunta pregunta pregunta pregunta pregunta pregunta pregunta',
+                      'Pregunta',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 22),)),
                   ),
                 ),
-                Container(height: size.height*0.28,width: size.width,
-                  child: Card(
-                    color: Colors.black.withOpacity(0.5),
-                    child: Text('data'),
-                  )
-                ),
+                _foto(size),
                 Expanded(child: Container(padding: EdgeInsets.symmetric(horizontal: 5),
                 child:Column(
                   mainAxisSize: MainAxisSize.max,
@@ -78,6 +75,20 @@ List<Map<String,dynamic>> respuestas = [
       ),
     );
   }
+
+  Widget _foto(Size size){
+    if(imagen == '' || imagen == null){
+      return Container();
+    }else 
+      return Container(
+       height:  size.height*0.28,
+       decoration: BoxDecoration(
+         image: DecorationImage(image: AssetImage(imagen)),
+         shape: BoxShape.rectangle
+       ),
+     );
+  }
+
   List<Widget> _respuestas(){
     final List<Widget> answers = [];
 

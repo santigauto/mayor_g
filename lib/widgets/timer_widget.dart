@@ -30,7 +30,7 @@ String get timerString{
                 builder:(BuildContext context, Widget child){
                   return CustomPaint(
                     painter: TimerPainter(
-                      color: Colors.yellow,
+                      color: Colors.red,
                       backgroundColor: Colors.white,
                       animation: widget.controller
                       )
