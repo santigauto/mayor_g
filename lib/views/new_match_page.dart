@@ -13,8 +13,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   bool _modoClasico = true;
   bool _modoDuelo = true;
-  bool _selecOponente = false;
-  bool _selecAlAzar = false;
+  bool _selecOponente = true;
+  bool _selecAlAzar = true;
   bool _canPlay = false;
 
 
@@ -110,7 +110,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
           children: <Widget>[
             RaisedButton(
               child: Container(
-                child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
+                child: Text("CAMPAÑA", style: TextStyle(fontSize: 20)),
               ),
               color: (_modoClasico) ? colorSelec : colorNoSelec,
               onPressed: () {
@@ -129,7 +129,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
             ),
             RaisedButton(
               child: Container(
-                child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
+                child: Text(" GUERRA ", style: TextStyle(fontSize: 20)),
               ),
               color: (_modoDuelo) ? colorSelec : colorNoSelec,
               onPressed: () {
@@ -176,10 +176,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
               child: Container(
                 child: Text("AMIGOS", style: TextStyle(fontSize: 20)),
               ),
-              color: (_modoClasico == false) ? colorSelec : colorNoSelec,
+              color: (_selecOponente == true) ? colorSelec : colorNoSelec,
               onPressed: () {
                 setState(() {
+                  _selecAlAzar = false;
                   _canPlay = true;
+                  _selecOponente = true;
                 });
               },
               textColor: Colors.white,
@@ -194,10 +196,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
               child: Container(
                 child: Text("AL AZAR", style: TextStyle(fontSize: 20)),
               ),
-              color: (_modoClasico==false) ? colorSelec : colorNoSelec,
+              color: (_selecAlAzar == true) ? colorSelec : colorNoSelec,
               onPressed: () {
                 setState(() {
+                  _selecOponente = false;
                   _canPlay = true;
+                  _selecAlAzar = true;
                 });
               },
               textColor: Colors.white,

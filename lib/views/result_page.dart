@@ -25,6 +25,14 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: (){
+            Navigator.pushReplacementNamed(context, 'question');
+          },
+          label: Text('Seguir'),
+          icon: Icon(Icons.keyboard_arrow_right),
+          ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: false, 
@@ -68,7 +76,6 @@ class _ResultPageState extends State<ResultPage> {
                     ),
                   ),
                 ),
-                Expanded(child: Container())
               ],
             ),
           ],

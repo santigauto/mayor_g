@@ -110,7 +110,7 @@ String imagen = '';
           child: ListTile(
             onTap: (){
               var route = MaterialPageRoute(builder: (context) => ResultPage(resultado:resp['bool']));
-              Navigator.push(context, route);},
+              Navigator.pushReplacement(context, route);},
             title: Text(resp['respuesta'],textAlign: TextAlign.center,),),
         ));
     });
