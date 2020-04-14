@@ -26,12 +26,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
   }
 }
 
-  void _modoAction(bool modo, String nombre){
-    setState(() {
-    modo = !modo;
-    print(nombre + ': $modo');
-    });
-  }
 
 
 
@@ -72,6 +66,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
 
   Widget _initMatchButton(context) {
+    if (_canPlay){
     return RaisedButton(
       child: Container(
         height: 200,
@@ -89,6 +84,9 @@ class _NewMatchPageState extends State<NewMatchPage> {
       onPressed: _playAction,
       shape: CircleBorder(),
     );
+    }else{
+      return Container();
+    }
   }
 
   Widget _modoDeJuego(Color colorSelec, Color colorNoSelec) {
@@ -114,12 +112,13 @@ class _NewMatchPageState extends State<NewMatchPage> {
               child: Container(
                 child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
               ),
+              color: (_modoClasico) ? colorSelec : colorNoSelec,
               onPressed: () {
+                  setState(() {
+                _canPlay = true;
                 _modoClasico = true;
-                if(_modoDuelo){
-                  _modoAction(_modoDuelo,'duelo');}
+                _modoDuelo = false;});
               },
-              color: (_modoClasico = true) ? colorSelec : colorNoSelec,
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -132,12 +131,13 @@ class _NewMatchPageState extends State<NewMatchPage> {
               child: Container(
                 child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
               ),
-              color: (_modoDuelo = true) ? colorSelec : colorNoSelec,
+              color: (_modoDuelo) ? colorSelec : colorNoSelec,
               onPressed: () {
+                  setState(() {
+                    _canPlay=false;
                 _modoDuelo = true;
-                if(_modoClasico){
-                  _modoAction(_modoClasico,'clasico');
-                }
+                _modoClasico=false;
+                  });
               },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -154,7 +154,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
   }
 
   Widget _seleccionOponente(Color colorSelec, Color colorNoSelec) {
-    return Column(
+    if(_modoDuelo && !_modoClasico){return Column(
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.all(10.0),
@@ -177,7 +177,11 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 child: Text("AMIGOS", style: TextStyle(fontSize: 20)),
               ),
               color: (_modoClasico == false) ? colorSelec : colorNoSelec,
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  _canPlay = true;
+                });
+              },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -191,7 +195,11 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 child: Text("AL AZAR", style: TextStyle(fontSize: 20)),
               ),
               color: (_modoClasico==false) ? colorSelec : colorNoSelec,
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  _canPlay = true;
+                });
+              },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -204,13 +212,11 @@ class _NewMatchPageState extends State<NewMatchPage> {
         ),
       ],
     );
+  }else{
+    return Container();
   }
 }
+}
 /*
-onPressed: () {
-  _modoDuelo = false
-  _selecOponente = true
-  _selecAlAzar = true
-
-},
+I hate this front faucking end xD
 */

@@ -1,5 +1,6 @@
 //ESTA PAGINA MOSTRARA LA PREGUNTA, EL RELOJ, LA IMAGEN (OPCIONAL) Y LAS OPCIONES
 
+
 import 'package:flutter/material.dart';
 import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
@@ -22,15 +23,21 @@ List<Map<String,dynamic>> respuestas = [
   {'respuesta':'Respuesta 4','bool':false}];
 
 String imagen = '';
-
   @override
   void initState() {
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds:20)
+      duration: Duration(seconds:5)
       );
-    controller.reverse(from: controller.value == 0 ? 1 : controller.value);
+    controller.reverse(from: controller.value == 0 ? 1 : controller.value,);
+    //print(controller.value);
+   if(controller.value==0.0){
+      print(controller.value);
+     // var route = MaterialPageRoute(builder: (context) => ResultPage(resultado:false));
+      //Navigator.push(context, route);
+    }
+    
   }
 
   @override

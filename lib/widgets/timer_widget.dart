@@ -13,7 +13,7 @@ class _TimerWidgetState extends State<TimerWidget>{
 
 String get timerString{
     Duration duration = widget.controller.duration * widget.controller.value;
-    return '${(duration.inSeconds %60).toString()}';
+    return '${(duration.inSeconds %60)}';
   }  
 
   @override 
