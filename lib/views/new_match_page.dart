@@ -2,11 +2,37 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
-class NewMatchPage extends StatelessWidget {
+class NewMatchPage extends StatefulWidget {
   const NewMatchPage({Key key}) : super(key: key);
 
   @override
+  _NewMatchPageState createState() => _NewMatchPageState();
+}
+
+class _NewMatchPageState extends State<NewMatchPage> {
+
+  bool _modoClasico = true;
+  bool _modoDuelo = true;
+  bool _selecOponente = false;
+  bool _selecAlAzar = false;
+  bool _canPlay = false;
+
+
+  void _playAction(){
+    if(_canPlay == true){
+      setState(() {
+        Navigator.pushNamed(context, 'question');
+      });
+  }
+}
+
+
+
+
+  @override
   Widget build(BuildContext context) {
+  Color _noSeleccionado = Theme.of(context).primaryColor.withOpacity(0.2);
+  Color _seleccionado = Theme.of(context).primaryColor;
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -24,11 +50,11 @@ class NewMatchPage extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  _modoDeJuego(),
+                  _modoDeJuego(_seleccionado,_noSeleccionado),
                   SizedBox(
                     height: 20,
                   ),
-                  _seleccionOponente()
+                  _seleccionOponente(_seleccionado,_noSeleccionado)
                 ],
               ),
             ),
@@ -38,7 +64,9 @@ class NewMatchPage extends StatelessWidget {
     );
   }
 
+
   Widget _initMatchButton(context) {
+    if (_canPlay){
     return RaisedButton(
       child: Container(
         height: 200,
@@ -53,14 +81,15 @@ class NewMatchPage extends StatelessWidget {
           style: TextStyle(fontSize: 35, color: Colors.white),
         )),
       ),
-      onPressed: () {
-        Navigator.pushNamed(context, 'question');
-      },
+      onPressed: _playAction,
       shape: CircleBorder(),
     );
+    }else{
+      return Container();
+    }
   }
 
-  Widget _modoDeJuego() {
+  Widget _modoDeJuego(Color colorSelec, Color colorNoSelec) {
     return Column(
       children: <Widget>[
         Padding(
@@ -83,8 +112,13 @@ class NewMatchPage extends StatelessWidget {
               child: Container(
                 child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
               ),
-              onPressed: () {},
-              color: Colors.green[900],
+              color: (_modoClasico) ? colorSelec : colorNoSelec,
+              onPressed: () {
+                  setState(() {
+                _canPlay = true;
+                _modoClasico = true;
+                _modoDuelo = false;});
+              },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -97,8 +131,14 @@ class NewMatchPage extends StatelessWidget {
               child: Container(
                 child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
               ),
-              onPressed: () {},
-              color: Colors.green[900],
+              color: (_modoDuelo) ? colorSelec : colorNoSelec,
+              onPressed: () {
+                  setState(() {
+                    _canPlay=false;
+                _modoDuelo = true;
+                _modoClasico=false;
+                  });
+              },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -113,8 +153,8 @@ class NewMatchPage extends StatelessWidget {
     );
   }
 
-  Widget _seleccionOponente() {
-    return Column(
+  Widget _seleccionOponente(Color colorSelec, Color colorNoSelec) {
+    if(_modoDuelo && !_modoClasico){return Column(
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.all(10.0),
@@ -136,8 +176,12 @@ class NewMatchPage extends StatelessWidget {
               child: Container(
                 child: Text("AMIGOS", style: TextStyle(fontSize: 20)),
               ),
-              onPressed: () {},
-              color: Colors.green[900],
+              color: (_modoClasico == false) ? colorSelec : colorNoSelec,
+              onPressed: () {
+                setState(() {
+                  _canPlay = true;
+                });
+              },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -150,8 +194,12 @@ class NewMatchPage extends StatelessWidget {
               child: Container(
                 child: Text("AL AZAR", style: TextStyle(fontSize: 20)),
               ),
-              onPressed: () {},
-              color: Colors.green[900],
+              color: (_modoClasico==false) ? colorSelec : colorNoSelec,
+              onPressed: () {
+                setState(() {
+                  _canPlay = true;
+                });
+              },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               splashColor: Colors.grey,
@@ -164,5 +212,11 @@ class NewMatchPage extends StatelessWidget {
         ),
       ],
     );
+  }else{
+    return Container();
   }
 }
+}
+/*
+I hate this front faucking end xD
+*/

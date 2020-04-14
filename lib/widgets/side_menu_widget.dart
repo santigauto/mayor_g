@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/services/drawer_service.dart';
 import 'package:mayor_g/utils/icon_string_util.dart';
 
@@ -23,6 +24,7 @@ class SideMenuWidget extends StatelessWidget {
                 ),
                 title: Text('Log Out', style: TextStyle(color: Colors.red[400])),
                 trailing: Icon(Icons.keyboard_arrow_right, color: Colors.red[400]),
+                onTap: (){AuthService().logout(context: context);},
               ),
             )
           ],

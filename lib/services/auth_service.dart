@@ -37,7 +37,7 @@ class AuthService {
     final User _user = User.fromJson(_decodedJson);
     await user.set(_decodedJson);
 
-    Navigator.pushNamed(context, 'menu');
+    Navigator.pushReplacementNamed(context, 'menu');
 
 
     print([_user.token.generatedAt,_user.dni.toString()]);
@@ -51,4 +51,16 @@ class AuthService {
       final String uat = result['mut_uat'] as String;
       return uat;
   }
+
+  logout({BuildContext context}){
+    this.user.storage.deleteAll();
+    Navigator.pushReplacementNamed(context, 'splash');
+  }
+/*logout() {
+    this.storage.remove(this.TOKEN_KEY).then(()=>{
+      this.authenticationState.next(false);
+      this.router.navigateByUrl('/auth');
+    })
+  }*/
+
 }

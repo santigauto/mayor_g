@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
@@ -23,13 +26,16 @@ class _ResultPageState extends State<ResultPage> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          leading: MaterialButton(
-            child: Text('Volver al Menu'),
-            onPressed: (){},
-            ),
+          automaticallyImplyLeading: false,
+          centerTitle: false, 
           actions: <Widget>[
             MaterialButton(
-              child: Text('Reportar'),
+            child: Text('Salir',style: TextStyle(color: Colors.white),),
+            onPressed: (){},
+            ),
+            Expanded(child: Container()),
+            MaterialButton(
+              child: Text('Reportar',style: TextStyle(color: Colors.white)),
               onPressed: (){},
             ),
           ],
@@ -39,7 +45,30 @@ class _ResultPageState extends State<ResultPage> {
             BackgroundWidget(),
             Column(
               children: <Widget>[
-                Image.asset(imagen)
+                Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage(imagen)),
+                    border: Border(bottom: BorderSide(color: Colors.black,width: 6))
+                  ),
+                ),
+                Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    //image: DecorationImage(image: AssetImage('assets/bgCopia6.png'),fit: BoxFit.fitWidth),
+                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.black,width: 6)
+                        )
+                  ),
+                  child: Center(
+                    child: ListTile(
+                      title: _resultadoText(),
+                    ),
+                  ),
+                ),
+                Expanded(child: Container())
               ],
             ),
           ],
@@ -47,4 +76,22 @@ class _ResultPageState extends State<ResultPage> {
       ),
     );
   }
+
+Widget _resultadoText(){
+ if (widget.resultado) {
+   return  BorderedText(
+        strokeColor: Colors.green,
+        child: Text('¡Correcto!', 
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 30,color: Colors.white)),
+   );}
+ else {
+   return BorderedText(
+        strokeColor: Colors.red,
+        child: Text('Incorrecto', 
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30,color: Colors.white),),
+   );}
+}
+
 }

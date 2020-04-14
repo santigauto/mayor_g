@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
+
 import 'package:mayor_g/views/new_match_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/side_menu_widget.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   const MenuPage({Key key}) : super(key: key);
 
   @override
+  _MenuPageState createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+Future<bool> _back(){
+  return showDialog(
+    context: context,
+    builder: (context)=>AlertDialog(
+        title: Text('Quieres realmente salir de Mayor G'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){Navigator.pop(context,true);}, 
+            child: Text('Salir')),
+          FlatButton(
+            onPressed: (){Navigator.pop(context,false);}, 
+            child: Text('Cancelar'))
+        ],
+      )
+    );
+}
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
+    return WillPopScope(
+      onWillPop: _back,
+        child: Scaffold(
         drawer: Container(width: 300, child: SideMenuWidget()),
         appBar: AppBar(
           title: Text('MayorG App'),
