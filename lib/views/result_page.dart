@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/views/drawer_options/collab_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 class ResultPage extends StatefulWidget {
@@ -44,7 +45,10 @@ class _ResultPageState extends State<ResultPage> {
             Expanded(child: Container()),
             MaterialButton(
               child: Text('Reportar',style: TextStyle(color: Colors.white)),
-              onPressed: (){},
+              onPressed: (){
+                var route = MaterialPageRoute(builder: (context){return CollabPage(collabOrReport: 'Reportar', id: 3);});
+                Navigator.push(context, route);
+              },
             ),
           ],
         ),

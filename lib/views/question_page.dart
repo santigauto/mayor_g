@@ -1,6 +1,5 @@
 //ESTA PAGINA MOSTRARA LA PREGUNTA, EL RELOJ, LA IMAGEN (OPCIONAL) Y LAS OPCIONES
 
-
 import 'package:flutter/material.dart';
 import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
@@ -16,11 +15,12 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMixin{
 
 AnimationController controller;
+
 List<Map<String,dynamic>> respuestas = [
   {'respuesta':'Respuesta 1','bool':false}, 
   {'respuesta':'respuesta 2','bool':false}, 
   {'respuesta':'respuesta 3','bool':true}, 
-  {'respuesta':'Respuesta 4','bool':false}];
+  {'respuesta':'Respuesta larga largisima como algo que tengo dentro de mis pantalones locooo re piola ehhhh cabeza de pingo 4','bool':false}];
 
 String imagen = '';
   @override
@@ -28,22 +28,39 @@ String imagen = '';
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds:5)
+      duration: Duration(seconds:5),
       );
     controller.reverse(from: controller.value == 0 ? 1 : controller.value,);
-    //print(controller.value);
-   if(controller.value==0.0){
-      print(controller.value);
-     // var route = MaterialPageRoute(builder: (context) => ResultPage(resultado:false));
-      //Navigator.push(context, route);
-    }
-    
+    controller.addStatusListener((state){
+      return Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(builder: (context) => ResultPage(resultado:false))
+      );});
   }
+
+  Future<bool> _back(){
+  return showDialog(
+    context: context,
+    builder: (context)=>AlertDialog(
+        title: Text('Quieres realmente salir de Mayor G'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){Navigator.pop(context,true);},
+            child: Text('Salir')),
+          FlatButton(
+            onPressed: (){Navigator.pop(context,false);}, 
+            child: Text('Cancelar'))
+        ],
+      )
+    );
+}
+
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
+    return WillPopScope(
+      onWillPop: _back,
       child: Scaffold(
         body: Stack(
           children: <Widget>[
@@ -88,7 +105,7 @@ String imagen = '';
       return Container();
     }else 
       return Container(
-       height:  size.height*0.28,
+       height:  size.height*0.25,
        decoration: BoxDecoration(
          image: DecorationImage(image: AssetImage(imagen)),
          shape: BoxShape.rectangle
@@ -111,9 +128,15 @@ String imagen = '';
             onTap: (){
               var route = MaterialPageRoute(builder: (context) => ResultPage(resultado:resp['bool']));
               Navigator.pushReplacement(context, route);},
-            title: Text(resp['respuesta'],textAlign: TextAlign.center,),),
+            title: Text(resp['respuesta'],textAlign: TextAlign.center,style: TextStyle(fontSize: 13),),),
         ));
     });
     return answers;
   }
+
+   @override            
+      void dispose() {
+        controller.dispose();            
+        super.dispose();            
+      }
 }
