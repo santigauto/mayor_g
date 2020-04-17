@@ -99,7 +99,7 @@ class SideMenuWidget extends StatelessWidget {
         leading: getIcon(item['icon']),
         trailing: Icon(Icons.keyboard_arrow_right),
         onTap: () {
-          Navigator.pushNamed(context, item['ruta']);
+          Navigator.popAndPushNamed(context, item['ruta']);
         },
       );
       opciones..add(widgetTemp);

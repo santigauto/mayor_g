@@ -40,7 +40,9 @@ class _ResultPageState extends State<ResultPage> {
           actions: <Widget>[
             MaterialButton(
             child: Text('Salir',style: TextStyle(color: Colors.white),),
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushReplacementNamed(context, '/');
+            },
             ),
             Expanded(child: Container()),
             MaterialButton(

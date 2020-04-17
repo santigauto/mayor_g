@@ -180,9 +180,9 @@ class _NewMatchPageState extends State<NewMatchPage> {
               onPressed: () {
                 setState(() {
                   _selecAlAzar = false;
-                  _canPlay = true;
                   _selecOponente = true;
                 });
+                Navigator.pushNamed(context, 'friends');
               },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),

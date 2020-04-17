@@ -20,7 +20,7 @@ List<Map<String,dynamic>> respuestas = [
   {'respuesta':'Respuesta 1','bool':false}, 
   {'respuesta':'respuesta 2','bool':false}, 
   {'respuesta':'respuesta 3','bool':true}, 
-  {'respuesta':'Respuesta larga largisima como algo que tengo dentro de mis pantalones locooo re piola ehhhh cabeza de pingo 4','bool':false}];
+  {'respuesta':'Respuesta larga largisima no puede ser no se me ocurre que poner a ver locooo re piola ehhhh cabeza de pingo 4','bool':false}];
 
 String imagen = '';
   @override
@@ -28,7 +28,7 @@ String imagen = '';
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds:5),
+      duration: Duration(seconds:15),
       );
     controller.reverse(from: controller.value == 0 ? 1 : controller.value,);
     controller.addStatusListener((state){

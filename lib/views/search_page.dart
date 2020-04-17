@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
-class FriendsPage extends StatefulWidget {
+
+class SearchPage extends StatefulWidget {
+  SearchPage({Key key}) : super(key: key);
+
   @override
-  _FriendsPageState createState() => _FriendsPageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _FriendsPageState extends State<FriendsPage> {
-  List<Map<String,dynamic>> gente = [{'nombre':'Carlos','grado':'VS'}, {'nombre':'Raul','grado':'CT'}, {'nombre':'Octavio','grado':'SG'}, {'nombre':'Jose','grado':'TT'}];
+class _SearchPageState extends State<SearchPage> {
+  List<Map<String,dynamic>> gente = [
+    {'nombre': 'Mara'  ,'grado':'VP'}, 
+    {'nombre':'Esteban','grado':'CT'}, 
+    {'nombre': 'Juan'  ,'grado':'SP'}, 
+    {'nombre': 'Roger' ,'grado':'TC'}, 
+    {'nombre':'Rodrigo','grado':'CI'}];
   bool _isSelected = false;
 
 @override
@@ -23,14 +31,7 @@ class _FriendsPageState extends State<FriendsPage> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Friends'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add), 
-              onPressed: (){
-                Navigator.pushNamed(context, 'search');
-              })
-          ],
+          title: Text('Search'),
           ),
         body: Stack(
           children: <Widget>[
@@ -59,17 +60,16 @@ class _FriendsPageState extends State<FriendsPage> {
         onTap: () {},
         title: Text(gente[x]['grado'] + ' ' + gente[x]['nombre']),
         leading: Icon(Icons.face),
-        trailing: Checkbox(
-          value: gente[x]['seleccion'], 
-          onChanged: (boolean){
-            setState(() {
-              for(var i = 0; i < gente.length; i++ ){
-                gente[i]['seleccion']=false;
-              }
-              gente[x]['seleccion']=boolean;
-              _isSelected = gente[x]['seleccion'];
-            });
-        }),
+        trailing: FlatButton(
+          color: Theme.of(context).primaryColor,
+          textColor: Colors.white,
+          disabledColor: Colors.grey,
+          disabledTextColor: Colors.black,
+          onPressed: () {
+            /*...*/
+          },
+          child: Text("Invitar",),
+        ),
       ),
     );
   }
