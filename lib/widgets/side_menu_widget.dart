@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/auth/user.dart';
 import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/services/drawer_service.dart';
 import 'package:mayor_g/utils/icon_string_util.dart';
@@ -6,8 +7,10 @@ import 'package:mayor_g/utils/icon_string_util.dart';
 class SideMenuWidget extends StatelessWidget {
   SideMenuWidget({Key key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: Drawer(
         child: Column(
@@ -34,6 +37,9 @@ class SideMenuWidget extends StatelessWidget {
   }
 
   Widget _drawerProfile() {
+
+    User usuarioEjemplo = User(nombre: 'santi', apellido: 'gauto');
+
     return Container(
       height: 152,
       color: Colors.green[900],
@@ -54,22 +60,50 @@ class SideMenuWidget extends StatelessWidget {
                   backgroundColor: Colors.yellow,
                 ),
                 SizedBox(width: 7,),
-                Column(
-                  //nombre de usuario
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('SV Gauto',
-                        style: TextStyle(fontSize: 15, color: Colors.white)),
-                    Text(
-                      'Santiago Tomas',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )
-                  ],
+                StreamBuilder(
+                  stream: bloc.userProfileStream,
+                  initialData: usuarioEjemplo,
+                  builder: (context,AsyncSnapshot snapshot) {
+                    print('hola mono, llega esto del snapshot: ${snapshot.data.nombre}');
+                    if(snapshot.hasData){
+                      dispose(); 
+                    return Column(
+                          //nombre de usuario
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              snapshot.data.apellido.toString(),
+                              style: TextStyle(fontSize: 15, color: Colors.white)),
+                            Text(
+                              snapshot.data.nombre.toString(),
+                              style: TextStyle(fontSize: 12, color: Colors.white),
+                            )
+                          ],
+                    );
+                    }else{
+                      return Column(
+                          //nombre de usuario
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'apellido',
+                              style: TextStyle(fontSize: 15, color: Colors.white)),
+                            Text(
+                              'nombre',
+                              style: TextStyle(fontSize: 12, color: Colors.white),
+                            )
+                          ],
+                    );
+                    }
+                  }
                 ),
                 Expanded(child: Container()),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print('hola');
+                  },
                   icon: Icon(Icons.settings),
                 )
               ],

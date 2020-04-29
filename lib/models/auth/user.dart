@@ -7,6 +7,7 @@ class User {
   String nombre;
   String apellido;
   String email;
+  String grado;
   String pushId;
   String deviceId;
   Token token;
@@ -14,7 +15,7 @@ class User {
   final storage = FlutterSecureStorage();
   final tokenKey = 'session_id';
 
-  User({this.dni,this.nombre,this.apellido,this.deviceId,this.email,this.pushId,this.token});
+  User({this.dni,this.nombre,this.apellido,this.deviceId,this.email,this.pushId,this.token,this.grado});
 
 
   set(_decodedUser) async {
@@ -42,11 +43,22 @@ class User {
         email: '',
         pushId: '',
         deviceId: '',
+        grado: '',
         token: Token(
           expiresIn: 3600,
           generatedAt: DateTime.now(),
           token: parsedJson['mut_uat']
         )
+      );
+    }
+
+  factory User.fromJsonProfile(Map<String, dynamic> parsedJson)
+    {
+      return User (
+        dni: parsedJson['usu_DNI'],
+        nombre: parsedJson['usu_Nombre'].toString().trim(),
+        apellido: parsedJson['usu_Apellido'].toString().trim(),
+        grado: parsedJson['uni_Abrev'].toString().trim(),
       );
     }
 

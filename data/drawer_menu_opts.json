@@ -2,6 +2,11 @@
     "nombreApp" : "Componentes",
     "rutas" : [
         {
+            "ruta" : "search",
+            "icon" : "search",
+            "texto": "Busqueda"
+        },
+        {
             "ruta" : "ranking",
             "icon" : "star",
             "texto": "Ranking"
@@ -10,11 +15,6 @@
             "ruta" : "collab",
             "icon" : "collab",
             "texto": "Colaborar"
-        },
-        {
-            "ruta" : "friends",
-            "icon" : "smile",
-            "texto": "Amigos"
         }
     ]
 }

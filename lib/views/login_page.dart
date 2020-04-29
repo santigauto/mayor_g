@@ -5,6 +5,8 @@ import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/input_text_widget.dart';
 
+import '../services/auth_service.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
 
@@ -17,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   var _username;
   var _password;
   bool _isLoading = false;
+  
 
   _submit() async {
     if (!_isLoading) {
@@ -26,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         });
 
         await AuthService().login(context, username: _username, password: _password);
+        //await AuthService().getUserProfile(AuthService().user.token.token);
 
         setState(() {
           _isLoading = false;

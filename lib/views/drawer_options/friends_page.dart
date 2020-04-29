@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/utils/search_delegate.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 class FriendsPage extends StatefulWidget {
@@ -26,10 +27,10 @@ class _FriendsPageState extends State<FriendsPage> {
           title: Text('Friends'),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.add), 
+              icon: Icon(Icons.search), 
               onPressed: (){
-                Navigator.pushNamed(context, 'search');
-              })
+                showSearch(context: context, delegate: DataSearch());
+              }),
           ],
           ),
         body: Stack(

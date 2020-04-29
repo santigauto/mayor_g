@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 
-class SearchPage extends StatefulWidget {
-  SearchPage({Key key}) : super(key: key);
+class SearchPeoplePage extends StatefulWidget {
+  SearchPeoplePage({Key key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _SearchPeoplePageState createState() => _SearchPeoplePageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPeoplePageState extends State<SearchPeoplePage> {
   List<Map<String,dynamic>> gente = [
     {'nombre': 'Mara'  ,'grado':'VP'}, 
     {'nombre':'Esteban','grado':'CT'}, 
@@ -32,6 +32,11 @@ class _SearchPageState extends State<SearchPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Search'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search), 
+              onPressed: (){})
+          ],
           ),
         body: Stack(
           children: <Widget>[

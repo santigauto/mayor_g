@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/views/drawer_options/collab_page.dart';
 import 'package:mayor_g/views/drawer_options/friends_page.dart';
 import 'package:mayor_g/views/drawer_options/ranking_page.dart';
+import 'package:mayor_g/views/drawer_options/search_page.dart';
 import 'package:mayor_g/views/login_page.dart';
 import 'package:mayor_g/views/menu_page.dart';
 import 'package:mayor_g/views/question_page.dart';
-import 'package:mayor_g/views/search_page.dart';
+import 'package:mayor_g/views/drawer_options/search_people_page.dart';
 import 'package:mayor_g/views/splash_page.dart';
 
 
@@ -21,7 +22,8 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'splash'  : (BuildContext context) => SplashPage(),
     'login'   : (BuildContext context) => LoginPage(),
     'question': (BuildContext context) => QuestionPage(),
-    'search'  : (BuildContext context) => SearchPage()
+    'search'  : (BuildContext context) => SearchPage(),
+    'search_people'  : (BuildContext context) => SearchPeoplePage()
   };
 }
 
