@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:mayor_g/models/profileInfo.dart';
 
 import 'package:meta/meta.dart' show required;
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../config.dart';
 import 'package:mayor_g/models/auth/user.dart';
@@ -37,7 +39,9 @@ class AuthService {
 
 //------------------------------ FUNCION DE LOGEO ------------------------------------
 
-  login(BuildContext context, { @required String username, @required String password}) async {
+  login(BuildContext context, { @required String username, @required String password, ProfileInfo info }) async {
+
+   //
 
    final http.Response response = await http.post(
      '${Config.ApiURL}/musuario/login',
@@ -63,7 +67,7 @@ class AuthService {
 
     await user.set(_decodedJson);
     profile =await getUserProfile(await getAccessToken());
-    bloc.userProfileSink(profile);
+    info.nombre=(profile.nombre);
 
     Navigator.pushReplacementNamed(context, 'menu');
     print('${[_user.token.generatedAt,_user.dni.toString()]}');

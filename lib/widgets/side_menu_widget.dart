@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/models/auth/user.dart';
+import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/services/drawer_service.dart';
 import 'package:mayor_g/utils/icon_string_util.dart';
+import 'package:provider/provider.dart';
 
 class SideMenuWidget extends StatelessWidget {
   SideMenuWidget({Key key}) : super(key: key);
@@ -11,11 +12,13 @@ class SideMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final profileInfo = Provider.of<ProfileInfo>(context);
+
     return Container(
       child: Drawer(
         child: Column(
           children: <Widget>[
-            _drawerProfile(),
+            _drawerProfile(profileInfo),
             Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
             Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
             Container(
@@ -36,9 +39,7 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawerProfile() {
-
-    User usuarioEjemplo = User(nombre: 'santi', apellido: 'gauto');
+  Widget _drawerProfile(ProfileInfo info) {
 
     return Container(
       height: 152,
@@ -60,48 +61,24 @@ class SideMenuWidget extends StatelessWidget {
                   backgroundColor: Colors.yellow,
                 ),
                 SizedBox(width: 7,),
-                StreamBuilder(
-                  stream: bloc.userProfileStream,
-                  initialData: usuarioEjemplo,
-                  builder: (context,AsyncSnapshot snapshot) {
-                    print('hola mono, llega esto del snapshot: ${snapshot.data.nombre}');
-                    if(snapshot.hasData){
-                    return Column(
-                          //nombre de usuario
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              snapshot.data.apellido.toString(),
-                              style: TextStyle(fontSize: 15, color: Colors.white)),
-                            Text(
-                              snapshot.data.nombre.toString(),
-                              style: TextStyle(fontSize: 12, color: Colors.white),
-                            )
-                          ],
-                    );
-                    }else{
-                      return Column(
-                          //nombre de usuario
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'apellido',
-                              style: TextStyle(fontSize: 15, color: Colors.white)),
-                            Text(
-                              'nombre',
-                              style: TextStyle(fontSize: 12, color: Colors.white),
-                            )
-                          ],
-                    );
-                    }
-                  }
+                Column(
+                  //nombre de usuario
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      info.nombre,
+                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                    Text(
+                      info.nombre,
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    )
+                  ],
                 ),
                 Expanded(child: Container()),
                 IconButton(
                   onPressed: () {
-                    print('hola');
+                    print(info.nombre);
                   },
                   icon: Icon(Icons.settings),
                 )
