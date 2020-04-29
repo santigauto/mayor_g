@@ -66,7 +66,6 @@ class SideMenuWidget extends StatelessWidget {
                   builder: (context,AsyncSnapshot snapshot) {
                     print('hola mono, llega esto del snapshot: ${snapshot.data.nombre}');
                     if(snapshot.hasData){
-                      dispose(); 
                     return Column(
                           //nombre de usuario
                           mainAxisAlignment: MainAxisAlignment.center,

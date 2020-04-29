@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/utils/search_delegate.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 
@@ -35,7 +36,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search), 
-              onPressed: (){})
+              onPressed: (){showSearch(context: context, delegate: DataSearch(gente));})
           ],
           ),
         body: Stack(

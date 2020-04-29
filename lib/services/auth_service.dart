@@ -62,12 +62,11 @@ class AuthService {
     final User _user = User.fromJson(_decodedJson);
 
     await user.set(_decodedJson);
-    //profile =await getUserProfile(await getAccessToken());
-    profile = User(apellido: 'gutierrez',nombre: 'marcos');
+    profile =await getUserProfile(await getAccessToken());
     bloc.userProfileSink(profile);
 
     Navigator.pushReplacementNamed(context, 'menu');
-    print('hola manito ${[_user.token.generatedAt,_user.dni.toString()]}');
+    print('${[_user.token.generatedAt,_user.dni.toString()]}');
 
 
   }
@@ -104,7 +103,6 @@ class AuthService {
     }
     else{
       _profile = User.fromJsonProfile(_decodedJson);
-      print(_profile.nombre);
       return _profile;
     }
 

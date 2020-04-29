@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/widgets/background_widget.dart';
 
 
 
 class DataSearch extends SearchDelegate{
 
-List<Map<String,dynamic>> gente = [
-  {'nombre':'Carlos','grado':'VS'}, 
-  {'nombre':'Raul','grado':'CT'}, 
-  {'nombre':'Octavio','grado':'SG'}, 
-  {'nombre':'Jose','grado':'TT'}];
+List<Map<String,dynamic>> gente;
+
+DataSearch(this.gente);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -40,14 +39,25 @@ List<Map<String,dynamic>> gente = [
       ? gente 
       : gente.where( (data) => 
               data['nombre'].toLowerCase().startsWith(query.toLowerCase()) ).toList();
-    return ListView.builder(
-      itemCount: _dataSuggested.length,
-      itemBuilder: (context, index){
-        return ListTile(
-          leading: Icon(Icons.person),
-          title: Text('${_dataSuggested[index]['grado']} ${_dataSuggested[index]['nombre']}'),
-        );
-      });
+    return Stack(
+      children: <Widget>[
+        BackgroundWidget(),
+        ListView.builder(
+          itemCount: _dataSuggested.length,
+          itemBuilder: (context, index){
+            return Container(
+              decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5),
+              border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
+              child: ListTile(
+                leading: Icon(Icons.person),
+                title: Text('${_dataSuggested[index]['grado']} ${_dataSuggested[index]['nombre']}'),
+                onTap: (){},
+              ),
+            );
+          }),
+      ],
+    );
   }
 
 }

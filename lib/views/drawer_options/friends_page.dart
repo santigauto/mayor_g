@@ -29,20 +29,15 @@ class _FriendsPageState extends State<FriendsPage> {
             IconButton(
               icon: Icon(Icons.search), 
               onPressed: (){
-                showSearch(context: context, delegate: DataSearch());
+                showSearch(context: context, delegate: DataSearch(gente));
               }),
           ],
           ),
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
-            ListView.builder(
-              itemCount: gente.length,
-              itemBuilder: (context, x){
-                return _listItem(x);
-              },
-              //children: _listaAmigos(),
-            )
+            listItem(context, gente)
+              //children: _listaAmigos(), 
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -50,6 +45,13 @@ class _FriendsPageState extends State<FriendsPage> {
       ),
     );
 
+  }
+  Widget listItem(context, gente){
+    return ListView.builder(
+      itemCount: gente.length,
+      itemBuilder: (context, x){
+        return _listItem(x);
+      });
   }
   Widget _listItem(int x){
     return Container(

@@ -21,7 +21,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
   void _playAction(){
     if(_canPlay == true){
       setState(() {
-        Navigator.pushNamed(context, 'question');
+        Navigator.popAndPushNamed(context, 'question');
       });
   }
 }

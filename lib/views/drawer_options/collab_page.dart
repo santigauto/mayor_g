@@ -20,7 +20,7 @@ class _CollabPageState extends State<CollabPage> {
       setState(() {
       aux = 'colaborar';
       });
-    }else aux = widget.collabOrReport;
+    }else aux = widget.collabOrReport.toLowerCase();
 
     var size = MediaQuery.of(context).size;
 
