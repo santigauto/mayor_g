@@ -67,8 +67,6 @@ class AuthService {
     await user.set(_decodedJson);
     profile =await getUserProfile(await getAccessToken());
     prefs.setString('apellido', profile.apellido);
-    prefs.setString('nombre', profile.nombre);
-    prefs.setInt('dni', profile.dni);
 
     Navigator.pushReplacementNamed(context, 'menu');
     print('${[_user.token.generatedAt,_user.dni.toString()]}');

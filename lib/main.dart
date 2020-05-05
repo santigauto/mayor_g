@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:mayor_g/routes/routes.dart';
+import 'package:mayor_g/models/profileInfo.dart';
 
+void main() async{
 
-void main() => runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  final prefs = new PreferenciasUsuario();
+  await prefs.initPrefs();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

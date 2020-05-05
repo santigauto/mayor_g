@@ -1,11 +1,9 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/input_text_widget.dart';
-import 'package:provider/provider.dart';
 
 import '../services/auth_service.dart';
 
@@ -24,14 +22,14 @@ class _LoginPageState extends State<LoginPage> {
   
   
 
-  _submit(profileInfo) async {
+  _submit() async {
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
         setState(() {
           _isLoading = true;
         });
 
-        await AuthService().login(context, username: _username, password: _password, info: profileInfo);
+        await AuthService().login(context, username: _username, password: _password);
         //await AuthService().getUserProfile(AuthService().user.token.token);
 
         setState(() {
@@ -43,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final profileInfo = Provider.of<ProfileInfo>(context);
     final size = MediaQuery.of(context).size;
     return Container(
       child: Scaffold(
@@ -139,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black)),
                           color: Colors.white,
-                          onPressed: () => _submit(profileInfo),
+                          onPressed: () => _submit(),
                         ),
                       ),
                     ),

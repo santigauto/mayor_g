@@ -1,13 +1,34 @@
-import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileInfo with ChangeNotifier{
+class PreferenciasUsuario{
 
-String _nombre = '';
+  static final PreferenciasUsuario _instancia = new PreferenciasUsuario._internal();
 
-get nombre{return _nombre;}
+  factory PreferenciasUsuario() {
+    return _instancia;
+  }
 
-set nombre(String text){
-  _nombre = nombre;
-  notifyListeners();
-}
+  PreferenciasUsuario._internal();
+
+  SharedPreferences _prefs;
+
+  initPrefs() async{
+    this._prefs = await SharedPreferences.getInstance();
+  }
+
+
+  //String _nombre;
+  //String _apellido;
+  //int _dni;
+
+  get apellido{
+    return _prefs.getString('apellido') ?? 'apellidoO';
+  }
+
+  set apellido(String value){
+    _prefs.setString('apellido', value);
+  }
+
+
+
 }

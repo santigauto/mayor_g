@@ -3,22 +3,19 @@ import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/services/drawer_service.dart';
 import 'package:mayor_g/utils/icon_string_util.dart';
-import 'package:provider/provider.dart';
 
 class SideMenuWidget extends StatelessWidget {
   SideMenuWidget({Key key}) : super(key: key);
-
+  final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
-
-    final profileInfo = Provider.of<ProfileInfo>(context);
 
     return Container(
       child: Drawer(
         child: Column(
           children: <Widget>[
-            _drawerProfile(profileInfo),
+            _drawerProfile(),
             Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
             Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
             Container(
@@ -39,7 +36,7 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawerProfile(ProfileInfo info) {
+  Widget _drawerProfile() {
 
     return Container(
       height: 152,
@@ -67,10 +64,10 @@ class SideMenuWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      info.nombre,
+                      prefs.apellido,
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                     Text(
-                      info.nombre,
+                      'nombre',
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ],
@@ -78,7 +75,6 @@ class SideMenuWidget extends StatelessWidget {
                 Expanded(child: Container()),
                 IconButton(
                   onPressed: () {
-                    print(info.nombre);
                   },
                   icon: Icon(Icons.settings),
                 )
