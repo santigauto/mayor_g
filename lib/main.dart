@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/routes/routes.dart';
-import 'package:provider/provider.dart';
 
 
 void main() => runApp(MyApp());
@@ -9,9 +7,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-          create: (context) => ProfileInfo(),
-          child: MaterialApp(
+    return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Mayor G Flutter',
           theme: ThemeData(
@@ -21,7 +17,6 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: 'splash',
           routes: getApplicationRoutes(), 
-          ),
     );
         
   }

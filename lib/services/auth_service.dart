@@ -1,18 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:mayor_g/models/profileInfo.dart';
 
 import 'package:meta/meta.dart' show required;
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config.dart';
 import 'package:mayor_g/models/auth/user.dart';
 import 'package:mayor_g/widgets/alert_widget.dart';
 
 
-class Bloc{
+/*class Bloc{
 
   //-------------------- STREAM DE DATOS DE USUARIO LOGEADO ---------------------------
 
@@ -27,7 +26,7 @@ class Bloc{
   }
 
 }
-Bloc bloc = Bloc();
+Bloc bloc = Bloc();*/
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,9 +38,9 @@ class AuthService {
 
 //------------------------------ FUNCION DE LOGEO ------------------------------------
 
-  login(BuildContext context, { @required String username, @required String password, ProfileInfo info }) async {
+  login(BuildContext context, { @required String username, @required String password}) async {
 
-   //
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
    final http.Response response = await http.post(
      '${Config.ApiURL}/musuario/login',
@@ -67,7 +66,9 @@ class AuthService {
 
     await user.set(_decodedJson);
     profile =await getUserProfile(await getAccessToken());
-    info.nombre=(profile.nombre);
+    prefs.setString('apellido', profile.apellido);
+    prefs.setString('nombre', profile.nombre);
+    prefs.setInt('dni', profile.dni);
 
     Navigator.pushReplacementNamed(context, 'menu');
     print('${[_user.token.generatedAt,_user.dni.toString()]}');
@@ -94,7 +95,9 @@ class AuthService {
 //------------- FUNCION PEDIR DATOS DEL USUARIO ------------------
 
   Future<User>getUserProfile(_uat) async{
+
     User _profile = User();
+
     final http.Response response = await http.get(
       '${Config.ApiURL}/musuario/Trae_Datos_Usuario?mut_uat=$_uat',
       headers: Config.HttpHeaders,);
@@ -107,10 +110,12 @@ class AuthService {
     }
     else{
       _profile = User.fromJsonProfile(_decodedJson);
+
       return _profile;
     }
 
   }
+
 
 }
 
