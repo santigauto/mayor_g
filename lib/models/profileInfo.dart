@@ -29,6 +29,29 @@ class PreferenciasUsuario{
     _prefs.setString('apellido', value);
   }
 
+  get nombre{
+    return _prefs.getString('nombre') ?? 'nombreO';
+  }
+
+  set nombre(String value){
+    _prefs.setString('nombre', value);
+  }
+
+  get dni{
+    return _prefs.getInt('dni') ?? 0;
+  }
+
+  set dni(int value){
+    _prefs.setInt('dni', value);
+  }
+
+  get foto{
+    return _prefs.getString('foto') ?? null;
+  }
+
+  set foto(String value){
+    _prefs.setString('foto', value);
+  }
 
 
 }

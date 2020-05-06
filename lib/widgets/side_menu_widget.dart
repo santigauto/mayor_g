@@ -54,7 +54,7 @@ class SideMenuWidget extends StatelessWidget {
             Row(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: AssetImage('assets/harold.jpeg'),
+                  backgroundImage: imagen(),
                   backgroundColor: Colors.yellow,
                 ),
                 SizedBox(width: 7,),
@@ -67,7 +67,7 @@ class SideMenuWidget extends StatelessWidget {
                       prefs.apellido,
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                     Text(
-                      'nombre',
+                      prefs.nombre,
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ],
@@ -75,6 +75,7 @@ class SideMenuWidget extends StatelessWidget {
                 Expanded(child: Container()),
                 IconButton(
                   onPressed: () {
+                    print(prefs.foto);
                   },
                   icon: Icon(Icons.settings),
                 )
@@ -84,6 +85,12 @@ class SideMenuWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ImageProvider imagen(){
+    if(prefs.foto == null || prefs.foto == 'null'){
+      return AssetImage('assets/harold.jpeg');
+    }else return NetworkImage(prefs.foto);
   }
 
   Widget _lista() {

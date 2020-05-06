@@ -11,11 +11,12 @@ class User {
   String pushId;
   String deviceId;
   Token token;
+  String foto;
 
   final storage = FlutterSecureStorage();
   final tokenKey = 'session_id';
 
-  User({this.dni,this.nombre,this.apellido,this.deviceId,this.email,this.pushId,this.token,this.grado});
+  User({this.dni,this.nombre,this.apellido,this.deviceId,this.email,this.pushId,this.token,this.grado,this.foto});
 
 
   set(_decodedUser) async {
@@ -59,6 +60,7 @@ class User {
         nombre: parsedJson['usu_Nombre'].toString().trim(),
         apellido: parsedJson['usu_Apellido'].toString().trim(),
         grado: parsedJson['uni_Abrev'].toString().trim(),
+        foto: parsedJson['usu_Foto'].toString().trim(),
       );
     }
 

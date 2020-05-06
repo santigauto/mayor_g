@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:mayor_g/models/profileInfo.dart';
 
 import 'package:meta/meta.dart' show required;
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config.dart';
 import 'package:mayor_g/models/auth/user.dart';
@@ -34,13 +34,11 @@ class AuthService {
 
   final user = User();
   User profile = User();
-
+  final prefs = new PreferenciasUsuario();
 
 //------------------------------ FUNCION DE LOGEO ------------------------------------
 
   login(BuildContext context, { @required String username, @required String password}) async {
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
 
    final http.Response response = await http.post(
      '${Config.ApiURL}/musuario/login',
@@ -66,7 +64,10 @@ class AuthService {
 
     await user.set(_decodedJson);
     profile =await getUserProfile(await getAccessToken());
-    prefs.setString('apellido', profile.apellido);
+    prefs.apellido=profile.apellido;
+    prefs.nombre=profile.nombre;
+    prefs.dni=profile.dni;
+    prefs.foto=profile.foto;
 
     Navigator.pushReplacementNamed(context, 'menu');
     print('${[_user.token.generatedAt,_user.dni.toString()]}');
@@ -108,7 +109,7 @@ class AuthService {
     }
     else{
       _profile = User.fromJsonProfile(_decodedJson);
-
+      print(_decodedJson.toString());
       return _profile;
     }
 
