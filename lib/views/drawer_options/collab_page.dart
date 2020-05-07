@@ -85,6 +85,7 @@ Widget _collabPageBody(Size size, String text){
               ),
             ),
             onPressed: () {
+              _mostrarAlerta(context);
             },
             color: Colors.green[900],
             textColor: Colors.white,
@@ -101,5 +102,31 @@ Widget _collabPageBody(Size size, String text){
   );
 }
 
+void _mostrarAlerta(BuildContext context){
+  
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context){
+      return AlertDialog(
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: Colors.yellow)
+        ),
+        title: Text('¡Muchas gracias por su aporte!',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: 200,
+              child: Image.asset('assets/capa5@2x.png')),
+          ],
+        ),
+      );
+    }
+    );
+
+}
 
 }
