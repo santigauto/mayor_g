@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/auth_service.dart';
-import 'package:mayor_g/services/drawer_service.dart';
+import 'package:mayor_g/services/commons/drawer_service.dart';
 import 'package:mayor_g/utils/icon_string_util.dart';
 
 class SideMenuWidget extends StatelessWidget {

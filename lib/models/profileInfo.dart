@@ -34,12 +34,11 @@ class PreferenciasUsuario{
   }
 
   set nombre(String value){
+    
     value = value.toLowerCase();
     value = value.replaceFirst(RegExp(value[0]), value[0].toUpperCase());
-    print('hola: ${value.length}');
 
     for(var i = 0; i < value.length ; i ++){
-      print(value[i]);
       if (value[i] == ' '){
         value = value.replaceFirst(value[i+1], value[i+1].toUpperCase(), i);
       }
