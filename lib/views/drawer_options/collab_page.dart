@@ -54,7 +54,7 @@ Widget _collabPageBody(Size size, String text){
               ),
             ),
           ),
-          SizedBox(height: 25,),
+          SizedBox(height: 20,),
           Container(
             width: size.width*0.9,
             decoration: BoxDecoration(
@@ -120,7 +120,7 @@ void _mostrarAlerta(BuildContext context){
           children: <Widget>[
             Container(
               width: 200,
-              child: Image.asset('assets/capa5@2x.png')),
+              child: Image.asset('assets/capa53x.png')),
           ],
         ),
       );

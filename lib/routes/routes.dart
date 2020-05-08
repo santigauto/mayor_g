@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 //PAGINAS
 import 'package:mayor_g/views/drawer_options/collab_page.dart';
-import 'package:mayor_g/views/drawer_options/friends_page.dart';
+import 'package:mayor_g/views/drawer_options/search_friends_page.dart';
 import 'package:mayor_g/views/drawer_options/ranking_page.dart';
 import 'package:mayor_g/views/drawer_options/search_page.dart';
 import 'package:mayor_g/views/login_page.dart';

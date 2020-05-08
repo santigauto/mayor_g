@@ -12,28 +12,32 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-Future<bool> _back(){
-  return showDialog(
-    context: context,
-    builder: (context)=>AlertDialog(
-        title: Text('Quieres realmente salir de Mayor G'),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: (){Navigator.pop(context,true);}, 
-            child: Text('Salir')),
-          FlatButton(
-            onPressed: (){Navigator.pop(context,false);}, 
-            child: Text('Cancelar'))
-        ],
-      )
-    );
-}
+  Future<bool> _back() {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Quieres realmente salir de Mayor G'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    child: Text('Salir')),
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    child: Text('Cancelar'))
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _back,
-        child: Scaffold(
+      child: Scaffold(
         drawer: Container(width: 300, child: SideMenuWidget()),
         appBar: AppBar(
           title: Text('MayorG App'),
@@ -42,72 +46,78 @@ Future<bool> _back(){
           children: <Widget>[
             BackgroundWidget(),
             Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      Opacity(
-                        opacity: 0.8,
-                        child: Container(
-                          height: 265,
-                          width: 210,
-                          child: Image.asset(
-                            'assets/mayor.png',
-                            color: Colors.black,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        Opacity(
+                          opacity: 0.6,
+                          child: Container(
+                            padding: EdgeInsets.only(left: size.width * 0.05),
+                            height: 310,
+                            width: 250,
+                            child: Image.asset(
+                              'assets/MayorG-Fumando.gif',
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        height: 250,
-                        width: 210,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/mayor.png'))),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 215),
-                        child: Container(
-                          height: 100,
+                        Container(
+                          padding: EdgeInsets.only(left: size.width * 0.5),
+                          height: 310,
                           width: 250,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage('assets/mayorG@3x.png'))),
+                                  image:
+                                      AssetImage('assets/MayorG-Fumando.gif'))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 215),
+                          child: Container(
+                            height: 100,
+                            width: 250,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('assets/mayorG@3x.png'))),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 45,
+                    ),
+                    RaisedButton(
+                      child: Container(
+                        width: 150,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Comenzar  ", style: TextStyle(fontSize: 20)),
+                            Icon(Icons.play_circle_filled)
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 45,
-                  ),
-                  RaisedButton(
-                    child: Container(
-                      width: 150,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Comenzar  ", style: TextStyle(fontSize: 20)),
-                          Icon(Icons.play_circle_filled)
-                        ],
+                      onPressed: () {
+                        var route = MaterialPageRoute(
+                            builder: (context) => NewMatchPage());
+                        Navigator.push(context, route);
+                      },
+                      color: Colors.green[900],
+                      textColor: Colors.white,
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      splashColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.black),
                       ),
                     ),
-                    onPressed: () {
-                      var route = MaterialPageRoute(builder: (context) => NewMatchPage());
-                      Navigator.push(context, route);
-                    },
-                    color: Colors.green[900],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    splashColor: Colors.grey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  )
-                ],
+                    SizedBox(
+                      height: 40,
+                    )
+                  ],
+                ),
               ),
             ),
           ],
