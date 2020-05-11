@@ -36,14 +36,7 @@ class _FriendsPageState extends State<FriendsPage> {
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
-            Column(
-              children: <Widget>[
-                listItem(context, gente),
-                NavigationToolbar(
-                  leading: Icon(Icons.clear),
-                ),
-              ],
-            )
+            listItem(context, gente)
               //children: _listaAmigos(), 
           ],
         ),
