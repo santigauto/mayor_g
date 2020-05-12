@@ -21,27 +21,35 @@ class _FriendsPageState extends State<FriendsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Friends'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search), 
-              onPressed: (){
-                showSearch(context: context, delegate: DataSearch(gente));
-              }),
-          ],
-          ),
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
-            listItem(context, gente)
-              //children: _listaAmigos(), 
+            listItem(context, gente) 
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: _playMatchButton()
+        floatingActionButton: Container(
+          width: size.width,
+          height: 59,
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              _playMatchButton(),
+              Positioned(
+                right: 10,
+                child: FloatingActionButton(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Icon(Icons.search), 
+                  onPressed: (){
+                    showSearch(context: context, delegate: DataSearch(gente));
+                  }),
+              ),
+            ],
+          ),
+        )
       ),
     );
 
@@ -93,5 +101,7 @@ class _FriendsPageState extends State<FriendsPage> {
 //void _funcion(){
  ///_isSelected = persona
 //}
+
+
 
 }

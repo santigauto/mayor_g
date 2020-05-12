@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:mayor_g/models/auth/obtain_password.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 
 import 'package:meta/meta.dart' show required;
@@ -113,6 +114,31 @@ class AuthService {
       return _profile;
     }
 
+  }
+
+
+//----------------------------- RECUPERAR CLAVE ------------------------------
+
+recuperarContrasenia(BuildContext context, {@required String dni}) async {
+    final url = Uri.https(Config.ApiURL, '/api/musuario/PasswordRecovery');
+    final http.Response response = await http.post(url, headers: Config.HttpHeaders,
+      body: jsonEncode({
+        'usu_dni': dni
+      })
+    );
+    if (!response.headers['content-type'].contains('application/json; charset=utf-8')) {
+      return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'));
+    }
+
+    final dynamic _decodedJson = jsonDecode(response.body);
+
+    if (_decodedJson['status'].toString().isEmpty || _decodedJson['status'] != 200) {
+      return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'));
+    }
+
+    final RecuperarContrasenia _recuperarContrasenia = RecuperarContrasenia.fromJsonMap(_decodedJson);
+
+    return Alert.alert(context, body: Text(_recuperarContrasenia.mensaje));
   }
 
 

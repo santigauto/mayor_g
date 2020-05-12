@@ -17,7 +17,6 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
     {'nombre': 'Juan'  ,'grado':'SP'}, 
     {'nombre': 'Roger' ,'grado':'TC'}, 
     {'nombre':'Rodrigo','grado':'CI'}];
-  bool _isSelected = false;
 
 @override
   void initState() {
@@ -31,14 +30,6 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Search'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search), 
-              onPressed: (){showSearch(context: context, delegate: DataSearch(gente));})
-          ],
-          ),
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
@@ -51,8 +42,11 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
             )
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: _playMatchButton()
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          child:Icon(Icons.search), 
+          onPressed: (){showSearch(context: context, delegate: DataSearch(gente));})
       ),
     );
 
@@ -78,18 +72,6 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         ),
       ),
     );
-  }
-
-  Widget _playMatchButton(){
-    if (_isSelected){
-    return FloatingActionButton.extended(
-      backgroundColor: Theme.of(context).primaryColor,
-      onPressed: (){
-        //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
-        Navigator.popAndPushNamed(context, 'question');
-      }, 
-      label: Text('¡Comenzar Duelo!'));
-    }else return Container();
   }
 
 

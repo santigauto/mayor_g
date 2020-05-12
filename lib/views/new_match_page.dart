@@ -1,5 +1,6 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/utils/friend_modal.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 class NewMatchPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
   bool _selecAlAzar = true;
   bool _canPlay = false;
 
+  Modal modal = new Modal();
 
   void _playAction(){
     if(_canPlay == true){
@@ -110,7 +112,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
           children: <Widget>[
             RaisedButton(
               child: Container(
-                child: Text("CAMPAÑA", style: TextStyle(fontSize: 20)),
+                child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
               ),
               color: (_modoClasico) ? colorSelec : colorNoSelec,
               onPressed: () {
@@ -129,7 +131,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
             ),
             RaisedButton(
               child: Container(
-                child: Text(" GUERRA ", style: TextStyle(fontSize: 20)),
+                child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
               ),
               color: (_modoDuelo) ? colorSelec : colorNoSelec,
               onPressed: () {
@@ -183,7 +185,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   _canPlay = false;
                   _selecOponente = true;
                 });
-                Navigator.pushNamed(context, 'friends');
+                modal.mainBottomSheet(context);
               },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),

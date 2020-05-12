@@ -59,6 +59,7 @@ class PreferenciasUsuario{
   }
 
   set foto(String value){
+    value = value.replaceFirst('data:image/jpeg;base64,', '');
     _prefs.setString('foto', value);
   }
 

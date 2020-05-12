@@ -1,11 +1,16 @@
-import 'package:bordered_text/bordered_text.dart';
+//BASICS
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/services/auth_service.dart';
-import 'package:mayor_g/widgets/background_widget.dart';
+//DEPENDENCIAS
+import 'package:bordered_text/bordered_text.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+//WIDGETS
 import 'package:mayor_g/widgets/input_text_widget.dart';
-
+import 'package:mayor_g/widgets/background_widget.dart';
+//SERVICIOS
+import 'package:mayor_g/services/auth_service.dart';
 import '../services/auth_service.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -19,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   var _username;
   var _password;
   bool _isLoading = false;
+  bool _recuperandoContrasenia = false;
 
   _submit() async {
     if (!_isLoading) {
@@ -33,6 +39,22 @@ class _LoginPageState extends State<LoginPage> {
 
         setState(() {
           _isLoading = false;
+        });
+      }
+    }
+  }
+
+  _recuperarContrasenia() async{
+    if(!_recuperandoContrasenia) { 
+      if(_formKey.currentState.validate()) {
+        setState(() {
+          _recuperandoContrasenia = true;
+        });
+
+        await AuthService().recuperarContrasenia(context,dni: _username);
+
+        setState(() {
+          _recuperandoContrasenia = false;
         });
       }
     }
@@ -145,26 +167,33 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Al Ingresar usted acepta los",
-                                style:
-                                    TextStyle(fontSize: 12, color: Colors.white)),
-                            CupertinoButton(
-                                padding: EdgeInsets.only(left: 4),
-                                child: Text("Terminos Y Condiciones",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400)),
-                                onPressed: () {})
-                          ],
-                        )
+                        CupertinoButton(
+                    child: Text("Recuperar contraseña", style: TextStyle(fontSize: 15,)),
+                    onPressed: () => _recuperarContrasenia(),
+                  )
                       ],
                     ),
                   ),
                 )),
-          )
+          ),
+          _isLoading ? Positioned.fill(
+              child: Container(
+                color: Colors.black45,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SpinKitDoubleBounce(
+                      color: Colors.white70,
+                      size: size.width * 0.2,
+                    ),
+                    SizedBox(height: 25,),
+                    Text(!_recuperandoContrasenia ? 'Usted está ingresando a MayorG' : 'Recuperando contraseña',
+                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)
+                    )
+                  ],
+                ),
+              )
+            ) : Container(),
         ],
       )),
     );

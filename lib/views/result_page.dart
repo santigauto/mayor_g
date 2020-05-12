@@ -22,10 +22,28 @@ class _ResultPageState extends State<ResultPage> {
     else imagen = 'assets/mayorEnojado.gif';
   }
 
+
+Future<bool> _back(){
+  return showDialog(
+    context: context,
+    builder: (context)=>AlertDialog(
+        title: Text('Quieres realmente salir de Mayor G'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){Navigator.pop(context,true);},
+            child: Text('Salir')),
+          FlatButton(
+            onPressed: (){Navigator.pop(context,false);}, 
+            child: Text('Cancelar'))
+        ],
+      )
+    );
+}
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-          onWillPop: null,
+          onWillPop: _back,
           child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton.extended(

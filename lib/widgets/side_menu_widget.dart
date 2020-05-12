@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/auth_service.dart';
@@ -90,7 +92,9 @@ class SideMenuWidget extends StatelessWidget {
   ImageProvider imagen(){
     if(prefs.foto == null || prefs.foto == 'null'){
       return AssetImage('assets/harold.jpeg');
-    }else return NetworkImage(prefs.foto);
+    }else return MemoryImage(
+      base64Decode(prefs.foto),
+    );
   }
 
   Widget _lista() {

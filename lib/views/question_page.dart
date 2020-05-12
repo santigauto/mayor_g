@@ -15,7 +15,7 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMixin{
 
 AnimationController controller;
-
+bool aux = false;
 List<Map<String,dynamic>> respuestas = [
   {'respuesta':'Respuesta 1','bool':false}, 
   {'respuesta':'respuesta 2','bool':false}, 
@@ -32,6 +32,7 @@ String imagen = '';
       );
     controller.reverse(from: controller.value == 0 ? 1 : controller.value,);
     controller.addStatusListener((state){
+      if (aux==true){Navigator.pop(context);}
       return Navigator.pushReplacement(
       context, 
       MaterialPageRoute(builder: (context) => ResultPage(resultado:false))
@@ -39,16 +40,17 @@ String imagen = '';
   }
 
   Future<bool> _back(){
+    aux=true;
   return showDialog(
     context: context,
     builder: (context)=>AlertDialog(
         title: Text('Quieres realmente salir de Mayor G'),
         actions: <Widget>[
           FlatButton(
-            onPressed: (){Navigator.pop(context,true);},
+            onPressed: (){Navigator.pop(context,true);aux=false;},
             child: Text('Salir')),
           FlatButton(
-            onPressed: (){Navigator.pop(context,false);}, 
+            onPressed: (){Navigator.pop(context,false);aux=false;}, 
             child: Text('Cancelar'))
         ],
       )
