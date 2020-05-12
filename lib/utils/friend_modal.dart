@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/widgets/background_widget.dart';
 
 class Modal{
 
@@ -24,11 +25,16 @@ class Modal{
       });
   }
   Widget listItem(context, gente){
-    return ListView.builder(
-      itemCount: gente.length,
-      itemBuilder: (context, x){
-        return _listItem(x);
-      });
+    return Stack(
+      children: <Widget>[
+        BackgroundWidget(),
+        ListView.builder(
+          itemCount: gente.length,
+          itemBuilder: (context, x){
+            return _listItem(x);
+          }),
+      ],
+    );
   }
 
   Widget _listItem(int x){

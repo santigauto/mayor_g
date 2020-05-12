@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             appBarTheme: AppBarTheme(color:Colors.green[900]),
             primarySwatch: Colors.green,
-            primaryColor: Colors.green[900]
+            primaryColor: Colors.green[900],
+            canvasColor: Colors.transparent
           ),
           initialRoute: 'splash',
           routes: getApplicationRoutes(), 
