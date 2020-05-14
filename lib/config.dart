@@ -1,5 +1,5 @@
 
-
+//PETICIÓN DE UAT
 class Config { 
   static const ApiURL = "https://cps-ea.mil.ar:612/api";
 
@@ -12,4 +12,14 @@ class Config {
   };
 
 }
+//PETICIONES A MADEROSOLUTIONS
+class MayorGApis { 
+  static const ApiURL = 'https://www.maderosolutions.com.ar/MayorG2/modelo';
 
+  static const HttpHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': '*',
+    'Content-Type': 'application/x-www-form-urlencoded'
+  };
+
+}

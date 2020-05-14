@@ -1,5 +1,7 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/profileInfo.dart';
+import 'package:mayor_g/services/commons/collab_service.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 class CollabPage extends StatefulWidget {
@@ -85,7 +87,7 @@ Widget _collabPageBody(Size size, String text){
               ),
             ),
             onPressed: () {
-              _mostrarAlerta(context);
+              CollabService().sendCollab(context,dni: PreferenciasUsuario().dni,sugerencia: 'hola',idPregunta: 0);
             },
             color: Colors.green[900],
             textColor: Colors.white,
@@ -102,31 +104,5 @@ Widget _collabPageBody(Size size, String text){
   );
 }
 
-void _mostrarAlerta(BuildContext context){
-  
-  showDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (context){
-      return AlertDialog(
-        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.yellow)
-        ),
-        title: Text('¡Muchas gracias por su aporte!',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: 200,
-              child: Image.asset('assets/capa53x.png')),
-          ],
-        ),
-      );
-    }
-    );
-
-}
 
 }

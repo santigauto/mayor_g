@@ -42,16 +42,18 @@ Future<bool> _back(){
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; 
     return WillPopScope(
           onWillPop: _back,
           child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor:Theme.of(context).primaryColor,
           onPressed: (){
             Navigator.pushReplacementNamed(context, 'question');
           },
-          label: Text('Seguir'),
           icon: Icon(Icons.keyboard_arrow_right),
+          label: Text('Seguir'),
           ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -79,7 +81,7 @@ Future<bool> _back(){
             Column(
               children: <Widget>[
                 Container(
-                  height: 300,
+                  height: size.height*0.45,
                   decoration: BoxDecoration(
                     image: DecorationImage(image: AssetImage(imagen)),
                     border: Border(bottom: BorderSide(color: Colors.black,width: 6))
