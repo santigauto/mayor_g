@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
 
         await AuthService()
             .login(context, username: _username, password: _password);
-        //await AuthService().getUserProfile(AuthService().user.token.token);
 
         setState(() {
           _isLoading = false;
