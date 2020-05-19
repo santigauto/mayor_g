@@ -1,5 +1,7 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/profileInfo.dart';
+import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/utils/friend_modal.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
@@ -22,8 +24,9 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   void _playAction(){
     if(_canPlay == true){
+      print(PreferenciasUsuario().dni);
       setState(() {
-        Navigator.popAndPushNamed(context, 'question');
+        QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
       });
   }
 }

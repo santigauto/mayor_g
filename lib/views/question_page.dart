@@ -1,12 +1,14 @@
 //ESTA PAGINA MOSTRARA LA PREGUNTA, EL RELOJ, LA IMAGEN (OPCIONAL) Y LAS OPCIONES
 
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/timer_widget.dart';
 
 class QuestionPage extends StatefulWidget {
-  const QuestionPage({Key key}) : super(key: key);
+  final ListaPreguntas questions;
+  const QuestionPage({Key key, this.questions}) : super(key: key);
 
   @override
   _QuestionPageState createState() => _QuestionPageState();
@@ -16,11 +18,6 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
 
 AnimationController controller;
 bool aux = false;
-List<Map<String,dynamic>> respuestas = [
-  {'respuesta':'Respuesta 1','bool':false}, 
-  {'respuesta':'respuesta 2','bool':false}, 
-  {'respuesta':'respuesta 3','bool':true}, 
-  {'respuesta':'Respuesta larga largisima no puede ser no se me ocurre que poner a ver locooo abcdefghijklmnñopqrstuvwxyz 4','bool':false}];
 
 String imagen = '';
   @override
@@ -37,6 +34,9 @@ String imagen = '';
       context, 
       MaterialPageRoute(builder: (context) => ResultPage(resultado:false))
       );});
+
+
+
   }
 
   Future<bool> _back(){
@@ -117,8 +117,17 @@ String imagen = '';
 
   List<Widget> _respuestas(){
     final List<Widget> answers = [];
+    List<Map<String,dynamic>> aux = [];
 
-    respuestas.forEach((resp){
+    widget.questions.preguntas[0].respuestas.forEach((f){
+      var i = 0;
+      aux.add({'respuesta' : f });
+      aux.add({'id' : i });
+      i++;
+    });
+
+
+    for (var i = 0; i < aux.length; i++) {
       answers.add(
         Container(
           decoration: BoxDecoration(
@@ -128,11 +137,19 @@ String imagen = '';
           ),
           child: ListTile(
             onTap: (){
-              var route = MaterialPageRoute(builder: (context) => ResultPage(resultado:resp['bool']));
-              Navigator.pushReplacement(context, route);},
-            title: Text(resp['respuesta'],textAlign: TextAlign.center,style: TextStyle(fontSize: 13),),),
+              MaterialPageRoute route;
+              if(aux[i]['id'] != widget.questions.preguntas[0].respuestaCorrecta){
+                route = MaterialPageRoute(builder: (context) => ResultPage(resultado:false));
+                Navigator.pushReplacement(context, route);
+              }else{
+                route = MaterialPageRoute(builder: (context) => ResultPage(resultado:true));
+                Navigator.pushReplacement(context, route);
+              }
+              },
+            title: Text(aux[i]['respuesta'],textAlign: TextAlign.center,style: TextStyle(fontSize: 13),),),
         ));
-    });
+    }
+
     return answers;
   }
 

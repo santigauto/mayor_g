@@ -1,5 +1,96 @@
+class ListaPreguntas {
+  List<PreguntaYRespuesta> preguntas;
 
-class Pregunta{
+  ListaPreguntas({
+    this.preguntas,
+  });
+  factory ListaPreguntas.fromJson(Map<String,dynamic> jsonDecoded){
+    print(jsonDecoded['preguntas'][0]);
+    return ListaPreguntas(
+      preguntas: jsonDecoded['preguntas'].forEach((f){
+        PreguntaYRespuesta.fromJson(f);
+      })
+    );
+  }
+}
+
+class PreguntaYRespuesta {
+  Pregunta pregunta;
+  List<Respuesta> respuestas;
+  int respuestaCorrecta;
+
+  PreguntaYRespuesta({
+    this.pregunta,
+    this.respuestas,
+    this.respuestaCorrecta,
+  });
+
+  factory PreguntaYRespuesta.fromJson(Map<String,dynamic> jsonDecoded){
+    List<Respuesta> aux;
+    jsonDecoded['respuestas'].forEach((f){
+      Respuesta.fromJson(f);
+    });
+    return PreguntaYRespuesta(
+      pregunta: Pregunta.fromJson(jsonDecoded['pregunta']),
+      respuestaCorrecta: jsonDecoded['respuestaCorrecta'],
+      respuestas: aux,
+      );
+  }
+
+}
+
+class Pregunta {
+  int id;
+  int nivel;
+  String foto;
+  String pregunta;
+  String categoria;
+  String tema;
+  String prescripcion;
+  int longitud;
+
+  Pregunta({
+    this.id,
+    this.nivel,
+    this.foto,
+    this.pregunta,
+    this.categoria,
+    this.tema,
+    this.prescripcion,
+    this.longitud,
+  });
+
+  factory Pregunta.fromJson(Map<String,dynamic> jsonDecoded){
+    return Pregunta(
+      id: jsonDecoded['id'],
+      nivel: jsonDecoded['nivel'],
+      foto: jsonDecoded['foto'].toString(),
+      pregunta: jsonDecoded['pregunta'].toString(),
+      categoria: jsonDecoded['categoria'].toString(),
+      tema: jsonDecoded['tema'].toString(),
+      prescripcion: jsonDecoded['prescripcion'].toString(),
+      longitud: jsonDecoded['longitud'],
+    );
+  }
+
+
+}
+
+class Respuesta {
+  String respuesta;
+
+  Respuesta({this.respuesta});
+
+  factory Respuesta.fromJson(String jsonDecoded){
+    return Respuesta(
+      respuesta: jsonDecoded.toString()
+    );
+  }
+
+}
+
+
+/*class Pregunta{
   int    id;
   int    nivel;
   String foto;
@@ -25,7 +116,7 @@ class Pregunta{
 
 class Question{
   Pregunta pregunta;
-  List<String> respuestas;
+  List<dynamic> respuestas;
   int respuestaCorrecta;
 
   Question({this.pregunta,this.respuestas,this.respuestaCorrecta});
@@ -33,7 +124,9 @@ class Question{
 factory Question.fromJson(Map<String,dynamic> parsedJson){
   return Question(
     pregunta: Pregunta.fromJson(parsedJson['pregunta']),
-    respuestas: parsedJson['respuestas'],
+    respuestas: parsedJson['respuestas'].forEach((f){
+        return f.toString();
+      }), 
     respuestaCorrecta: parsedJson['respuestaCorrecta']
   );
 }
@@ -42,14 +135,12 @@ factory Question.fromJson(Map<String,dynamic> parsedJson){
 
 class Questions{
   List<Question> preguntas;
-  bool estado;
 
-  Questions({this.estado,this.preguntas});
+  Questions({this.preguntas});
 
-  factory Questions.fromJson(Map<String,dynamic> parsedJson){
+  factory Questions.fromJson(Map<String,Map<String,dynamic>> parsedJson){
 
     return Questions(
-      estado: parsedJson['estado'],
       preguntas: parsedJson['preguntas'].forEach((f){
         Question.fromJson(f);
       }), 
@@ -58,7 +149,7 @@ class Questions{
   
 }
 
-/*"id": 324,
+"id": 324,
   "nivel": 1,
   "foto": null,
   "pregunta": "¿Qué capacidad tiene la central telefonica automatica digital del RDC?",

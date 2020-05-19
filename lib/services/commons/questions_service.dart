@@ -5,12 +5,13 @@ import 'package:http/http.dart' as http;
 
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/models/question_model.dart';
+import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/alert_widget.dart';
 
 
 class QuestionsService{
 
-  sendCollab(BuildContext context,{ @required int dni}) async{
+  getQuestions(BuildContext context,{ @required int dni}) async{
     final http.Response response = await http.post(
        '${MayorGApis.ApiURL}/jugador_modelo10.php',
        headers: MayorGApis.HttpHeaders,
@@ -19,33 +20,14 @@ class QuestionsService{
         })
        );
     final dynamic _decodedJson = jsonDecode(response.body);
-    final Question _collab = Question.fromJson(_decodedJson); 
-    if(_collab.estado == false) {
-      return Alert.alert(context, body: Text(_collab.descripcion));
+    ListaPreguntas preguntas = ListaPreguntas.fromJson(_decodedJson); 
+    if(preguntas == null) {
+      return Alert.alert(context, body: Text("ha ocurrido un error"));
     }
     else{
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context){
-          return AlertDialog(
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: Colors.yellow)
-            ),
-            title: Text('¡Muchas gracias por su aporte!',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  width: 200,
-                  child: Image.asset('assets/capa53x.png')),
-              ],
-            ),
-          );
-        }
-      );
+      print(preguntas.preguntas[0].respuestaCorrecta);
+      var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas,));
+      Navigator.push(context, route);
     }
   }   
 }
