@@ -25,7 +25,9 @@ class QuestionsService{
       return Alert.alert(context, body: Text("ha ocurrido un error"));
     }
     else{
-      print(preguntas.preguntas[0].respuestaCorrecta);
+      preguntas.preguntas.forEach((f){
+        print('la respuesta correcta es la ${f.pregunta.pregunta}');
+      });
       var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas,));
       Navigator.push(context, route);
     }

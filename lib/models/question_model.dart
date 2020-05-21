@@ -5,18 +5,22 @@ class ListaPreguntas {
     this.preguntas,
   });
   factory ListaPreguntas.fromJson(Map<String,dynamic> jsonDecoded){
-    print(jsonDecoded['preguntas'][0]);
+
+for (var i = 0; i < jsonDecoded['preguntas'].length ; i++) {
+  
+  jsonDecoded['preguntas'][i] = PreguntaYRespuesta.fromJson(jsonDecoded['preguntas'][i]);
+
+}
+
     return ListaPreguntas(
-      preguntas: jsonDecoded['preguntas'].forEach((f){
-        PreguntaYRespuesta.fromJson(f);
-      })
+      preguntas: jsonDecoded['preguntas'].cast<PreguntaYRespuesta>()
     );
   }
 }
 
 class PreguntaYRespuesta {
   Pregunta pregunta;
-  List<Respuesta> respuestas;
+  List<String> respuestas;
   int respuestaCorrecta;
 
   PreguntaYRespuesta({
@@ -26,14 +30,10 @@ class PreguntaYRespuesta {
   });
 
   factory PreguntaYRespuesta.fromJson(Map<String,dynamic> jsonDecoded){
-    List<Respuesta> aux;
-    jsonDecoded['respuestas'].forEach((f){
-      Respuesta.fromJson(f);
-    });
     return PreguntaYRespuesta(
       pregunta: Pregunta.fromJson(jsonDecoded['pregunta']),
       respuestaCorrecta: jsonDecoded['respuestaCorrecta'],
-      respuestas: aux,
+      respuestas: jsonDecoded['respuestas'].cast<String>(),
       );
   }
 
@@ -76,18 +76,6 @@ class Pregunta {
 
 }
 
-class Respuesta {
-  String respuesta;
-
-  Respuesta({this.respuesta});
-
-  factory Respuesta.fromJson(String jsonDecoded){
-    return Respuesta(
-      respuesta: jsonDecoded.toString()
-    );
-  }
-
-}
 
 
 /*class Pregunta{
