@@ -8,7 +8,8 @@ import 'package:mayor_g/widgets/timer_widget.dart';
 
 class QuestionPage extends StatefulWidget {
   final ListaPreguntas questions;
-  const QuestionPage({Key key, this.questions}) : super(key: key);
+  final int n;
+  const QuestionPage({Key key, this.questions, this.n}) : super(key: key);
 
   @override
   _QuestionPageState createState() => _QuestionPageState();
@@ -32,7 +33,7 @@ String imagen = '';
       if (aux==true){Navigator.pop(context);}
       return Navigator.pushReplacement(
       context, 
-      MaterialPageRoute(builder: (context) => ResultPage(resultado:false))
+      MaterialPageRoute(builder: (context) => ResultPage(resultado:false,n: widget.n,questions: widget.questions,))
       );});
 
 
@@ -61,6 +62,7 @@ String imagen = '';
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print('questionPage: ${widget.questions.preguntas[widget.n].pregunta.pregunta}');
     return WillPopScope(
       onWillPop: _back,
       child: Scaffold(
@@ -80,7 +82,7 @@ String imagen = '';
                   child: Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                     child: Center(child: Text(
-                      'Pregunta',
+                      widget.questions.preguntas[widget.n].pregunta.pregunta,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 22),)),
                   ),
@@ -117,14 +119,14 @@ String imagen = '';
 
   List<Widget> _respuestas(){
     final List<Widget> answers = [];
-    List<Map<String,dynamic>> aux = [];
+    List<dynamic> aux = [];
 
-    widget.questions.preguntas[0].respuestas.forEach((f){
-      var i = 0;
-      aux.add({'respuesta' : f });
-      aux.add({'id' : i });
-      i++;
-    });
+    print(widget.questions.preguntas[widget.n].respuestas.length);
+
+    for (var i = 0; i < widget.questions.preguntas[widget.n].respuestas.length; i++) {
+      aux.add({'respuesta' : '${widget.questions.preguntas[widget.n].respuestas[i]}', 'id' : i });
+    }
+    print(aux.toString());
 
 
     for (var i = 0; i < aux.length; i++) {
@@ -138,11 +140,11 @@ String imagen = '';
           child: ListTile(
             onTap: (){
               MaterialPageRoute route;
-              if(aux[i]['id'] != widget.questions.preguntas[0].respuestaCorrecta){
-                route = MaterialPageRoute(builder: (context) => ResultPage(resultado:false));
+              if(aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta){
+                route = MaterialPageRoute(builder: (context) => ResultPage(resultado:false, n: widget.n,questions: widget.questions,));
                 Navigator.pushReplacement(context, route);
               }else{
-                route = MaterialPageRoute(builder: (context) => ResultPage(resultado:true));
+                route = MaterialPageRoute(builder: (context) => ResultPage(resultado:true, n: widget.n,questions:widget.questions));
                 Navigator.pushReplacement(context, route);
               }
               },

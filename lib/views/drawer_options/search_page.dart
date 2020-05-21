@@ -23,9 +23,10 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
       appBar: AppBar(
         title: Text("Buscador"),
         bottom: TabBar(
+          labelPadding: EdgeInsets.all(0),
           tabs: [
-            Tab(icon: Icon(Icons.tag_faces)),
-            Tab(icon: Icon(Icons.person_add),),
+            Tab(icon: Icon(Icons.tag_faces),text: 'Amigos',),
+            Tab(icon: Icon(Icons.person_add),text: 'Buscar',),
           ],
           controller: _tabController,
           indicatorColor: Colors.white,

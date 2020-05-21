@@ -21,14 +21,14 @@ class SideMenuWidget extends StatelessWidget {
             Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
             Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
             Container(
-              color: Colors.brown[200],
+              color: Theme.of(context).primaryColor,
               child: ListTile(
                 leading: Icon(
                   Icons.power_settings_new,
-                  color: Colors.red[400],
+                  color: Colors.red,
                 ),
-                title: Text('Log Out', style: TextStyle(color: Colors.red[400])),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.red[400]),
+                title: Text('Log Out', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.keyboard_arrow_right),
                 onTap: (){AuthService().logout(context: context);},
               ),
             )
@@ -56,8 +56,9 @@ class SideMenuWidget extends StatelessWidget {
             Row(
               children: <Widget>[
                 CircleAvatar(
+                  radius: 27,
                   backgroundImage: imagen(),
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: Colors.amberAccent[700],
                 ),
                 SizedBox(width: 7,),
                 Column(
@@ -91,7 +92,7 @@ class SideMenuWidget extends StatelessWidget {
 
   ImageProvider imagen(){
     if(prefs.foto == null || prefs.foto == 'null'){
-      return AssetImage('assets/harold.jpeg');
+      return AssetImage('assets/soldier.png');
     }else return MemoryImage(
       base64Decode(prefs.foto),
     );

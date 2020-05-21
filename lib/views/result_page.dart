@@ -3,11 +3,15 @@ import 'dart:ui';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/views/drawer_options/collab_page.dart';
+import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
+import 'package:mayor_g/models/question_model.dart';
 
 class ResultPage extends StatefulWidget {
   final bool resultado;
-  ResultPage({Key key, this.resultado}) : super(key: key);
+  final int n;
+  final ListaPreguntas questions; 
+  ResultPage({Key key, this.resultado, this.n,this.questions}) : super(key: key);
 
   @override
   _ResultPageState createState() => _ResultPageState();
@@ -15,9 +19,11 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   String imagen;
+  int n;
   @override
   void initState() {
     super.initState();
+    n = (widget.n)+1;
     if(widget.resultado){imagen = 'assets/mayorContento.gif';} 
     else imagen = 'assets/mayorEnojado.gif';
   }
@@ -50,7 +56,8 @@ Future<bool> _back(){
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor:Theme.of(context).primaryColor,
           onPressed: (){
-            Navigator.pushReplacementNamed(context, 'question');
+            var route = MaterialPageRoute(builder: (context){return QuestionPage(n: n,questions: widget.questions,);});
+            Navigator.push(context, route);
           },
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),

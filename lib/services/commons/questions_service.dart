@@ -25,10 +25,8 @@ class QuestionsService{
       return Alert.alert(context, body: Text("ha ocurrido un error"));
     }
     else{
-      preguntas.preguntas.forEach((f){
-        print('la respuesta correcta es la ${f.pregunta.pregunta}');
-      });
-      var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas,));
+        print('la respuesta correcta es la ${preguntas.preguntas[0].respuestaCorrecta}');
+      var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas,n: 0,));
       Navigator.push(context, route);
     }
   }   
