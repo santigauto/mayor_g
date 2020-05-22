@@ -9,6 +9,7 @@ import 'package:mayor_g/views/login_page.dart';
 import 'package:mayor_g/views/menu_page.dart';
 import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/views/drawer_options/search_people_page.dart';
+import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/views/splash_page.dart';
 import 'package:mayor_g/views/suggestQuestion/suggestQuestion.dart';
 
@@ -26,7 +27,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'questionb':(BuildContext context) => QuestionPage(),
     'search'  : (BuildContext context) => SearchPage(),
     'search_people'  : (BuildContext context) => SearchPeoplePage(),
-
+    'result'  : (BuildContext context) => ResultPage(),
     'suggestQuestion' : (BuildContext context) => SuggestQuestionPage(),
   };
 }

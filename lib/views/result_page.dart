@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/navegador_argumentos.dart';
 import 'package:mayor_g/views/drawer_options/collab_page.dart';
-import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/models/question_model.dart';
 
@@ -23,10 +23,11 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     super.initState();
-    n = (widget.n)+1;
+    n = widget.n;
     if(widget.resultado){imagen = 'assets/mayorContento.gif';} 
     else imagen = 'assets/mayorEnojado.gif';
   }
+
 
 
 Future<bool> _back(){
@@ -48,7 +49,8 @@ Future<bool> _back(){
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; 
+    final size = MediaQuery.of(context).size;
+    ArgumentosPreguntas _argumentos = ModalRoute.of(context).settings.arguments;
     return WillPopScope(
           onWillPop: _back,
           child: Scaffold(
@@ -56,8 +58,7 @@ Future<bool> _back(){
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor:Theme.of(context).primaryColor,
           onPressed: (){
-            var route = MaterialPageRoute(builder: (context){return QuestionPage(n: n,questions: widget.questions,);});
-            Navigator.push(context, route);
+            Navigator.pushReplacementNamed(context, 'question',arguments: _argumentos);
           },
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),
