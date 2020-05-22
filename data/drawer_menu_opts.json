@@ -15,6 +15,11 @@
             "ruta" : "collab",
             "icon" : "collab",
             "texto": "Colaborar"
+        },
+        {
+            "ruta" : "suggestQuestion",
+            "icon" : "suggest",
+            "texto": "Sugerir pregunta"
         }
     ]
 }

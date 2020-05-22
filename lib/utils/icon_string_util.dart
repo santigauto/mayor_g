@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 final _icons = <String, IconData>{
   'star'    :  Icons.star,
   'collab'  :  Icons.markunread,
-  'search'   :  Icons.search
+  'search'   :  Icons.search,
+  'suggest'   :  Icons.question_answer,
 };
 
 Icon getIcon(String nombreIcono){
