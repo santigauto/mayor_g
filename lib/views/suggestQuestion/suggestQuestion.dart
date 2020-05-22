@@ -93,10 +93,6 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 onPressed: () => _submit(),
                 color: Colors.green[900],
                 textColor: Colors.white,
-<<<<<<< HEAD
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-=======
->>>>>>> 78f2495727fd10122d0d3474a38504cebc65c093
                 splashColor: Colors.grey,
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(18.0),
