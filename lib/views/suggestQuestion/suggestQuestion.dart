@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:bordered_text/bordered_text.dart';
+
+import 'package:mayor_g/services/commons/camara.dart';
 
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/views/suggestQuestion/widgets/myInput.dart';
@@ -18,9 +22,11 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
+  Camara camaraController = new Camara();
+
   Pregunta _pregunta = new Pregunta();
-  List<String> _correctas;
-  List<String> _incorrectas;
+  List<String> _correctas = ['','','','',''];
+  List<String> _incorrectas = ['','','','',''];
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +67,32 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
               SizedBox(height: 25),
               _createIncorrects(),
               SizedBox(height: 25),
-              
+
+              _pregunta.foto == null || _pregunta.foto.isEmpty ? Container() :
+                Image.memory(
+                  base64Decode(_pregunta.foto), fit: BoxFit.cover,
+                ),
+              RaisedButton.icon(
+                icon: Icon(Icons.camera),
+                label: Text("Cargar imagen", style: TextStyle(fontSize: 20)),
+                onPressed: uploadImage,
+                color: Colors.green[900],
+                textColor: Colors.white,
+                splashColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black),
+                ),
+              ),
+
+              SizedBox(height: 25),
+
               RaisedButton.icon(
                 icon: Icon(Icons.mail_outline),
-                label: Text("Enviar  ", style: TextStyle(fontSize: 20)),
+                label: Text("Enviar", style: TextStyle(fontSize: 20)),
                 onPressed: () => _submit(),
                 color: Colors.green[900],
                 textColor: Colors.white,
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 splashColor: Colors.grey,
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(18.0),
@@ -82,30 +106,35 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     );
   }
 
+  uploadImage(){
+    setState(() async{
+      _pregunta.foto = await camaraController.getImage();
+    });
+  }
+
   Container _createQuestion() {
     return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white.withOpacity(0.6),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  validator: (String text) {
-                    if (text.isEmpty) {
-                      return 'Por favor completar el campo';
-                    }
-                    this._pregunta.pregunta = text;
-                    return null;
-                  },
-                  style: TextStyle(fontSize: 18),
-                  maxLines: 7,
-                  decoration: InputDecoration(
-                    labelText: 'Pregunta a sugerir',
-                  ),
-                ),
-              ),
-            );
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white.withOpacity(0.6),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextFormField(
+          validator: (String text) {
+            if (text.isEmpty)
+              return 'Por favor completar el campo';
+            this._pregunta.pregunta = text;
+            return null;
+          },
+          style: TextStyle(fontSize: 18),
+          maxLines: 7,
+          decoration: InputDecoration(
+            labelText: 'Pregunta a sugerir',
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _createCorrects(){
@@ -114,6 +143,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(width: 42),
             BorderedText(
               strokeColor: Theme.of(context).primaryColor,
               child: Text(
@@ -187,6 +217,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(width: 42),
             BorderedText(
               strokeColor: Theme.of(context).primaryColor,
               child: Text(
