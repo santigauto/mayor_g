@@ -11,6 +11,7 @@ class MyInput extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       child: Container(
         color: Colors.white.withOpacity(0.6),
+        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 12),
         child: TextFormField(
           validator: validator,
           style: TextStyle(fontSize: 16),
