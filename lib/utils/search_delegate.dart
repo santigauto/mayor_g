@@ -10,8 +10,17 @@ List<Map<String,dynamic>> gente;
 DataSearch(this.gente);
 
   @override
+    String get searchFieldLabel => 'Buscar';
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context);
+  }
+  
+  @override
   List<Widget> buildActions(BuildContext context) {
     return [
+      
       IconButton(
         icon: Icon(Icons.clear), 
         onPressed: (){
@@ -29,7 +38,6 @@ DataSearch(this.gente);
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     return Container();
   }
 

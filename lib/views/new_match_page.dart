@@ -1,8 +1,11 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/navegador_argumentos.dart';
 import 'package:mayor_g/models/profileInfo.dart';
+import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/utils/friend_modal.dart';
+import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 class NewMatchPage extends StatefulWidget {
@@ -19,14 +22,17 @@ class _NewMatchPageState extends State<NewMatchPage> {
   bool _selecOponente = true;
   bool _selecAlAzar = true;
   bool _canPlay = false;
+  ListaPreguntas preguntas;
 
   Modal modal = new Modal();
 
   void _playAction(){
     if(_canPlay == true){
       print(PreferenciasUsuario().dni);
-      setState(() {
-        QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+      setState(() async {
+        preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+        var route = MaterialPageRoute(builder: (context){return QuestionPage(n: 0,questions: preguntas);});
+        Navigator.pushReplacement(context, route);
       });
   }
 }

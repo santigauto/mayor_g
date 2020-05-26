@@ -24,7 +24,6 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'splash'  : (BuildContext context) => SplashPage(),
     'login'   : (BuildContext context) => LoginPage(),
     'question': (BuildContext context) => QuestionPage(),
-    'questionb':(BuildContext context) => QuestionPage(),
     'search'  : (BuildContext context) => SearchPage(),
     'search_people'  : (BuildContext context) => SearchPeoplePage(),
     'result'  : (BuildContext context) => ResultPage(),

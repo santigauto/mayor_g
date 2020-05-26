@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
           title: 'Mayor G Flutter',
           theme: ThemeData(
             appBarTheme: AppBarTheme(color:Colors.green[900]),
+            cursorColor: Colors.white38,
+            hintColor: Colors.white.withOpacity(0.5),
             primarySwatch: Colors.green,
             primaryColor: Colors.green[900],
             canvasColor: Colors.transparent

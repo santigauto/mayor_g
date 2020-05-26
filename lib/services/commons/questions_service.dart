@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/models/question_model.dart';
-import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/alert_widget.dart';
 
 
@@ -25,9 +24,8 @@ class QuestionsService{
       return Alert.alert(context, body: Text("ha ocurrido un error"));
     }
     else{
-        print('la respuesta correcta es la ${preguntas.preguntas[0].pregunta.foto}');
-      var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas,n: 0,));
-      Navigator.push(context, route);
+        print('la respuesta correcta es la ${preguntas.preguntas[0].pregunta.pregunta}');
+      return preguntas;
     }
   }   
 }
