@@ -26,8 +26,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
         bottom: TabBar(
           labelPadding: EdgeInsets.all(0),
           tabs: [
-            Tab(icon: Icon(Icons.tag_faces),text: 'Amigos',),
             Tab(icon: Icon(Icons.person_add),text: 'Buscar',),
+            Tab(icon: Icon(Icons.tag_faces),text: 'Amigos',),
           ],
           controller: _tabController,
           indicatorColor: Colors.white,
@@ -37,8 +37,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
       ),
       body: TabBarView(
         children: [
-          FriendsPage(),
           SearchPeoplePage(),
+          FriendsPage(),
         ],
         controller: _tabController,
       ),

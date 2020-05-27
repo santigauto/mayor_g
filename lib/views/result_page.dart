@@ -10,8 +10,9 @@ import 'package:mayor_g/models/question_model.dart';
 class ResultPage extends StatefulWidget {
   final bool resultado;
   final int n;
-  final ListaPreguntas questions; 
-  ResultPage({Key key, this.resultado, this.n,this.questions}) : super(key: key);
+  final ListaPreguntas questions;
+  ResultPage({Key key, this.resultado, this.n, this.questions})
+      : super(key: key);
 
   @override
   _ResultPageState createState() => _ResultPageState();
@@ -23,60 +24,90 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     super.initState();
-    n = (widget.n)+1;
-    if(widget.resultado){imagen = 'assets/mayorContento.gif';} 
-    else imagen = 'assets/mayorEnojado.gif';
+    n = (widget.n) + 1;
+    if (widget.resultado) {
+      imagen = 'assets/mayorContento.gif';
+    } else
+      imagen = 'assets/mayorEnojado.gif';
   }
 
-
-Future<bool> _back(){
-  return showDialog(
-    context: context,
-    builder: (context)=>AlertDialog(
-        title: Text('Quieres realmente salir de Mayor G'),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: (){Navigator.pop(context,true);},
-            child: Text('Salir')),
-          FlatButton(
-            onPressed: (){Navigator.pop(context,false);}, 
-            child: Text('Cancelar'))
-        ],
-      )
-    );
-}
+  Future<bool> _back() {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Quieres realmente salir de Mayor G'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    child: Text('Salir')),
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    child: Text('Cancelar'))
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; 
+    final size = MediaQuery.of(context).size;
     return WillPopScope(
-          onWillPop: _back,
-          child: Scaffold(
+      onWillPop: _back,
+      child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton.extended(
-          backgroundColor:Theme.of(context).primaryColor,
-          onPressed: (){
-            var route = MaterialPageRoute(builder: (context){return QuestionPage(n: n,questions: widget.questions,);});
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            var route = MaterialPageRoute(builder: (context) {
+              return QuestionPage(
+                n: n,
+                questions: widget.questions,
+              );
+            });
             Navigator.pushReplacement(context, route);
           },
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),
-          ),
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          centerTitle: false, 
+          centerTitle: false,
           actions: <Widget>[
             MaterialButton(
-            child: Text('Salir',style: TextStyle(color: Colors.white),),
-            onPressed: (){
-              Navigator.pushReplacementNamed(context, '/');
-            },
+              child: Text(
+                'Salir',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text('¿Realmente quiere abaonar la partida?'),
+                          actions: <Widget>[
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(context, '/');
+                                },
+                                child: Text('Salir')),
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancelar'))
+                          ],
+                        ));
+              },
             ),
             Expanded(child: Container()),
             MaterialButton(
-              child: Text('Reportar',style: TextStyle(color: Colors.white)),
-              onPressed: (){
-                var route = MaterialPageRoute(builder: (context){return CollabPage(collabOrReport: 'Reportar', id: 3);});
+              child: Text('Reportar', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                var route = MaterialPageRoute(builder: (context) {
+                  return CollabPage(collabOrReport: 'Reportar', id: 3);
+                });
                 Navigator.push(context, route);
               },
             ),
@@ -88,22 +119,19 @@ Future<bool> _back(){
             Column(
               children: <Widget>[
                 Container(
-                  height: size.height*0.45,
+                  height: size.height * 0.45,
                   decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(imagen)),
-                    border: Border(bottom: BorderSide(color: Colors.black,width: 6))
-                  ),
+                      image: DecorationImage(image: AssetImage(imagen)),
+                      border: Border(
+                          bottom: BorderSide(color: Colors.black, width: 6))),
                 ),
                 Container(
                   height: 100,
                   decoration: BoxDecoration(
-                    //image: DecorationImage(image: AssetImage('assets/bgCopia6.png'),fit: BoxFit.fitWidth),
-                    color: Theme.of(context).primaryColor.withOpacity(0.8),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black,width: 6)
-                        )
-                  ),
+                      //image: DecorationImage(image: AssetImage('assets/bgCopia6.png'),fit: BoxFit.fitWidth),
+                      color: Theme.of(context).primaryColor.withOpacity(0.8),
+                      border: Border(
+                          bottom: BorderSide(color: Colors.black, width: 6))),
                   child: Center(
                     child: ListTile(
                       title: _resultadoText(),
@@ -118,21 +146,23 @@ Future<bool> _back(){
     );
   }
 
-Widget _resultadoText(){
- if (widget.resultado) {
-   return  BorderedText(
+  Widget _resultadoText() {
+    if (widget.resultado) {
+      return BorderedText(
         strokeColor: Colors.green,
-        child: Text('¡Correcto!', 
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30,color: Colors.white)),
-   );}
- else {
-   return BorderedText(
+        child: Text('¡Correcto!',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white)),
+      );
+    } else {
+      return BorderedText(
         strokeColor: Colors.red,
-        child: Text('Incorrecto', 
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30,color: Colors.white),),
-   );}
-}
-
+        child: Text(
+          'Incorrecto',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 30, color: Colors.white),
+        ),
+      );
+    }
+  }
 }
