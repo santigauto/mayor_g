@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
-
+//--- PATRON BLOC PARA MANEJO EN DIRECTO DE LOS WIDGETS DEL MODAL ---
 class Bloc{
   StreamController _controller = StreamController.broadcast();
 
@@ -18,20 +18,33 @@ class Bloc{
 
 }
 
-
+//              ------------ MODAL -------------
 
 
 class Modal{
 
-  List<Map<String,dynamic>> gente = [{'nombre':'Carlos','grado':'VS'}, {'nombre':'Raul','grado':'CT'}, {'nombre':'Octavio','grado':'SG'}, {'nombre':'Jose','grado':'TT'},{'nombre':'Carlos','grado':'VS'},{'nombre':'Carlos','grado':'VS'}, {'nombre':'Raul','grado':'CT'}, {'nombre':'Octavio','grado':'SG'}, {'nombre':'Jose','grado':'TT'},];
-  bool _isSelected = false;
-  Map<String,dynamic> _personaSeleccionada = {'nombre':'','grado':''};
+  
+  List<Map<String,dynamic>> gente = [   // AUXILIAR HARCODEADO(NO SE VAN A USAR) 
+    {'nombre':'Carlos','grado':'VS'}, 
+    {'nombre':'Raul','grado':'CT'}, 
+    {'nombre':'Octavio','grado':'SG'}, 
+    {'nombre':'Jose','grado':'TT'},
+    {'nombre':'Carlos','grado':'VS'},
+    {'nombre':'Carlos','grado':'VS'}, 
+    {'nombre':'Raul','grado':'CT'}, 
+    {'nombre':'Octavio','grado':'SG'}, 
+    {'nombre':'Jose','grado':'TT'},];
+  bool _isSelected = false;                                            // BANDERA QUE HABILITARA EL FOOTER DE SELECCION DE PERSONA
+  Map<String,dynamic> _personaSeleccionada = {'nombre':'','grado':''}; // CONTENEDOR DEL MAPA DE PERSONA
 
   mainBottomSheet (BuildContext context){
+    
+//---AGREGO AL MAPA LA KEY BOOLEANA 'SELECCION'--- 
     gente.forEach((persona){
       persona.addAll({'seleccion':false});
     });
 
+//---CUERPO DEL MODAL---
     showModalBottomSheet(
       context: context, 
       builder: (context){
@@ -70,6 +83,8 @@ class Modal{
         );
       });
   }
+
+//---WIDGET LISTA DE AMIGOS---
   Widget listItem(context, gente){
     return 
         ListView.builder(
@@ -79,6 +94,7 @@ class Modal{
           });
   }
 
+//---WIDGETS ITEMS DE LA LISTA---
   Widget _listItem(int x){
     
     return Container(
@@ -104,6 +120,7 @@ class Modal{
     );
   }
 
+//---WIDGET ITEM (AMIGO) SELECCIONADO---
 Widget _selecionado(BuildContext context){
 
   if(_isSelected){
