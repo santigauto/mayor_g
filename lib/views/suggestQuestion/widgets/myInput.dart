@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyInput extends StatelessWidget {
-  Function validator;
-  String label;
+  final Function validator;
+  final String label;
   MyInput({Key key, this.validator, this.label}) : super(key: key);
 
   @override
@@ -14,6 +14,7 @@ class MyInput extends StatelessWidget {
         padding: const EdgeInsets.only(left: 8, right: 8, bottom: 12),
         child: TextFormField(
           validator: validator,
+          maxLength: 100,
           style: TextStyle(fontSize: 16),
           decoration: InputDecoration(
             labelText: label,
