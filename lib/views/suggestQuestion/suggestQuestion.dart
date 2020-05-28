@@ -52,14 +52,14 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              BorderedText(
+              /* BorderedText(
                 strokeColor: Theme.of(context).primaryColor,
                 child: Text(
                   'Puede sugerir una pregunta para que este en el juego.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
-              ),
+              ), */
               SizedBox(height: 25),
               _createQuestion(),
               SizedBox(height: 25),
@@ -106,10 +106,9 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     );
   }
 
-  uploadImage(){
-    setState(() async{
-      _pregunta.foto = await camaraController.getImage();
-    });
+  uploadImage()async{
+    _pregunta.foto = await camaraController.getImage();
+    setState((){});
   }
 
   Container _createQuestion() {
@@ -121,6 +120,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
+          maxLength: 250,
           validator: (String text) {
             if (text.isEmpty)
               return 'Por favor completar el campo';
