@@ -1,6 +1,5 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/models/navegador_argumentos.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
@@ -28,7 +27,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   void _playAction(){
     if(_canPlay == true){
-      print(PreferenciasUsuario().dni);
       setState(() async {
         preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
         var route = MaterialPageRoute(builder: (context){return QuestionPage(n: 0,questions: preguntas);});
@@ -36,8 +34,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
       });
   }
 }
-
-
 
 
   @override

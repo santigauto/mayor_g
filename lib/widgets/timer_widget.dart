@@ -14,7 +14,7 @@ class _TimerWidgetState extends State<TimerWidget>{
 String get timerString{
     Duration duration = widget.controller.duration * widget.controller.value;
     //print(widget.controller.value);
-    return '${(duration.inSeconds %60)}';
+    return '${(duration.inSeconds %60)}"';
   }  
 
   @override 
@@ -43,7 +43,6 @@ String get timerString{
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Tiempo'),
                   AnimatedBuilder(
                     animation: widget.controller, 
                     builder: (BuildContext context,Widget child){

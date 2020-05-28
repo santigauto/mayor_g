@@ -4,19 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
-//--- PATRON BLOC PARA MANEJO EN DIRECTO DE LOS WIDGETS DEL MODAL ---
-class Bloc{
-  StreamController _controller = StreamController.broadcast();
 
-  Function get streamSink => _controller.sink.add;
 
-  Stream get streamStream => _controller.stream;
-
-  void disposeStreams(){
-    _controller.close();
-  }
-
-}
 
 //              ------------ MODAL -------------
 
@@ -29,14 +18,28 @@ class Modal{
     {'nombre':'Raul','grado':'CT'}, 
     {'nombre':'Octavio','grado':'SG'}, 
     {'nombre':'Jose','grado':'TT'},
-    {'nombre':'Carlos','grado':'VS'},
-    {'nombre':'Carlos','grado':'VS'}, 
-    {'nombre':'Raul','grado':'CT'}, 
-    {'nombre':'Octavio','grado':'SG'}, 
-    {'nombre':'Jose','grado':'TT'},];
+    {'nombre':'Ramon','grado':'VS'},
+    {'nombre':'Oscar','grado':'VS'}, 
+    {'nombre':'Miguel','grado':'CT'}, 
+    {'nombre':'Pedro','grado':'SG'}, 
+    {'nombre':'Uriel','grado':'TT'},];
   bool _isSelected = false;                                            // BANDERA QUE HABILITARA EL FOOTER DE SELECCION DE PERSONA
   Map<String,dynamic> _personaSeleccionada = {'nombre':'','grado':''}; // CONTENEDOR DEL MAPA DE PERSONA
 
+
+//--- PATRON BLOC PARA MANEJO EN DIRECTO DE LOS WIDGETS DEL MODAL ---
+
+  StreamController _controller = StreamController.broadcast();
+
+    Function get streamSink => _controller.sink.add;
+
+    Stream get streamStream => _controller.stream;
+
+    void disposeStreams(){
+      _controller.close();
+    }
+
+//---MAIN---
   mainBottomSheet (BuildContext context){
     
 //---AGREGO AL MAPA LA KEY BOOLEANA 'SELECCION'--- 
@@ -48,38 +51,43 @@ class Modal{
     showModalBottomSheet(
       context: context, 
       builder: (context){
-        return Container(
-          height: MediaQuery.of(context).size.height*0.5,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(20) ,topLeft: Radius.circular(20) ,),
-            color: Theme.of(context).primaryColor
-          ),
-          child: Stack(
-            children: <Widget>[
-              Column(
+        return StreamBuilder<Object>(
+          stream: streamStream,
+          builder: (context, snapshot) {
+            return Container(
+              height: MediaQuery.of(context).size.height*0.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topRight: Radius.circular(20) ,topLeft: Radius.circular(20) ,),
+                color: Theme.of(context).primaryColor
+              ),
+              child: Stack(
                 children: <Widget>[
-                  Container(
-                    child: ListTile(
-                      title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-                      trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
-                      leading: IconButton(icon: Icon(Icons.keyboard_arrow_up,color: Colors.white,), onPressed: (){print(_personaSeleccionada);}),
-                    )
-                    ),
-                  Expanded(
-                    child: Container(
-                      child: Stack(
-                        children: <Widget>[
-                          BackgroundWidget(),
-                          listItem(context, gente),
-                        ],
-                      ),
-                    ),
-                  )
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        child: ListTile(
+                          title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                          trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
+                          leading: IconButton(icon: Icon(Icons.keyboard_arrow_up,color: Colors.white,), onPressed: (){print(_personaSeleccionada);}),
+                        )
+                        ),
+                      Expanded(
+                        child: Container(
+                          child: Stack(
+                            children: <Widget>[
+                              BackgroundWidget(),
+                              listItem(context, gente),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                _selecionado(context)  
                 ],
               ),
-            _selecionado(context)  
-            ],
-          ),
+            );
+          }
         );
       });
   }
@@ -114,6 +122,7 @@ class Modal{
               gente[x]['seleccion']=boolean;
               _isSelected = gente[x]['seleccion'];
               _personaSeleccionada=gente[x];
+              streamSink(_personaSeleccionada);
           },
           ),
       ),
@@ -130,9 +139,16 @@ Widget _selecionado(BuildContext context){
         Container(
           color:Theme.of(context).primaryColor, 
           child: ListTile(
-            leading: IconButton(icon: Icon(Icons.cancel), onPressed: null),
+            leading: IconButton(
+              icon: Icon(Icons.cancel), 
+              onPressed: (){
+                _personaSeleccionada['seleccion']=false;
+                _personaSeleccionada={'nombre':'','grado':'','seleccion':false};
+                streamSink(_personaSeleccionada);
+                _isSelected=false;}
+            ),
             title: Text(_personaSeleccionada['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
-            trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: (){}),
+            trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: (){Navigator.pop(context);}),
           )
         )
       ],

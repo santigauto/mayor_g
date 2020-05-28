@@ -23,7 +23,20 @@ class MyApp extends StatelessWidget {
             hintColor: Colors.white54,
             primarySwatch: Colors.green,
             primaryColor: Colors.green[900],
-            canvasColor: Colors.transparent
+            canvasColor: Colors.transparent,
+            hoverColor: Colors.white,
+            textSelectionColor: Colors.white,
+            focusColor: Colors.white,
+            appBarTheme: AppBarTheme(
+              textTheme: TextTheme(
+                title: TextStyle(color: Colors.white),
+                subhead: TextStyle(color: Colors.white),
+                subtitle: TextStyle(color: Colors.white),
+                body1: TextStyle(color: Colors.white),
+                caption: TextStyle(color: Colors.white),
+
+              )
+            )
           ),
           initialRoute: 'splash',
           routes: getApplicationRoutes(),

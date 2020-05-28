@@ -100,14 +100,13 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                _foto(size),
                 Expanded(
                     child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: _respuestas(),
+                    children: _respuestas(size),
                   ),
                 ))
               ],
@@ -122,18 +121,26 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
 
     double d;
     if(imagen == '' || imagen == null || imagen == 'null')d = 0.25;
-    else d = 0.15;
+    else d = 0.4;
     return Container(
-      height: size.height*d,
+      height:size.height*d,
       child: Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15)),
         child: Center(
-            child: Text(
-          widget.questions.preguntas[widget.n].pregunta.pregunta,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
-        )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    widget.questions.preguntas[widget.n].pregunta.pregunta,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17),
+                  ),
+                ),
+                _foto(size)
+              ],
+            )),
       ),
     );
 
@@ -144,14 +151,14 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
       return Container();
     } else
       return Container(
-        height: size.height * 0.2,
+        height: size.height * 0.3,
         decoration: BoxDecoration(
             image: DecorationImage(image: NetworkImage(imagen)),
             shape: BoxShape.rectangle),
       );
   }
 
-  List<Widget> _respuestas() {
+  List<Widget> _respuestas(Size size) {
     final List<Widget> answers = [];
     List<dynamic> aux = [];
 
@@ -167,13 +174,14 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
 
     for (var i = 0; i < aux.length; i++) {
       answers.add(Container(
+        height: size.height*0.1,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: Colors.white,
             border:
                 Border.all(color: Theme.of(context).primaryColor, width: 5)),
         child: ListTile(
-
+          contentPadding: EdgeInsets.all(0),
           onTap: () {
             bool boolean;
             if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
@@ -185,7 +193,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
           title: Text(
             aux[i]['respuesta'],
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: 16),
           ),
         ),
       ));
