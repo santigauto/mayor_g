@@ -83,7 +83,7 @@ class Modal{
                       )
                     ],
                   ),
-                _selecionado(context)  
+                _selecionado(context, snapshot)  
                 ],
               ),
             );
@@ -130,7 +130,7 @@ class Modal{
   }
 
 //---WIDGET ITEM (AMIGO) SELECCIONADO---
-Widget _selecionado(BuildContext context){
+Widget _selecionado(BuildContext context, AsyncSnapshot snapshot){
 
   if(_isSelected){
     return Column(
@@ -147,7 +147,7 @@ Widget _selecionado(BuildContext context){
                 streamSink(_personaSeleccionada);
                 _isSelected=false;}
             ),
-            title: Text(_personaSeleccionada['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
+            title: Text(snapshot.data['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
             trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: (){Navigator.pop(context);}),
           )
         )
