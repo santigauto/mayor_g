@@ -107,7 +107,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                       return null;
                     }
                   ),
-                  SizedBox(height: 12.0,),
+                  SizedBox(height: 8.0,),
                   MyTextInput('Dni', helper: 'Sin puntos ni comas.',
                     textInputType: TextInputType.number,
                     validator: (String text) {

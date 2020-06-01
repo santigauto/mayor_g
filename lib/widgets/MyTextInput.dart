@@ -18,17 +18,23 @@ class MyTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: textInputType,
-      maxLength: maxLenght,
-      decoration: InputDecoration(
-        focusColor: Colors.red,
-        hoverColor: Colors.red,
-        fillColor: Colors.red,
-        labelText: label,
-        helperText: helper
+    return Theme(
+      data: new ThemeData(
+        primaryColor: Colors.white70,
+        hintColor: Colors.white70,
+        textTheme: TextTheme(
+          subtitle1: TextStyle(color: Colors.white,),
+        )
       ),
-      validator: validator,
+      child: TextFormField(
+        keyboardType: textInputType,
+        maxLength: maxLenght,
+        decoration: InputDecoration(
+          labelText: label,
+          helperText: helper,
+        ),
+        validator: validator,
+      ),
     );
   }
 }
