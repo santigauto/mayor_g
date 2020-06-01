@@ -83,7 +83,7 @@ class Modal{
                       )
                     ],
                   ),
-                _selecionado(context, snapshot)  
+                _selecionado(context)  
                 ],
               ),
             );
@@ -130,7 +130,7 @@ class Modal{
   }
 
 //---WIDGET ITEM (AMIGO) SELECCIONADO---
-Widget _selecionado(BuildContext context, AsyncSnapshot snapshot){
+Widget _selecionado(BuildContext context){
 
   if(_isSelected){
     return Column(

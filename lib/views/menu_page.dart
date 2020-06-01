@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/services/commons/friend_selector_service.dart';
 
 import 'package:mayor_g/views/new_match_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
@@ -34,6 +35,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    GetFriendsService().getFriends(context, dni: 1);
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _back,
