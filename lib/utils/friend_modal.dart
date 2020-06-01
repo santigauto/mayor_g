@@ -147,7 +147,7 @@ Widget _selecionado(BuildContext context, AsyncSnapshot snapshot){
                 streamSink(_personaSeleccionada);
                 _isSelected=false;}
             ),
-            title: Text(snapshot.data['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
+            title: Text(_personaSeleccionada['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
             trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: (){Navigator.pop(context);}),
           )
         )
