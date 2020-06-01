@@ -2,6 +2,7 @@
 //PETICIÓN DE UAT
 class Config { 
   static const ApiURL = "https://cps-ea.mil.ar:612/api";
+  static const ApiURLCGE = "www.cge.mil.ar:81";
 
   static const HttpHeaders = {
     'Access-Control-Allow-Origin': '*',
