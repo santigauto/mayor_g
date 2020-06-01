@@ -11,7 +11,7 @@ class GetFriendsService{
 
   getFriends(BuildContext context,{ @required int dni }) async{
     final http.Response response = await http.post(
-       '${MayorGApis.ApiURL}/getAmigos.php',
+       'https://www.maderosolutions.com.ar/MayorG1/modelo/getAmigos.php',
        headers: MayorGApis.HttpHeaders,
        body: jsonEncode({
           'dni' : dni
@@ -19,7 +19,7 @@ class GetFriendsService{
        );
     final dynamic _decodedJson = jsonDecode(response.body);
     final Amigos amigos = Amigos.fromJson(_decodedJson);
-    print(amigos.toString());
+    print(amigos.amigos[0].nombre);
   }
 }
 

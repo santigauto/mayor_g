@@ -22,20 +22,21 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
 
   AnimationController controller; // CONTROLADOR DEL TEMPORIZADOR
   bool aux = false;               // BANDERA DEL CONTROLADOR QUE ME PERMITE GENERAR UN POP EXTRA EN EL CASO DE QUE UN ALERTA NO SE CIERRE CUANDO SE ACABE EL TIEMPO
-  String imagen;                  // CONTENDRÁ EL CONTENIDO DE LA IMAGEN DE LA PREGUNTA
-
+  ImageProvider imagen;           // CONTENDRÁ LA IMAGEN DE LA PREGUNTA
+  String imagenString;            // ES EL STRING QUE LLAMARA EL NETWORK IMAGE
 
 //-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
   @override
   void initState() {
     super.initState();
 
-    imagen = widget.questions.preguntas[widget.n].pregunta.foto;
+    imagenString = '${widget.questions.preguntas[widget.n].pregunta.foto}';
 
-    if(imagen != null && imagen != 'null' && imagen != ''){
-      imagen = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagen';
-      print(imagen);
-    }
+    if(imagenString != null && imagenString != 'null' && imagenString != ''){
+      imagenString = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagenString';
+      imagen = NetworkImage(imagenString);
+      print(imagenString);
+    }//SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS
 
     controller = AnimationController(
       vsync: this,
@@ -120,7 +121,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   Widget _pregunta(Size size){
 
     double d;
-    if(imagen == '' || imagen == null || imagen == 'null')d = 0.25;
+    if(imagenString == '' || imagenString == null || imagenString == 'null')d = 0.25;
     else d = 0.4;
     return Container(
       height:size.height*d,
@@ -147,21 +148,21 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   }
 
   Widget _foto(Size size) {
-    if (imagen == '' || imagen == null || imagen == 'null') {
+    if (imagenString == '' || imagenString == null || imagenString == 'null') {
       return Container();
-    } else
+    } else{
       return Container(
         height: size.height * 0.3,
         decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage(imagen)),
+            image: DecorationImage(image: imagen),
             shape: BoxShape.rectangle),
       );
+      }
   }
 
   List<Widget> _respuestas(Size size) {
     final List<Widget> answers = [];
     List<dynamic> aux = [];
-
 
     for (var i = 0;
         i < widget.questions.preguntas[widget.n].respuestas.length;
