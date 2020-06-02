@@ -17,7 +17,7 @@ class SideMenuWidget extends StatelessWidget {
       child: Drawer(
         child: Column(
           children: <Widget>[
-            _drawerProfile(),
+            _drawerProfile(context),
             Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
             Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
             Container(
@@ -38,12 +38,15 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawerProfile() {
+  Widget _drawerProfile(BuildContext context) {
 
     return Container(
       height: 152,
-      color: Colors.green[900],
+      color: Colors.white.withOpacity(0.7),
       child: DrawerHeader(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -58,7 +61,7 @@ class SideMenuWidget extends StatelessWidget {
                 CircleAvatar(
                   radius: 27,
                   backgroundImage: imagen(),
-                  backgroundColor: Colors.amberAccent[700],
+                  backgroundColor: Color(0xFF838547),
                 ),
                 SizedBox(width: 7,),
                 Column(
@@ -80,7 +83,7 @@ class SideMenuWidget extends StatelessWidget {
                   onPressed: () {
                     print(prefs.foto);
                   },
-                  icon: Icon(Icons.settings),
+                  icon: Icon(Icons.settings, color: Colors.white,),
                 )
               ],
             ),

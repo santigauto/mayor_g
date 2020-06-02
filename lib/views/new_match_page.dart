@@ -43,7 +43,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green[900],
           title: Text('New Match'),
         ),
         body: Stack(

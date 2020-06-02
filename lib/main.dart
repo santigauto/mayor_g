@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             cursorColor: Colors.white38,
             hintColor: Colors.white54,
             primarySwatch: Colors.green,
-            primaryColor: Colors.green[900],
+            primaryColor: Color(0xFF5C8D60),
             canvasColor: Colors.transparent, 
           ),
           initialRoute: 'splash',

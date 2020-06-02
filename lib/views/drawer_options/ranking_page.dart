@@ -19,7 +19,7 @@ class RankingPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  height: 150,
+                  height: size.height*0.1,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage('assets/award@3x.png'))),
@@ -47,8 +47,10 @@ class RankingPage extends StatelessWidget {
                       colorList: [Theme.of(context).primaryColor,Colors.red],
                       dataMap: dataMap,
                       showChartValueLabel: false,
-                      showLegends: false,
                       chartValueStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      animationDuration: Duration(
+                        seconds: 2
+                      ),
                     )),
               ],
             ),
