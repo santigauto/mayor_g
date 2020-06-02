@@ -44,23 +44,11 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
               children: <Widget>[
                 createCardBuscar(context),
                 SizedBox(height: 24,),
-                Expanded(
-                  child: createList()
-                ),
+                Expanded(child: createList()),
               ],
             )
           ],
         ),
-        /* floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          child:Icon(Icons.search), 
-          onPressed: (){showSearch(context: context, delegate: DataSearch(_gente));}) */
-        /* floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          child:Icon(Icons.search), 
-          onPressed: (){}
-        ) */
       ),
     );
 
@@ -83,6 +71,8 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       );
     else
       return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: _gente.length,
         itemBuilder: (context, x) => _listItem(x),
       );
@@ -140,7 +130,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       child: ListTile(
         onTap: () {},
         title: Text("${_gente[x].grado} ${_gente[x].apellido} ${_gente[x].nombres}"),
-        leading: MyImage(imageBytes: _gente[x].foto,),
+        leading: Icon(Icons.face),
         trailing: FlatButton(
           color: Theme.of(context).primaryColor,
           textColor: Colors.white,
