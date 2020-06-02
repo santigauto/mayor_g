@@ -3,7 +3,6 @@ import 'package:mayor_g/models/persona_model.dart';
 import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/services/commons/personas.dart';
 import 'package:mayor_g/widgets/MyTextInput.dart';
-import 'package:mayor_g/widgets/MyImagen.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 

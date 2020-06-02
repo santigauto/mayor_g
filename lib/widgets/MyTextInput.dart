@@ -29,6 +29,7 @@ class MyTextInput extends StatelessWidget {
       child: TextFormField(
         keyboardType: textInputType,
         maxLength: maxLenght,
+        cursorColor: Colors.white,
         decoration: InputDecoration(
           labelText: label,
           helperText: helper,

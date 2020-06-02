@@ -42,9 +42,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
   Color _seleccionado = Theme.of(context).primaryColor;
     return Container(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('New Match'),
-        ),
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),

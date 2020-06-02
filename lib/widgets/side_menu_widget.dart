@@ -93,7 +93,7 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  ImageProvider imagen(){
+  ImageProvider imagen(){// Hacerla GLOBAL!!
     if(prefs.foto == null || prefs.foto == 'null'){
       return AssetImage('assets/soldier.png');
     }else return MemoryImage(

@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 //PAGINAS
 import 'package:mayor_g/views/drawer_options/collab_page.dart';
+import 'package:mayor_g/views/drawer_options/ranking/ranking_options_page.dart';
+import 'package:mayor_g/views/drawer_options/ranking/ranking_page.dart';
 import 'package:mayor_g/views/drawer_options/search_friends_page.dart';
-import 'package:mayor_g/views/drawer_options/ranking_page.dart';
 import 'package:mayor_g/views/drawer_options/search_page.dart';
 import 'package:mayor_g/views/login_page.dart';
 import 'package:mayor_g/views/menu_page.dart';
@@ -18,7 +19,8 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
   return <String, WidgetBuilder>{
     '/'       : (BuildContext context) => MenuPage(),
     'menu'    : (BuildContext context) => MenuPage(),
-    'ranking' : (BuildContext context) => RankingPage(),
+    'ranking' : (BuildContext context) => RankingOptionsPage(),
+    'rank'    : (BuildContext context) => RankingPage(),
     'collab'  : (BuildContext context) => CollabPage(),
     'friends' : (BuildContext context) => FriendsPage(),
     'splash'  : (BuildContext context) => SplashPage(),
