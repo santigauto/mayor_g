@@ -76,7 +76,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 icon: Icon(Icons.camera),
                 label: Text("Cargar imagen", style: TextStyle(fontSize: 20)),
                 onPressed: uploadImage,
-                color: Colors.green[900],
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 splashColor: Colors.grey,
                 shape: RoundedRectangleBorder(
@@ -91,7 +91,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 icon: Icon(Icons.mail_outline),
                 label: Text("Enviar", style: TextStyle(fontSize: 20)),
                 onPressed: () => _submit(),
-                color: Colors.green[900],
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 splashColor: Colors.grey,
                 shape: RoundedRectangleBorder(
@@ -143,7 +143,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(width: 42),
+            /* SizedBox(width: 42), */
             BorderedText(
               strokeColor: Theme.of(context).primaryColor,
               child: Text(
@@ -151,12 +151,12 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
-            IconButton(
+            /* IconButton(
               icon: Icon(Icons.help_outline),
               onPressed: () => _alerta(
                 'Lorem ipsum\nejemplo'
               )
-            )
+            ) */
           ],
         ),
 
@@ -217,7 +217,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(width: 42),
+            /* SizedBox(width: 42), */
             BorderedText(
               strokeColor: Theme.of(context).primaryColor,
               child: Text(
@@ -225,12 +225,12 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
-            IconButton(
+            /* IconButton(
               icon: Icon(Icons.help_outline),
               onPressed: () => _alerta(
                 'Lorem ipsum\nejemplo'
               )
-            )
+            ) */
           ],
         ),
 
@@ -307,6 +307,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         //await CollabService().sendCollab(context,dni: PreferenciasUsuario().dni,sugerencia: _collab,idPregunta: 0);
         await Future.delayed(Duration(seconds: 3));
 
+        await _sended();
         setState(() {
           _isLoading = false;
         });
@@ -331,6 +332,45 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
           ],
         );
       },
+    );
+  }
+
+  Future<void> _sended() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context){
+        return AlertDialog(
+          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: Colors.yellow)
+          ),
+          title: Text('¡Muchas gracias por su aporte!',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                width: 200,
+                child: Image.asset('assets/capa53x.png')),
+                RaisedButton(
+                child: Text("Continuar", style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                splashColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 }

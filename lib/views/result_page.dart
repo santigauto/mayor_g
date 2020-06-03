@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/profileInfo.dart';
+import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/views/drawer_options/collab_page.dart';
 import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
@@ -21,10 +23,13 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   String imagen;
   int n;
+  ListaPreguntas questions;
   @override
   void initState() {
     super.initState();
     n = (widget.n) + 1;
+    questions = widget.questions;
+    
     if (widget.resultado) {
       imagen = 'assets/mayorContento.gif';
     } else
@@ -60,11 +65,16 @@ class _ResultPageState extends State<ResultPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
+          onPressed: () async{
+            if (n % 5 == 0 && n % 10 != 0 && n != 0){
+              var aux = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+              questions.preguntas.addAll(aux.preguntas);
+              print(questions);
+            }
             var route = MaterialPageRoute(builder: (context) {
               return QuestionPage(
                 n: n,
-                questions: widget.questions,
+                questions: questions,
               );
             });
             Navigator.pushReplacement(context, route);

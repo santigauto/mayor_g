@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:mayor_g/views/new_match_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
@@ -89,29 +90,20 @@ class _MenuPageState extends State<MenuPage> {
                       height: 45,
                     ),
                     RaisedButton(
-                      child: Container(
-                        width: 150,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Comenzar  ", style: TextStyle(fontSize: 20)),
-                            Icon(Icons.play_circle_filled)
-                          ],
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text("Comenzar", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
                       ),
                       onPressed: () {
                         var route = MaterialPageRoute(
                             builder: (context) => NewMatchPage());
                         Navigator.push(context, route);
                       },
-                      color: Colors.green[900],
+                      color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      splashColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.black),
-                      ),
+                      splashColor: Colors.green[900],
+                      shape: StadiumBorder(),
                     ),
                     SizedBox(
                       height: 40,

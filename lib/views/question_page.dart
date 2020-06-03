@@ -22,20 +22,21 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
 
   AnimationController controller; // CONTROLADOR DEL TEMPORIZADOR
   bool aux = false;               // BANDERA DEL CONTROLADOR QUE ME PERMITE GENERAR UN POP EXTRA EN EL CASO DE QUE UN ALERTA NO SE CIERRE CUANDO SE ACABE EL TIEMPO
-  String imagen;                  // CONTENDRÁ EL CONTENIDO DE LA IMAGEN DE LA PREGUNTA
-
+  ImageProvider imagen;           // CONTENDRÁ LA IMAGEN DE LA PREGUNTA
+  String imagenString;            // ES EL STRING QUE LLAMARA EL NETWORK IMAGE
 
 //-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
   @override
   void initState() {
     super.initState();
 
-    imagen = widget.questions.preguntas[widget.n].pregunta.foto;
+    imagenString = '${widget.questions.preguntas[widget.n].pregunta.foto}';
 
-    if(imagen != null && imagen != 'null' && imagen != ''){
-      imagen = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagen';
-      print(imagen);
-    }
+    if(imagenString != null && imagenString != 'null' && imagenString != ''){
+      imagenString = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagenString';
+      imagen = NetworkImage(imagenString);
+      print(imagenString);
+    }//SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS
 
     controller = AnimationController(
       vsync: this,
@@ -100,12 +101,13 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
+                SizedBox(height: 26,),
                 Expanded(
-                    child: Container(
+                  child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    
                     children: _respuestas(size),
                   ),
                 ))
@@ -120,7 +122,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   Widget _pregunta(Size size){
 
     double d;
-    if(imagen == '' || imagen == null || imagen == 'null')d = 0.25;
+    if(imagenString == '' || imagenString == null || imagenString == 'null')d = 0.25;
     else d = 0.4;
     return Container(
       height:size.height*d,
@@ -147,21 +149,21 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   }
 
   Widget _foto(Size size) {
-    if (imagen == '' || imagen == null || imagen == 'null') {
+    if (imagenString == '' || imagenString == null || imagenString == 'null') {
       return Container();
-    } else
+    } else{
       return Container(
         height: size.height * 0.3,
         decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage(imagen)),
+            image: DecorationImage(image: imagen),
             shape: BoxShape.rectangle),
       );
+      }
   }
 
   List<Widget> _respuestas(Size size) {
     final List<Widget> answers = [];
     List<dynamic> aux = [];
-
 
     for (var i = 0;
         i < widget.questions.preguntas[widget.n].respuestas.length;
@@ -173,7 +175,34 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     }
 
     for (var i = 0; i < aux.length; i++) {
-      answers.add(Container(
+      answers.add(
+        Container(
+          width: double.infinity,
+          child: FlatButton(
+            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+            ),
+            onPressed: () {
+              bool boolean;
+              if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
+                boolean = false;
+              } else {boolean = true;}
+              var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
+              Navigator.pushReplacement(context, route);
+            },
+            child: Text(
+              aux[i]['respuesta'],
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ),
+      );
+      answers.add(SizedBox(height: 12,));
+      /* answers.add(Container(
         height: size.height*0.1,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -196,7 +225,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
             style: TextStyle(fontSize: 16),
           ),
         ),
-      ));
+      )); */
     }
 
     return answers;

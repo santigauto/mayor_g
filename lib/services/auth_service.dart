@@ -40,38 +40,41 @@ class AuthService {
 //------------------------------ FUNCION DE LOGEO ------------------------------------
 
   login(BuildContext context, { @required String username, @required String password}) async {
+    try{
+      final http.Response response = await http.post(
+        '${Config.ApiURL}/musuario/login',
+        headers: Config.HttpHeaders,
+        body: jsonEncode({
+            'usu_dni' : username,
+            'usu_password' : password,
+            'push_id' : '',
+            'device_id' : ''
+          })
+        );
+        if(!response.headers['content-type'].contains('application/json; charset=utf-8')) {
+          return Alert.alert(context, body: Text('Ups! Algo salió mal. Por favor vuelva a intentar.'));
+        }
 
-   final http.Response response = await http.post(
-     '${Config.ApiURL}/musuario/login',
-     headers: Config.HttpHeaders,
-     body: jsonEncode({
-        'usu_dni' : username,
-        'usu_password' : password,
-        'push_id' : '',
-        'device_id' : ''
-      })
-     );
-    if(!response.headers['content-type'].contains('application/json; charset=utf-8')) {
-      return Alert.alert(context, body: Text('Ups! Algo salió mal. Por favor vuelva a intentar.'));
+        final dynamic _decodedJson = jsonDecode(response.body); 
+
+        if(_decodedJson['status'].toString().isEmpty || _decodedJson['status'] != 200) {
+          return Alert.alert(context, body: Text('Usuario o contraseña incorrectos.'));
+        }
+
+        final User _user = User.fromJson(_decodedJson);
+
+        await user.set(_decodedJson);
+        profile =await getUserProfile(await getAccessToken());
+        prefs.apellido=profile.apellido;
+        prefs.nombre=profile.nombre;
+        prefs.dni=profile.dni;
+        prefs.foto=profile.foto;
+
+        Navigator.pushReplacementNamed(context, 'menu');
+        print('${[_user.token.generatedAt,_user.dni.toString()]}');
+    }catch(e){
+      return Alert.alert(context, body: Text("${e.toString()}\nPor favor vuelva a intentarlo, en caso de que persista el error intente recuperar su contraseña."));
     }
-
-    final dynamic _decodedJson = jsonDecode(response.body); 
-
-    if(_decodedJson['status'].toString().isEmpty || _decodedJson['status'] != 200) {
-      return Alert.alert(context, body: Text('Usuario o contraseña incorrectos.'));
-    }
-
-    final User _user = User.fromJson(_decodedJson);
-
-    await user.set(_decodedJson);
-    profile =await getUserProfile(await getAccessToken());
-    prefs.apellido=profile.apellido;
-    prefs.nombre=profile.nombre;
-    prefs.dni=profile.dni;
-    prefs.foto=profile.foto;
-
-    Navigator.pushReplacementNamed(context, 'menu');
-    print('${[_user.token.generatedAt,_user.dni.toString()]}');
 
 
   }
