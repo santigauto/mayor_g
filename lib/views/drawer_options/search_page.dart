@@ -22,7 +22,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
     return Scaffold(
       appBar: AppBar(
         title: Text("Buscador"),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         bottom: TabBar(
           labelPadding: EdgeInsets.all(0),
           tabs: [
