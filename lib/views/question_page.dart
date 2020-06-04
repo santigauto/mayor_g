@@ -101,12 +101,13 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
+                SizedBox(height: 26,),
                 Expanded(
-                    child: Container(
+                  child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    
                     children: _respuestas(size),
                   ),
                 ))
@@ -174,7 +175,34 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     }
 
     for (var i = 0; i < aux.length; i++) {
-      answers.add(Container(
+      answers.add(
+        Container(
+          width: double.infinity,
+          child: FlatButton(
+            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+            ),
+            onPressed: () {
+              bool boolean;
+              if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
+                boolean = false;
+              } else {boolean = true;}
+              var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
+              Navigator.pushReplacement(context, route);
+            },
+            child: Text(
+              aux[i]['respuesta'],
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ),
+      );
+      answers.add(SizedBox(height: 12,));
+      /* answers.add(Container(
         height: size.height*0.1,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -197,7 +225,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
             style: TextStyle(fontSize: 16),
           ),
         ),
-      ));
+      )); */
     }
 
     return answers;

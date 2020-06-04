@@ -79,12 +79,12 @@ class SideMenuWidget extends StatelessWidget {
                   ],
                 ),
                 Expanded(child: Container()),
-                IconButton(
+                /* IconButton(
                   onPressed: () {
                     print(prefs.foto);
                   },
                   icon: Icon(Icons.settings, color: Colors.white,),
-                )
+                ) */
               ],
             ),
           ],

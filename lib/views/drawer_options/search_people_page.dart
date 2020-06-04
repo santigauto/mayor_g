@@ -34,20 +34,18 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            BackgroundWidget(),
-            ListView(
-              children: <Widget>[
-                createCardBuscar(context),
-                SizedBox(height: 24,),
-                Expanded(child: createList()),
-              ],
-            )
-          ],
-        ),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          BackgroundWidget(),
+          ListView(
+            children: <Widget>[
+              createCardBuscar(context),
+              SizedBox(height: 24,),
+              createList(),
+            ],
+          )
+        ],
       ),
     );
 
