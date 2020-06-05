@@ -107,7 +107,6 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
-                    
                     children: _respuestas(size),
                   ),
                 ))
@@ -201,7 +200,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
           ),
         ),
       );
-      answers.add(SizedBox(height: 12,));
+      answers.add(SizedBox(height: 6,));
       /* answers.add(Container(
         height: size.height*0.1,
         decoration: BoxDecoration(
