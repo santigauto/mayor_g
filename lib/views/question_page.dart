@@ -91,28 +91,26 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SafeArea(child: Container()),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        height: size.height * 0.12,
-                        child: TimerWidget(controller: controller)),
+            Column(
+              children: <Widget>[
+                SafeArea(child: Container()),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      height: size.height * 0.12,
+                      child: TimerWidget(controller: controller)),
+                ),
+                _pregunta(size),
+                SizedBox(height: 26,),
+                Expanded(
+                  child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: _respuestas(size),
                   ),
-                  _pregunta(size),
-                  SizedBox(height: 26,),
-                  Expanded(
-                    child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: _respuestas(size),
-                    ),
-                  ))
-                ],
-              ),
+                ))
+              ],
             )
           ],
         ),
@@ -202,7 +200,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
           ),
         ),
       );
-      answers.add(SizedBox(height: 12,));
+      answers.add(SizedBox(height: 6,));
       /* answers.add(Container(
         height: size.height*0.1,
         decoration: BoxDecoration(

@@ -237,7 +237,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         BorderedText(
           strokeColor: Theme.of(context).primaryColor,
           child: Text(
-            'Debe ingresar las 5\nEstas deben ser alucivas a la pregunta',
+            'Debe ingresar las 5\nEstas deben ser alusivas a la pregunta',
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
           ),

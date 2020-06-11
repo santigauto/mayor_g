@@ -70,7 +70,7 @@ class _CollabPageState extends State<CollabPage> {
                 child: BorderedText(
                   strokeColor: Theme.of(context).primaryColor,
                   child: Text(
-                    'Si desea $text en algo, por favor deje su propueata en la caja de comentarios',
+                    'Si desea $text en algo, por favor deje su propuesta en la caja de comentarios',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
