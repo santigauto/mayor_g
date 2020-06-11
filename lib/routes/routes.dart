@@ -1,18 +1,18 @@
 //IMPORTS
 import 'package:flutter/material.dart';
 //PAGINAS
-import 'package:mayor_g/views/drawer_options/collab_page.dart';
-import 'package:mayor_g/views/drawer_options/ranking/ranking_options_page.dart';
-import 'package:mayor_g/views/drawer_options/ranking/ranking_page.dart';
-import 'package:mayor_g/views/drawer_options/search_friends_page.dart';
-import 'package:mayor_g/views/drawer_options/search_page.dart';
+import 'package:mayor_g/views/side_menu_options/collab_page.dart';
+import 'package:mayor_g/views/side_menu_options/ranking/ranking_options_page.dart';
+import 'package:mayor_g/views/side_menu_options/ranking/ranking_page.dart';
+import 'package:mayor_g/views/side_menu_options/search/search_friends_page.dart';
+import 'package:mayor_g/views/side_menu_options/search/search_page.dart';
+import 'package:mayor_g/views/side_menu_options/search/search_people_page.dart';
+import 'package:mayor_g/views/side_menu_options/suggestQuestion/suggestQuestion.dart';
 import 'package:mayor_g/views/login_page.dart';
 import 'package:mayor_g/views/menu_page.dart';
 import 'package:mayor_g/views/question_page.dart';
-import 'package:mayor_g/views/drawer_options/search_people_page.dart';
 import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/views/splash_page.dart';
-import 'package:mayor_g/views/suggestQuestion/suggestQuestion.dart';
 
 
 Map<String, WidgetBuilder> getApplicationRoutes(){

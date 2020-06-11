@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/views/drawer_options/search_friends_page.dart';
-import 'package:mayor_g/views/drawer_options/search_people_page.dart';
+import 'package:mayor_g/views/side_menu_options/search/search_friends_page.dart';
+import 'package:mayor_g/views/side_menu_options/search/search_people_page.dart';
 
 class SearchPage extends StatefulWidget {
   @override

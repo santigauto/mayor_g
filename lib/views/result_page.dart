@@ -4,7 +4,7 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
-import 'package:mayor_g/views/drawer_options/collab_page.dart';
+import 'package:mayor_g/views/side_menu_options/collab_page.dart';
 import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/models/question_model.dart';
@@ -95,7 +95,7 @@ class _ResultPageState extends State<ResultPage> {
                 showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                          title: Text('¿Realmente quiere abaonar la partida?'),
+                          title: Text('¿Realmente quiere abandonar la partida?'),
                           actions: <Widget>[
                             FlatButton(
                                 onPressed: () {
