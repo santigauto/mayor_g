@@ -7,9 +7,9 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:mayor_g/services/commons/camara.dart';
 
 import 'package:mayor_g/widgets/background_widget.dart';
-import 'package:mayor_g/views/suggestQuestion/widgets/myInput.dart';
 
 import 'package:mayor_g/models/question_model.dart';
+import 'package:mayor_g/widgets/myInput.dart';
 
 class SuggestQuestionPage extends StatefulWidget {
   SuggestQuestionPage({Key key}) : super(key: key);

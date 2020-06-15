@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/profileInfo.dart';
-import 'package:mayor_g/views/drawer_options/ranking/friends_rank_page.dart';
-import 'package:mayor_g/views/drawer_options/ranking/global_page.dart';
-import 'package:mayor_g/views/drawer_options/ranking/level_page.dart';
-import 'package:mayor_g/views/drawer_options/ranking/ranking_page.dart';
+import 'package:mayor_g/views/side_menu_options/ranking/friends_rank_page.dart';
+import 'package:mayor_g/views/side_menu_options/ranking/global_page.dart';
+import 'package:mayor_g/views/side_menu_options/ranking/level_page.dart';
+import 'package:mayor_g/views/side_menu_options/ranking/ranking_page.dart';
 
 class RankingOptionsPage extends StatefulWidget {
   @override
