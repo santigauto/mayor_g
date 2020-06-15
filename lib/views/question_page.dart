@@ -189,6 +189,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
               if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
                 boolean = false;
               } else {boolean = true;}
+              controller.stop();
               var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
               Navigator.pushReplacement(context, route);
             },
@@ -201,30 +202,6 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
         ),
       );
       answers.add(SizedBox(height: 6,));
-      /* answers.add(Container(
-        height: size.height*0.1,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
-            border:
-                Border.all(color: Theme.of(context).primaryColor, width: 5)),
-        child: ListTile(
-          contentPadding: EdgeInsets.all(0),
-          onTap: () {
-            bool boolean;
-            if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
-              boolean = false;
-            } else {boolean = true;}
-            var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
-            Navigator.pushReplacement(context, route);
-          },
-          title: Text(
-            aux[i]['respuesta'],
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
-      )); */
     }
 
     return answers;
