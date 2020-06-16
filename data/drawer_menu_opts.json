@@ -20,6 +20,11 @@
             "ruta" : "suggestQuestion",
             "icon" : "suggest",
             "texto": "Sugerir pregunta"
+        },
+        {
+            "ruta" : "test",
+            "icon" : "suggest",
+            "texto": "Test"
         }
     ]
 }

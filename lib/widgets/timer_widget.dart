@@ -32,7 +32,7 @@ String get timerString{
                   return CustomPaint(
                     painter: TimerPainter(
                       color: Colors.red,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.white.withOpacity(0.3),
                       animation: widget.controller
                       )
                   );

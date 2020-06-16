@@ -13,6 +13,7 @@ import 'package:mayor_g/views/menu_page.dart';
 import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/views/splash_page.dart';
+import 'package:mayor_g/views/test_page.dart';
 
 
 Map<String, WidgetBuilder> getApplicationRoutes(){
@@ -30,6 +31,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'search_people'  : (BuildContext context) => SearchPeoplePage(),
     'result'  : (BuildContext context) => ResultPage(),
     'suggestQuestion' : (BuildContext context) => SuggestQuestionPage(),
+    'test'    : (BuildContext context) => TestPage()
   };
 }
 
