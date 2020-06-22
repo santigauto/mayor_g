@@ -101,7 +101,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                SizedBox(height: 26,),
+                SizedBox(height: 20,),
                 Expanded(
                   child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),

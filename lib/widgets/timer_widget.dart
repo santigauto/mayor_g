@@ -31,7 +31,7 @@ String get timerString{
                 builder:(BuildContext context, Widget child){
                   return CustomPaint(
                     painter: TimerPainter(
-                      color: Colors.red,
+                      color: ((widget.controller.duration * widget.controller.value).inSeconds <= 3)?Colors.red:Colors.white,
                       backgroundColor: Colors.white.withOpacity(0.3),
                       animation: widget.controller
                       )
@@ -47,7 +47,7 @@ String get timerString{
                     animation: widget.controller, 
                     builder: (BuildContext context,Widget child){
                       return Text(
-                        timerString, style: Theme.of(context).textTheme.headline4);
+                        timerString, style: Theme.of(context).textTheme.headline4,);
                     })
                 ],
               ),
@@ -74,14 +74,20 @@ class TimerPainter extends CustomPainter{
   void paint(Canvas canvas, Size size){
     Paint paint = Paint()
       ..color = backgroundColor
-      ..strokeWidth = 7.0
+      ..strokeWidth = 5.0
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+
+    Paint paintArco = Paint()
+      ..color = backgroundColor
+      ..strokeWidth = 8.0
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     canvas.drawCircle(size.center(Offset.zero), size.width /2.0 , paint);
-    paint.color = color;
+    paintArco.color = color;
     double progress = (1.0 - animation.value) * 2 * math.pi;
-    canvas.drawArc(Offset.zero & size, math.pi*1.5, -progress, false, paint);
+    canvas.drawArc(Offset.zero & size, math.pi*1.5, progress, false, paintArco);
 
   }
 
