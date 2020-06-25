@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/views/result_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
+import 'package:mayor_g/widgets/custom_header_widget.dart';
 import 'package:mayor_g/widgets/timer_widget.dart';
 
 class QuestionPage extends StatefulWidget {
-  final ListaPreguntas questions;
-  final int n;
+  final ListaPreguntas questions;   //LISTA DE PREGUNTAS (CON RESPUESTAS)
+  final int n;                      //INDICE DE LA PRENGUNTA DENTRO DE LA LISTA
   const QuestionPage({Key key, this.questions, this.n}) : super(key: key);
 
   @override
@@ -21,6 +22,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
 
 
   AnimationController controller; // CONTROLADOR DEL TEMPORIZADOR
+  //AnimationController preguntasController; 
   bool aux = false;               // BANDERA DEL CONTROLADOR QUE ME PERMITE GENERAR UN POP EXTRA EN EL CASO DE QUE UN ALERTA NO SE CIERRE CUANDO SE ACABE EL TIEMPO
   ImageProvider imagen;           // CONTENDRÁ LA IMAGEN DE LA PREGUNTA
   String imagenString;            // ES EL STRING QUE LLAMARA EL NETWORK IMAGE
@@ -36,22 +38,25 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
       imagenString = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagenString';
       imagen = NetworkImage(imagenString);
       print(imagenString);
-    }//SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS
-
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 15),
-    );
-    controller.reverse(
-      from: controller.value == 0 ? 1 : controller.value,
-    );
-    controller.addStatusListener((state) {
-      if (aux == true) {
-        Navigator.pop(context);
-      }
-      var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: false,);});
-      return Navigator.pushReplacement(context, route);
-    });
+    }                                                                                //SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS
+    //preguntasController = AnimationController(vsync: this, duration: Duration(milliseconds: 1500));
+    //preguntasController.forward();
+    //if(preguntasController.status == AnimationStatus.completed){
+      controller = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 15),
+      );
+      controller.reverse(
+        from: controller.value == 0 ? 1 : controller.value,
+      );
+      controller.addStatusListener((state) {
+        if (aux == true) {
+          Navigator.pop(context);
+        }
+        var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: false,);});
+        return Navigator.pushReplacement(context, route);
+      });
+    //}
   }
 
 
@@ -91,6 +96,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
+            HeaderCurvo(),
             Column(
               children: <Widget>[
                 SafeArea(child: Container()),
@@ -210,6 +216,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   @override
   void dispose() {
     controller.dispose();
+    //preguntasController.dispose();
     super.dispose();
   }
 }

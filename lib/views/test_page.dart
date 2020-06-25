@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/timer_widget.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({Key key}) : super(key: key);
+class PicsPage extends StatefulWidget {
+  const PicsPage({Key key}) : super(key: key);
 
   @override
-  _TestPageState createState() => _TestPageState();
+  _PicsPageState createState() => _PicsPageState();
 }
 
-class _TestPageState extends State<TestPage> with TickerProviderStateMixin{
+class _PicsPageState extends State<PicsPage> with TickerProviderStateMixin{
 
 AnimationController controller;
 
