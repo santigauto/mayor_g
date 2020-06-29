@@ -86,6 +86,8 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
             ));
   }
 
+
+//-------------------------------------        BUILD          -----------------------------------------------
   @override
   Widget build(BuildContext context) {
 
@@ -108,7 +110,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                Expanded(child: Answers(tipo: 0, questions: widget.questions, n: widget.n,))
+                Expanded(child: Answers(tipo: 1, questions: widget.questions, n: widget.n,))
               ],
             )
           ],

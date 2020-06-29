@@ -137,7 +137,7 @@ class _ResultPageState extends State<ResultPage> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Colors.black
+                    color: Colors.white
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
