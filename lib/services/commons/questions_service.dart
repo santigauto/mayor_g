@@ -24,7 +24,6 @@ class QuestionsService{
       return Alert.alert(context, body: Text("ha ocurrido un error"));
     }
     else{
-        print('la respuesta correcta es la ${preguntas.preguntas[0].pregunta.pregunta}');
       return preguntas;
     }
   }   

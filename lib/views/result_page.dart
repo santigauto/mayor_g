@@ -38,22 +38,22 @@ class _ResultPageState extends State<ResultPage> {
 
   Future<bool> _back() {
     return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text('Quieres realmente salir de Mayor G'),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: Text('Salir')),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
-                    child: Text('Cancelar'))
-              ],
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+      title: Text('Quieres realmente salir de Mayor G'),
+      actions: <Widget>[
+        FlatButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: Text('Salir')),
+        FlatButton(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            child: Text('Cancelar'))
+      ],
+    ));
   }
 
   @override
@@ -69,7 +69,6 @@ class _ResultPageState extends State<ResultPage> {
             if (n % 5 == 0 && n % 10 != 0 && n != 0){
               var aux = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
               questions.preguntas.addAll(aux.preguntas);
-              print(questions);
             }
             var route = MaterialPageRoute(builder: (context) {
               return QuestionPage(
@@ -129,25 +128,28 @@ class _ResultPageState extends State<ResultPage> {
             Column(
               children: <Widget>[
                 Container(
-                  height: size.height * 0.45,
+                  height: size.height * 0.4,
                   decoration: BoxDecoration(
                       image: DecorationImage(image: AssetImage(imagen)),
-                      border: Border(
-                          bottom: BorderSide(color: Colors.black, width: 6))),
-                ),
-                Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                      //image: DecorationImage(image: AssetImage('assets/bgCopia6.png'),fit: BoxFit.fitWidth),
-                      color: Theme.of(context).primaryColor.withOpacity(0.8),
-                      border: Border(
-                          bottom: BorderSide(color: Colors.black, width: 6))),
-                  child: Center(
-                    child: ListTile(
-                      title: _resultadoText(),
-                    ),
                   ),
                 ),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.black
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Card(
+                      color: Theme.of(context).primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
+                        child: _resultadoText(),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ],

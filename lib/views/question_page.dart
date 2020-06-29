@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/views/result_page.dart';
+import 'package:mayor_g/widgets/answers_widget.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/custom_header_widget.dart';
 import 'package:mayor_g/widgets/timer_widget.dart';
@@ -107,15 +108,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                SizedBox(height: 20,),
-                Expanded(
-                  child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: _respuestas(size),
-                  ),
-                ))
+                Expanded(child: Answers(tipo: 0, questions: widget.questions, n: widget.n,))
               ],
             )
           ],
@@ -166,52 +159,6 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
       }
   }
 
-  List<Widget> _respuestas(Size size) {
-    final List<Widget> answers = [];
-    List<dynamic> aux = [];
-
-    for (var i = 0;
-        i < widget.questions.preguntas[widget.n].respuestas.length;
-        i++) {
-      aux.add({
-        'respuesta': '${widget.questions.preguntas[widget.n].respuestas[i]}',
-        'id': i
-      });
-    }
-
-    for (var i = 0; i < aux.length; i++) {
-      answers.add(
-        Container(
-          width: double.infinity,
-          child: FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-            ),
-            onPressed: () {
-              bool boolean;
-              if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
-                boolean = false;
-              } else {boolean = true;}
-              controller.stop();
-              var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
-              Navigator.pushReplacement(context, route);
-            },
-            child: Text(
-              aux[i]['respuesta'],
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
-            ),
-          ),
-        ),
-      );
-      answers.add(SizedBox(height: 6,));
-    }
-
-    return answers;
-  }
 
   @override
   void dispose() {

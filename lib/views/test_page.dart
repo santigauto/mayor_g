@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/question_model.dart';
+import 'package:mayor_g/widgets/answers_widget.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/timer_widget.dart';
 
 class PicsPage extends StatefulWidget {
-  const PicsPage({Key key}) : super(key: key);
+  final ListaPreguntas questions;
+  final int n;
+  const PicsPage({Key key, this.n, this.questions}) : super(key: key);
 
   @override
   _PicsPageState createState() => _PicsPageState();
@@ -43,30 +47,7 @@ AnimationController controller;
                 Expanded(child: Container()),
                 _pregunta(size),
                 Expanded(child: Container()),
-                Container(
-                  height: size.height*0.55,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _imagen(Colors.pink, size,),
-                          _imagen(Colors.amber, size,),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _imagen(Colors.deepPurple, size,),
-                          _imagen(Colors.lightBlue, size,),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(child: Container())
+                Answers(tipo: 1, questions: widget.questions, n: widget.n,)
               ],
             ),
           ),
@@ -74,20 +55,6 @@ AnimationController controller;
       ),
     );
   }
-
-Widget _imagen(Color color, Size size,){
-  return Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-        width: 3,
-        color: Theme.of(context).primaryColor
-      ),
-      color: color
-    ),
-    height: size.width*0.45,
-    width: size.width*0.45,
-    );
-}
 
 Widget _pregunta(Size size){
 

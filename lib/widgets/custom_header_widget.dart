@@ -10,7 +10,7 @@ class HeaderCurvo extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       child: CustomPaint(
-        painter: _HeaderCurvoShadowPainter(context, color:Color(0xFF5C8D60)),
+        painter: _HeaderCurvoPainter(context, color:Color(0xFF5C8D60)),
       ),
     );
   }
@@ -22,52 +22,36 @@ class _HeaderCurvoPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     
-    final lapiz = new Paint();
+    final lapiz1 = new Paint();
 
     // Propiedades
-    lapiz.color = color;
-    lapiz.style = PaintingStyle.fill; // .fill .stroke
-    lapiz.strokeWidth = 1;
+    lapiz1.color = color;
+    lapiz1.style = PaintingStyle.fill; // .fill .stroke
+    lapiz1.strokeWidth = 1;
 
-    final path = new Path();
+    final path1 = new Path();
 
-    // Dibujar con el path y el lapiz
-    path.lineTo( 0, size.height * 0.12 );
-    path.quadraticBezierTo(size.width * 0.5, -size.height * 0.045, size.width, size.height * 0.12 );
-    path.lineTo( size.width, 0 );
-
-    canvas.drawPath(path, lapiz );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-
-  
-
-}
-class _HeaderCurvoShadowPainter extends CustomPainter {
-  final Color color;
-  _HeaderCurvoShadowPainter(BuildContext context, {this.color});
-  @override
-  void paint(Canvas canvas, Size size) {
-    
-    final lapiz = new Paint();
+    final lapiz2 = new Paint();
 
     // Propiedades
-    lapiz.color = color;
-    lapiz.style = PaintingStyle.fill; // .fill .stroke
-    lapiz.strokeWidth = 1;
+    lapiz2.color = Colors.black.withOpacity(0.2);
+    lapiz2.style = PaintingStyle.fill; // .fill .stroke
+    lapiz2.strokeWidth = 1;
 
-    final path = new Path();
+    final path2 = new Path();
 
     // Dibujar con el path y el lapiz
-    path.lineTo( 0, size.height * 0.14 );
-    path.quadraticBezierTo(size.width * 0.5, -size.height * 0.14 + 50, size.width, size.height * 0.14 );
-    path.lineTo( size.width, 0 );
+    path2.lineTo( 0, size.height * 0.15 );
+    path2.quadraticBezierTo(size.width * 0.5, -size.height * 0.14 + 50, size.width, size.height * 0.15 );
+    path2.lineTo( size.width, 0 );
 
-    canvas.drawPath(path, lapiz );
+    canvas.drawPath(path2, lapiz2 );
+
+    path1.lineTo( 0, size.height * 0.14 );
+    path1.quadraticBezierTo(size.width * 0.5, -size.height * 0.14 + 50, size.width, size.height * 0.14 );
+    path1.lineTo( size.width, 0 );
+
+    canvas.drawPath(path1, lapiz1 );
   }
 
   @override

@@ -315,26 +315,6 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     }
   }
 
-  Future<void> _alerta(String texto) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(texto),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> _sended() async {
     return showDialog(
       context: context,
