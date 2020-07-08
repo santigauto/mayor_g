@@ -15,12 +15,7 @@ class PreferenciasUsuario{
   initPrefs() async{
     this._prefs = await SharedPreferences.getInstance();
   }
-
-
-  //String _nombre;
-  //String _apellido;
-  //int _dni;
-
+  //APELLIDO
   get apellido{
     return _prefs.getString('apellido') ?? 'apellidoO';
   }
@@ -28,7 +23,7 @@ class PreferenciasUsuario{
   set apellido(String value){
     _prefs.setString('apellido', value);
   }
-
+//NOMBRE
   get nombre{
     return _prefs.getString('nombre') ?? 'nombreO';
   }
@@ -45,7 +40,7 @@ class PreferenciasUsuario{
     }
     _prefs.setString('nombre', value);
   }
-
+//DNI
   get dni{
     return _prefs.getInt('dni') ?? 0;
   }
@@ -53,7 +48,7 @@ class PreferenciasUsuario{
   set dni(int value){
     _prefs.setInt('dni', value);
   }
-
+//FOTO
   get foto{
     return _prefs.getString('foto') ?? null;
   }

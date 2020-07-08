@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/auth_service.dart';
 import 'package:mayor_g/services/commons/drawer_service.dart';
 import 'package:mayor_g/utils/icon_string_util.dart';
+import 'package:mayor_g/widgets/imagen_perfil.dart';
 
 class SideMenuWidget extends StatelessWidget {
   SideMenuWidget({Key key}) : super(key: key);
@@ -13,27 +12,25 @@ class SideMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      child: Drawer(
-        child: Column(
-          children: <Widget>[
-            _drawerProfile(context),
-            Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
-            Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
-            Container(
-              color: Theme.of(context).primaryColor,
-              child: ListTile(
-                leading: Icon(
-                  Icons.power_settings_new,
-                  color: Colors.red,
-                ),
-                title: Text('Log Out', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.keyboard_arrow_right),
-                onTap: (){AuthService().logout(context: context);},
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          _drawerProfile(context),
+          Container(child: _lista(), color: Colors.white.withOpacity(0.7),),
+          Expanded(child: Container(color: Colors.white.withOpacity(0.7),)),
+          Container(
+            color: Theme.of(context).primaryColor,
+            child: ListTile(
+              leading: Icon(
+                Icons.power_settings_new,
+                color: Colors.red,
               ),
-            )
-          ],
-        ),
+              title: Text('Log Out', style: TextStyle(color: Colors.white)),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: (){AuthService().logout(context: context);},
+            ),
+          )
+        ],
       ),
     );
   }
@@ -58,11 +55,7 @@ class SideMenuWidget extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
-                CircleAvatar(
-                  radius: 27,
-                  backgroundImage: imagen(),
-                  backgroundColor: Color(0xFF838547),
-                ),
+                ImagenPerfil(photoData: prefs.foto,radius: 25,),
                 SizedBox(width: 7,),
                 Column(
                   //nombre de usuario
@@ -79,25 +72,11 @@ class SideMenuWidget extends StatelessWidget {
                   ],
                 ),
                 Expanded(child: Container()),
-                /* IconButton(
-                  onPressed: () {
-                    print(prefs.foto);
-                  },
-                  icon: Icon(Icons.settings, color: Colors.white,),
-                ) */
               ],
             ),
           ],
         ),
       ),
-    );
-  }
-
-  ImageProvider imagen(){// Hacerla GLOBAL!!
-    if(prefs.foto == null || prefs.foto == 'null'){
-      return AssetImage('assets/soldier.png');
-    }else return MemoryImage(
-      base64Decode(prefs.foto),
     );
   }
 

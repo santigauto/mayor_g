@@ -12,25 +12,6 @@ import 'package:mayor_g/models/auth/user.dart';
 import 'package:mayor_g/widgets/alert_widget.dart';
 
 
-/*class Bloc{
-
-  //-------------------- STREAM DE DATOS DE USUARIO LOGEADO ---------------------------
-
-  final _profileStreamController = StreamController<User>.broadcast();
-
-  Function(User) get userProfileSink => _profileStreamController.sink.add;
-
-  Stream<User> get userProfileStream => _profileStreamController.stream;
-
-  void disposeStreams(){
-    _profileStreamController.close();
-  }
-
-}
-Bloc bloc = Bloc();*/
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
 class AuthService {
 
   final user = User();
@@ -69,6 +50,9 @@ class AuthService {
         prefs.nombre=profile.nombre;
         prefs.dni=profile.dni;
         prefs.foto=profile.foto;
+        if(prefs.foto == 'g'){
+          prefs.foto = '';
+        }
 
         Navigator.pushReplacementNamed(context, 'menu');
         print('${[_user.token.generatedAt,_user.dni.toString()]}');
@@ -113,7 +97,7 @@ class AuthService {
     }
     else{
       _profile = User.fromJsonProfile(_decodedJson);
-      print(_decodedJson.toString());
+      print('${_decodedJson.toString()}');
       return _profile;
     }
 

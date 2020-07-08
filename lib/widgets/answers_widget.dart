@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/views/result_page.dart';
@@ -179,7 +181,6 @@ Widget _answerType4(Size size){
     'D': 'd'
   }; // ESTO SE VA!
 
-
   return Expanded(
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -191,8 +192,8 @@ Widget _answerType4(Size size){
           children: choices.keys.map((e) {
             return Draggable<String>(
               data: e,
-              child: _inicial((score[e] == true)?'correcto':e, size),
-              feedback: _onGrab(e, size),
+              child: _inicial(e, size, Colors.white),
+              feedback: _inicial(e, size, Colors.white.withOpacity(0.5)),
               childWhenDragging: Container(width: size.width*0.4, height: size.height*0.1,),
             );
           }).toList()
@@ -202,75 +203,54 @@ Widget _answerType4(Size size){
           children: choices.keys.map((e) {
             return _target('hola', size, score, e, choices);
           }).toList()
+          ..shuffle(Random(1))
         ),
       ],
     ),
   );
 }
 
-Widget _inicial(String text, Size size,){
-  return ClipRRect(
-    borderRadius: BorderRadius.circular(15),
-    child: Container(
-      width: size.width*0.4,
-      height: size.height*0.1,
-      color: Colors.white,
-      child: Center(child: Text(text)),
-    )
-  );
-}
-Widget _onGrab(String text, Size size,){
-  return ClipRRect(
-    borderRadius: BorderRadius.circular(15),
-    child: Container(
-      width: size.width*0.4,
-      height: size.height*0.1,
-      color: Colors.white.withOpacity(0.5),
-      child: Center(child: Text(text, style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal,fontSize: 20,decorationColor: Colors.white.withOpacity(0)),)),
-    )
+Widget _inicial(String text, Size size, Color color){
+  return Material(
+      child: ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+        width: size.width*0.4,
+        height: size.height*0.1,
+        color: color,
+        child: Center(
+          child: Text(text, 
+            style: TextStyle(
+              color: Colors.black, 
+              fontWeight: FontWeight.normal,
+              fontSize: 20,
+              decorationColor: Colors.white.withOpacity(0)
+              ),
+            )
+          ),
+      )
+    ),
   );
 }
 Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
   return DragTarget<String>(
-    builder: (BuildContext context, List<String> lista, List rechazado){
+    builder: (BuildContext context, List<String> incoming, List rejected){
       if(score[e] == true){
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Container(
-            width: size.width*0.4,
-            height: size.height*0.1,
-            color: Colors.amber,
-            child: Center(
-              child: Text('correcto'),
-            ),
-          ),
-        );
+        return _inicial('correcto', size, Colors.green);
       } else if (score[e] == false){
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Container(
-            width: size.width*0.4,
-            height: size.height*0.1,
-            color: Colors.amber,
-            child: Center(
-              child: Text('incorrecto'),
-            ),
-          ),
-        );
+        return _inicial('incorrecto', size, Colors.red);
       } else {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Container(
-            width: size.width*0.4,
-            height: size.height*0.1,
-            color: Colors.amber,
-            child: Center(
-              child: Text(choices[e]),
-            ),
-          ),
-        );
+        return _inicial(choices[e], size, Colors.amber);
       }
     },
+    onWillAccept: (data) => data == e, 
+    onAccept: (data){
+      setState(() {
+        score[e] = true;
+      });
+      print(score[e]);
+    },
+    onLeave: (data){},
   );
 }
 
