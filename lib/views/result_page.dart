@@ -31,16 +31,16 @@ class _ResultPageState extends State<ResultPage> {
     questions = widget.questions;
     
     if (widget.resultado) {
-      imagen = 'assets/mayorContento.gif';
+      imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
     } else
-      imagen = 'assets/mayorEnojado.gif';
+      imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';
   }
 
   Future<bool> _back() {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-      title: Text('Quieres realmente salir de Mayor G'),
+      title: Text('¿Quieres realmente abandonar la partida?'),
       actions: <Widget>[
         FlatButton(
             onPressed: () {
@@ -54,6 +54,26 @@ class _ResultPageState extends State<ResultPage> {
             child: Text('Cancelar'))
       ],
     ));
+  }
+
+  Future<void> _salir(){
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('¿Realmente quiere abandonar la partida?'),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/');
+              },
+              child: Text('Salir')),
+          FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'))
+        ],
+      ));
   }
 
   @override
@@ -90,25 +110,7 @@ class _ResultPageState extends State<ResultPage> {
                 'Salir',
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          title: Text('¿Realmente quiere abandonar la partida?'),
-                          actions: <Widget>[
-                            FlatButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(context, '/');
-                                },
-                                child: Text('Salir')),
-                            FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Cancelar'))
-                          ],
-                        ));
-              },
+              onPressed: _salir,
             ),
             Expanded(child: Container()),
             MaterialButton(
@@ -126,11 +128,12 @@ class _ResultPageState extends State<ResultPage> {
           children: <Widget>[
             BackgroundWidget(),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
                   height: size.height * 0.4,
                   decoration: BoxDecoration(
-                      image: DecorationImage(image: AssetImage(imagen)),
+                    image: DecorationImage(image: AssetImage(imagen)),
                   ),
                 ),
                 Container(
@@ -149,6 +152,9 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: size.height*0.15,
                 )
               ],
             ),
@@ -159,6 +165,7 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget _resultadoText() {
+    print(questions.preguntas[n-1].respuestaCorrecta);
     if (widget.resultado) {
       return BorderedText(
         strokeColor: Colors.green,
@@ -167,13 +174,41 @@ class _ResultPageState extends State<ResultPage> {
             style: TextStyle(fontSize: 30, color: Colors.white)),
       );
     } else {
-      return BorderedText(
-        strokeColor: Colors.red,
-        child: Text(
-          'Incorrecto',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 30, color: Colors.white),
-        ),
+      return Column(
+        children: <Widget>[
+          BorderedText(
+            strokeColor: Colors.red,
+            child: Text(
+              'Incorrecto',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 30, color: Colors.white),
+            ),
+          ),
+          Text('La respuesta era:', style: TextStyle(color: Colors.white),),
+          Hero(
+            tag: questions.preguntas[n-1].respuestaCorrecta,
+              child: Padding(
+              padding: const EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
+              child: Container(
+                width: double.infinity,
+                child: FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                  disabledColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                  ),
+                  onPressed: null,
+                  child: Text(
+                    questions.preguntas[n-1].respuestas[questions.preguntas[n-1].respuestaCorrecta],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     }
   }

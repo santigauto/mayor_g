@@ -1,4 +1,8 @@
 
+
+//---- AQUI SE ARMARAN LAS CLASES UTILIZADAS PARA LAS PETICIONES A LAS APIS  ------
+
+
 //PETICIÓN DE UAT
 class Config { 
   static const ApiURL = "https://cps-ea.mil.ar:612/api";
@@ -13,6 +17,7 @@ class Config {
   };
 
 }
+
 //PETICIONES A MADEROSOLUTIONS
 class MayorGApis { 
   static const ApiURL = 'https://www.maderosolutions.com.ar/MayorG2/modelo';

@@ -31,7 +31,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'search_people'  : (BuildContext context) => SearchPeoplePage(),
     'result'  : (BuildContext context) => ResultPage(),
     'suggestQuestion' : (BuildContext context) => SuggestQuestionPage(),
-    'test'    : (BuildContext context) => PicsPage()
+    'test'    : (BuildContext context) => TestPage()
   };
 }
 

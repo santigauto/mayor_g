@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/views/result_page.dart';
@@ -23,13 +24,16 @@ class _AnswersState extends State<Answers> {
       case 1:
         return _answerType2(size);
         break;
-      default: return _answerType3(size);
+      case 3:
+        return _answerType3(size);
+        break;
+      default: return _answerType4(size);
     }
   }
 
 
 
-//---------------------------------------------------------------
+//-------------------------------------------- MULTIPLE CHOICE ( 4 IMAGENES ) ---------------------------------------------
 
 Widget _answerType1(Size size){
   return Container(
@@ -57,7 +61,7 @@ Widget _answerType1(Size size){
   );
 }
 
-//---------------------------------------------------------------
+//--------------------------------------- MULTIPLE CHOICE ( CLASICO ) -----------------------------------------------
 
 
 Widget _answerType2(Size size){
@@ -87,73 +91,186 @@ List<Widget> _respuestas(Size size) {
 
     for (var i = 0; i < aux.length; i++) {
       answers.add(
-        Container(
-          width: double.infinity,
-          child: FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-            ),
-            onPressed: () {
-              bool boolean;
-              if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
-                boolean = false;
-              } else {boolean = true;}
-              var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
-              Navigator.pushReplacement(context, route);
-            },
-            child: Text(
-              aux[i]['respuesta'],
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
+        Hero(
+          tag: aux[i]['id'],
+          child: Container(
+            width: double.infinity,
+            child: FlatButton(
+              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+              ),
+              onPressed: () {
+                bool boolean;
+                if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
+                  boolean = false;
+                } else {boolean = true;}
+                var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
+                Navigator.pushReplacement(context, route);
+              },
+              child: Text(
+                aux[i]['respuesta'],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14),
+              ),
             ),
           ),
         ),
-      );
-      answers.add(SizedBox(height: 10,));
-    }
+    );
+    answers.add(SizedBox(height: 10,));
+  }
 
     return answers;
   }
 
 
-//---------------------------------------------------------------
+//----------------------------------------------- VERDADERO Y FALSO -----------------------------------------------------------
 
 Widget _answerType3(Size size){
-  return Container(
-    width: double.infinity,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+  return Expanded(
+      child: Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(25)
+              ),
+              child: ListTile(
+                title: Text('VERDADERO', textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.red[400],
+                borderRadius: BorderRadius.circular(25)
+              ),
+              child: ListTile(
+                title: Text('FALSO', textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+//-------------------------------------------------- UNIR CON FLECHAS -------------------------------------------------------------------------
+
+Widget _answerType4(Size size){
+
+  final Map<String,bool> score = {};
+
+  final Map choices = {
+    'A': 'a',
+    'B': 'b',
+    'C': 'c',
+    'D': 'd'
+  }; // ESTO SE VA!
+
+
+  return Expanded(
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(25)
-            ),
-            child: ListTile(
-              title: Text('VERDADERO', textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-            ),
-          ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: choices.keys.map((e) {
+            return Draggable<String>(
+              data: e,
+              child: _inicial((score[e] == true)?'correcto':e, size),
+              feedback: _onGrab(e, size),
+              childWhenDragging: Container(width: size.width*0.4, height: size.height*0.1,),
+            );
+          }).toList()
         ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.circular(25)
-            ),
-            child: ListTile(
-              title: Text('FALSO', textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-            ),
-          ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: choices.keys.map((e) {
+            return _target('hola', size, score, e, choices);
+          }).toList()
         ),
       ],
     ),
+  );
+}
+
+Widget _inicial(String text, Size size,){
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(15),
+    child: Container(
+      width: size.width*0.4,
+      height: size.height*0.1,
+      color: Colors.white,
+      child: Center(child: Text(text)),
+    )
+  );
+}
+Widget _onGrab(String text, Size size,){
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(15),
+    child: Container(
+      width: size.width*0.4,
+      height: size.height*0.1,
+      color: Colors.white.withOpacity(0.5),
+      child: Center(child: Text(text, style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal,fontSize: 20,decorationColor: Colors.white.withOpacity(0)),)),
+    )
+  );
+}
+Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
+  return DragTarget<String>(
+    builder: (BuildContext context, List<String> lista, List rechazado){
+      if(score[e] == true){
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Container(
+            width: size.width*0.4,
+            height: size.height*0.1,
+            color: Colors.amber,
+            child: Center(
+              child: Text('correcto'),
+            ),
+          ),
+        );
+      } else if (score[e] == false){
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Container(
+            width: size.width*0.4,
+            height: size.height*0.1,
+            color: Colors.amber,
+            child: Center(
+              child: Text('incorrecto'),
+            ),
+          ),
+        );
+      } else {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Container(
+            width: size.width*0.4,
+            height: size.height*0.1,
+            color: Colors.amber,
+            child: Center(
+              child: Text(choices[e]),
+            ),
+          ),
+        );
+      }
+    },
   );
 }
 

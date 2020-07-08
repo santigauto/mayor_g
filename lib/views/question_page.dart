@@ -110,7 +110,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                Expanded(child: Answers(tipo: 1, questions: widget.questions, n: widget.n,))
+                Answers(tipo: 5, questions: widget.questions, n: widget.n,)
               ],
             )
           ],
@@ -154,9 +154,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     } else{
       return Container(
         height: size.height * 0.3,
-        decoration: BoxDecoration(
-            image: DecorationImage(image: imagen),
-            shape: BoxShape.rectangle),
+        child: FadeInImage(placeholder: AssetImage('assets/MayorGAnimaciones/Canon_animado.gif'), image: imagen),
       );
       }
   }

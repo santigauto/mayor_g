@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             hintColor: Colors.white54,
             primarySwatch: Colors.green,
             primaryColor: Color(0xFF5C8D60),
-            canvasColor: Colors.transparent, 
+            canvasColor: Colors.transparent,
           ),
           initialRoute: 'splash',
           routes: getApplicationRoutes(),
