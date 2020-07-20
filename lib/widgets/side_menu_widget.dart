@@ -55,9 +55,10 @@ class SideMenuWidget extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
-                ImagenPerfil(photoData: prefs.foto,radius: 25,),
+                ImagenPerfil(photoData: prefs.foto,radius: 20,),
                 SizedBox(width: 7,),
                 Column(
+                  mainAxisSize: MainAxisSize.min,
                   //nombre de usuario
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +74,7 @@ class SideMenuWidget extends StatelessWidget {
                 ),
                 Expanded(child: Container()),
               ],
-            ),
+            ), 
           ],
         ),
       ),

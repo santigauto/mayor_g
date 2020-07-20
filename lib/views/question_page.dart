@@ -110,7 +110,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                Answers(tipo: 5, questions: widget.questions, n: widget.n,)
+                Answers(tipo: 2, questions: widget.questions, n: widget.n,)
               ],
             )
           ],

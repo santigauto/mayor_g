@@ -13,7 +13,7 @@ class ImagenPerfil extends StatelessWidget {
     return CircleAvatar(
       backgroundImage: _imagen(photoData),
       backgroundColor: Color(0xFF838547),
-      radius: (radius != null)?radius:20,
+      radius: radius,
     );
   }
 

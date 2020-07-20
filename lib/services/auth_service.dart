@@ -50,9 +50,6 @@ class AuthService {
         prefs.nombre=profile.nombre;
         prefs.dni=profile.dni;
         prefs.foto=profile.foto;
-        if(prefs.foto == 'g'){
-          prefs.foto = '';
-        }
 
         Navigator.pushReplacementNamed(context, 'menu');
         print('${[_user.token.generatedAt,_user.dni.toString()]}');

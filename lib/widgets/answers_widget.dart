@@ -29,44 +29,16 @@ class _AnswersState extends State<Answers> {
       case 3:
         return _answerType3(size);
         break;
-      default: return _answerType4(size);
+      default: return _AnswerType4();
     }
   }
 
 
 
-//-------------------------------------------- MULTIPLE CHOICE ( 4 IMAGENES ) ---------------------------------------------
-
-Widget _answerType1(Size size){
-  return Container(
-    height: size.height*0.55,
-    child: Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _imagen(Colors.pink, size,),
-            _imagen(Colors.amber, size,),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _imagen(Colors.deepPurple, size,),
-            _imagen(Colors.lightBlue, size,),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
 //--------------------------------------- MULTIPLE CHOICE ( CLASICO ) -----------------------------------------------
 
 
-Widget _answerType2(Size size){
+Widget _answerType1(Size size){
   return Expanded(
     child: Container(
     padding: EdgeInsets.symmetric(horizontal: 5),
@@ -128,6 +100,48 @@ List<Widget> _respuestas(Size size) {
   }
 
 
+//-------------------------------------------- MULTIPLE CHOICE ( 4 IMAGENES ) ---------------------------------------------
+
+Widget _answerType2(Size size){
+  return Container(
+    height: size.height*0.55,
+    child: Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            _imagen(Colors.pink, size,),
+            _imagen(Colors.amber, size,),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            _imagen(Colors.deepPurple, size,),
+            _imagen(Colors.lightBlue, size,),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _imagen(Color color, Size size,){
+  return Container(
+    decoration: BoxDecoration(
+      border: Border.all(
+        width: 3,
+        color: Theme.of(context).primaryColor
+      ),
+      color: color
+    ),
+    height: size.width*0.45,
+    width: size.width*0.45,
+    );
+}
+
 //----------------------------------------------- VERDADERO Y FALSO -----------------------------------------------------------
 
 Widget _answerType3(Size size){
@@ -170,9 +184,22 @@ Widget _answerType3(Size size){
 
 //-------------------------------------------------- UNIR CON FLECHAS -------------------------------------------------------------------------
 
-Widget _answerType4(Size size){
 
-  final Map<String,bool> score = {};
+
+
+
+
+//---------------------------------------------------------------
+
+
+}
+
+class _AnswerType4 extends StatefulWidget {
+  @override
+  __AnswerType4State createState() => __AnswerType4State();
+}
+
+final Map<String,bool> score = {};
 
   final Map choices = {
     'A': 'a',
@@ -181,7 +208,12 @@ Widget _answerType4(Size size){
     'D': 'd'
   }; // ESTO SE VA!
 
-  return Expanded(
+
+class __AnswerType4State extends State<_AnswerType4> {
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Expanded(
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
@@ -208,7 +240,7 @@ Widget _answerType4(Size size){
       ],
     ),
   );
-}
+  }
 
 Widget _inicial(String text, Size size, Color color){
   return Material(
@@ -250,25 +282,12 @@ Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
       });
       print(score[e]);
     },
-    onLeave: (data){},
+    onLeave: (data){
+      setState(() {
+        score[e] = false;
+      });
+      print(score[e]);
+    },
   );
 }
-
-//---------------------------------------------------------------
-
-
-Widget _imagen(Color color, Size size,){
-  return Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-        width: 3,
-        color: Theme.of(context).primaryColor
-      ),
-      color: color
-    ),
-    height: size.width*0.45,
-    width: size.width*0.45,
-    );
-}
-
 }
