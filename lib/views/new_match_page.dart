@@ -25,8 +25,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
   bool _selecAlAzar = true;
   bool _canPlay = false;
   ListaPreguntas preguntas;
-  List<String> values =['General','Caballeria','Artilleria','Comunicaciones'];
-  String selectedValue='General';
+  
 
   Modal modal = new Modal();
 
@@ -47,43 +46,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
   Color _seleccionado = Theme.of(context).primaryColor;
     return Container(
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: <Widget>[
-              Text('Categorías:'),
-              SizedBox(width: 10,),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:5.0),
-                  child: DropdownButton<String>(
-                    dropdownColor: Theme.of(context).primaryColor.withOpacity(0.9),
-                    hint: Text(selectedValue),
-                    value: selectedValue,
-                    items: values.map((String value) {
-                      return  DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style:  TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }).toList(), 
-                    onChanged: (String value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),

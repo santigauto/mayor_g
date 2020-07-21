@@ -59,5 +59,38 @@ class PreferenciasUsuario{
     _prefs.setString('foto', value);
   }
 
+  //ARMA
+  get arma{
+    return _prefs.getString('arma') ?? 'General';
+  }
+
+  set arma(String value){
+    _prefs.setString('arma', value);
+  }
+
+  //COLEGIO
+  get colegio{
+    return _prefs.getString('colegio') ?? '';
+  }
+
+  set colegio(String value){
+    _prefs.setString('colegio', value);
+  }
+  //CURSO
+  get curso{
+    return _prefs.getString('curso') ?? '';
+  }
+
+  set curso(String value){
+    _prefs.setString('curso', value);
+  }
+  //MATERIA
+  get materia{
+    return _prefs.getString('materia') ?? '';
+  }
+
+  set materia(String value){
+    _prefs.setString('materia', value);
+  }
 
 }

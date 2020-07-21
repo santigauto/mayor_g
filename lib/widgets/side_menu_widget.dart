@@ -11,7 +11,7 @@ class SideMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    print(prefs.arma);
     return Drawer(
       child: Column(
         children: <Widget>[
