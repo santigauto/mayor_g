@@ -4,7 +4,6 @@ import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/utils/friend_modal.dart';
-import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 
@@ -33,8 +32,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
     if(_canPlay == true){
       setState(() async {
         preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
-        var route = MaterialPageRoute(builder: (context){return QuestionPage(n: 0,questions: preguntas);});
-        Navigator.pushReplacement(context, route);
+        Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
       });
   }
 }

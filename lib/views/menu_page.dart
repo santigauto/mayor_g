@@ -1,40 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:mayor_g/views/new_match_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/side_menu_widget.dart';
 
-class MenuPage extends StatefulWidget {
-  const MenuPage({Key key}) : super(key: key);
-
-  @override
-  _MenuPageState createState() => _MenuPageState();
-}
-
-class _MenuPageState extends State<MenuPage> {
-  Future<bool> _back() {
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text('Quieres realmente salir de Mayor G'),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: Text('Salir')),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
-                    child: Text('Cancelar'))
-              ],
-            ));
-  }
+class MenuPage extends StatelessWidget{
+  
 
   @override
   Widget build(BuildContext context) {
+
+  Future<bool> _back() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Quieres realmente salir de Mayor G'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: Text('Salir')),
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            child: Text('Cancelar'))
+        ],
+      ));
+  }
+
+
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _back,
@@ -95,9 +91,7 @@ class _MenuPageState extends State<MenuPage> {
                         child: Text("Comenzar", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
                       ),
                       onPressed: () {
-                        var route = MaterialPageRoute(
-                            builder: (context) => NewMatchPage());
-                        Navigator.push(context, route);
+                        Navigator.pushNamed(context, 'new_match');
                       },
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,

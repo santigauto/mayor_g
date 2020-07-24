@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mayor_g/models/question_model.dart';
-import 'package:mayor_g/views/result_page.dart';
 
 class Answers extends StatefulWidget {
   final int tipo;
@@ -81,8 +80,7 @@ List<Widget> _respuestas(Size size) {
                 if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
                   boolean = false;
                 } else {boolean = true;}
-                var route = MaterialPageRoute(builder: (context){return ResultPage(n: widget.n,questions: widget.questions,resultado: boolean,);});
-                Navigator.pushReplacement(context, route);
+                Navigator.pushReplacementNamed(context, 'result', arguments: {'n': widget.n,'questions': widget.questions,'resultado': boolean});
               },
               child: Text(
                 aux[i]['respuesta'],

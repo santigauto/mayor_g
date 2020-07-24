@@ -1,31 +1,29 @@
 {
-    "nombreApp" : "Componentes",
-    "rutas" : [
-        {
-            "ruta" : "search",
-            "icon" : "search",
+    "nombreApp": "Componentes",
+    "rutas": [{
+            "ruta": "search",
+            "icon": "search",
             "texto": "Busqueda"
         },
         {
-            "ruta" : "ranking",
-            "icon" : "star",
+            "ruta": "ranking",
+            "icon": "star",
             "texto": "Ranking"
         },
         {
-            "ruta" : "collab",
-            "icon" : "collab",
+            "ruta": "collab",
+            "icon": "collab",
             "texto": "Colaborar"
         },
         {
-            "ruta" : "suggestQuestion",
-            "icon" : "suggest",
+            "ruta": "suggestQuestion",
+            "icon": "suggest",
             "texto": "Sugerir pregunta"
         },
         {
-            "ruta" : "test",
-            "icon" : "suggest",
-            "texto": "Test"
+            "ruta": "test",
+            "icon": "settings",
+            "texto": "Ajustes"
         }
     ]
 }
-

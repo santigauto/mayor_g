@@ -5,6 +5,7 @@ final _icons = <String, IconData>{
   'collab'  :  Icons.markunread,
   'search'   :  Icons.search,
   'suggest'   :  Icons.question_answer,
+  'settings'  : Icons.settings
 };
 
 Icon getIcon(String nombreIcono){

@@ -5,37 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/views/side_menu_options/collab_page.dart';
-import 'package:mayor_g/views/question_page.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/models/question_model.dart';
 
-class ResultPage extends StatefulWidget {
-  final bool resultado;
-  final int n;
-  final ListaPreguntas questions;
-  ResultPage({Key key, this.resultado, this.n, this.questions})
-      : super(key: key);
+class ResultPage extends StatelessWidget {
 
   @override
-  _ResultPageState createState() => _ResultPageState();
-}
+  Widget build(BuildContext context) {
 
-class _ResultPageState extends State<ResultPage> {
-  String imagen;
-  int n;
-  ListaPreguntas questions;
-  @override
-  void initState() {
-    super.initState();
-    n = (widget.n) + 1;
-    questions = widget.questions;
-    
-    if (widget.resultado) {
+  final Map mapa = ModalRoute.of(context).settings.arguments;
+  bool resultado = mapa['resultado'];
+  int n = mapa['n'] + 1;
+  ListaPreguntas questions= mapa['questions'];
+  String imagen =(resultado)? 'assets/MayorGAnimaciones/mayorContento.gif':'assets/MayorGAnimaciones/mayorEnojado.gif';
+
+  /* if (widget.resultado) {
       imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
     } else
       imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';
-  }
-
+  } */
+  
   Future<bool> _back() {
     return showDialog(
       context: context,
@@ -54,7 +43,7 @@ class _ResultPageState extends State<ResultPage> {
             child: Text('Cancelar'))
       ],
     ));
-  }
+  }  
 
   Future<void> _salir(){
     return showDialog(
@@ -75,9 +64,6 @@ class _ResultPageState extends State<ResultPage> {
         ],
       ));
   }
-
-  @override
-  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _back,
@@ -90,13 +76,7 @@ class _ResultPageState extends State<ResultPage> {
               var aux = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
               questions.preguntas.addAll(aux.preguntas);
             }
-            var route = MaterialPageRoute(builder: (context) {
-              return QuestionPage(
-                n: n,
-                questions: questions,
-              );
-            });
-            Navigator.pushReplacement(context, route);
+            Navigator.pushReplacementNamed(context, 'question', arguments: {'n':n , 'questions': questions});
           },
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),
@@ -148,7 +128,7 @@ class _ResultPageState extends State<ResultPage> {
                       color: Theme.of(context).primaryColor,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
-                        child: _resultadoText(),
+                        child: _resultadoText(questions, n, resultado, context),
                       ),
                     ),
                   ),
@@ -164,9 +144,9 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  Widget _resultadoText() {
+  Widget _resultadoText(questions, n, resultado, context) {
     print(questions.preguntas[n-1].respuestaCorrecta);
-    if (widget.resultado) {
+    if (resultado) {
       return BorderedText(
         strokeColor: Colors.green,
         child: Text('¡Correcto!',

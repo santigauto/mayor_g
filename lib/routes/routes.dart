@@ -1,5 +1,6 @@
 //IMPORTS
 import 'package:flutter/material.dart';
+import 'package:mayor_g/views/new_match_page.dart';
 //PAGINAS
 import 'package:mayor_g/views/side_menu_options/collab_page.dart';
 import 'package:mayor_g/views/side_menu_options/ranking/ranking_options_page.dart';
@@ -20,6 +21,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
   return <String, WidgetBuilder>{
     '/'       : (BuildContext context) => MenuPage(),
     'menu'    : (BuildContext context) => MenuPage(),
+    'new_match' : (BuildContext context) => NewMatchPage(),
     'ranking' : (BuildContext context) => RankingOptionsPage(),
     'rank'    : (BuildContext context) => RankingPage(),
     'collab'  : (BuildContext context) => CollabPage(),
