@@ -54,7 +54,7 @@ class FriendsPage extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                _playMatchButton(context, snapshot.data, preguntas, bloc),
+                _playMatchButton(context, snapshot.data, preguntas),
                 Positioned(
                   right: 10,
                   child: FloatingActionButton(
@@ -99,17 +99,14 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
-  Widget _playMatchButton(BuildContext context, data, ListaPreguntas preguntas,bloc){
+  Widget _playMatchButton(BuildContext context, data, ListaPreguntas preguntas,){
     if (data != null){
     return FloatingActionButton.extended(
       backgroundColor: Theme.of(context).primaryColor,
       onPressed: ()async{
         //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
-        Future.delayed(
-          preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
-          Duration(milliseconds: 1)
-          Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
-        );
+        preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+        Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
       }, 
       label: Text('¡Comenzar Duelo!'));
     }else return Container();

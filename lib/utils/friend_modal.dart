@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/models/profileInfo.dart';
+import 'package:mayor_g/models/question_model.dart';
+import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 
 
@@ -42,7 +45,7 @@ class Modal{
 
 
 //---MAIN---
-  mainBottomSheet (BuildContext context){
+  mainBottomSheet (BuildContext context, ListaPreguntas preguntas){
     
 //---AGREGO AL MAPA LA KEY BOOLEANA 'SELECCION'--- 
     gente.forEach((persona){
@@ -93,7 +96,7 @@ class Modal{
                       )
                     ],
                   ),
-                _selecionado(context)  
+                _selecionado(context, preguntas)  
                 ],
               ),
             );
@@ -139,7 +142,7 @@ class Modal{
   }
 
 //---WIDGET ITEM (AMIGO) SELECCIONADO---
-Widget _selecionado(BuildContext context){
+Widget _selecionado(BuildContext context, ListaPreguntas preguntas){
 
   if(_isSelected){
     return Column(
@@ -157,7 +160,11 @@ Widget _selecionado(BuildContext context){
                 _isSelected=false;}
             ),
             title: Text(_personaSeleccionada['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
-            trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: (){Navigator.pop(context);}),
+            trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
+              //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
+              preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+              Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
+            }),
           )
         )
       ],

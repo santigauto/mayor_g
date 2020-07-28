@@ -59,7 +59,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  _seleccionOponente(_seleccionado,_noSeleccionado)
+                  _seleccionOponente(_seleccionado,_noSeleccionado, preguntas)
                 ],
               ),
             ),
@@ -158,7 +158,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
     );
   }
 
-  Widget _seleccionOponente(Color colorSelec, Color colorNoSelec) {
+  Widget _seleccionOponente(Color colorSelec, Color colorNoSelec, ListaPreguntas preguntas) {
     if(_modoDuelo && !_modoClasico){return Column(
       children: <Widget>[
         Padding(
@@ -188,7 +188,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   _canPlay = false;
                   _selecOponente = true;
                 });
-                modal.mainBottomSheet(context);
+                modal.mainBottomSheet(context, preguntas);
               },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
