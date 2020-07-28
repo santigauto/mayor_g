@@ -38,6 +38,8 @@ class Modal{
     void disposeStreams(){
       _controller.close();
     }
+  
+
 
 //---MAIN---
   mainBottomSheet (BuildContext context){
@@ -46,7 +48,8 @@ class Modal{
     gente.forEach((persona){
       persona.addAll({'seleccion':false});
     });
-
+    double _height = MediaQuery.of(context).size.height*0.3;
+    IconData _iconData = Icons.keyboard_arrow_up;
 //---CUERPO DEL MODAL---
     showModalBottomSheet(
       context: context, 
@@ -55,7 +58,7 @@ class Modal{
           stream: streamStream,
           builder: (context, snapshot) {
             return Container(
-              height: MediaQuery.of(context).size.height*0.5,
+              height: _height,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(topRight: Radius.circular(20) ,topLeft: Radius.circular(20) ,),
                 color: Theme.of(context).primaryColor
@@ -68,17 +71,24 @@ class Modal{
                         child: ListTile(
                           title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
                           trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
-                          leading: IconButton(icon: Icon(Icons.keyboard_arrow_up,color: Colors.white,), onPressed: (){print(_personaSeleccionada);}),
+                          leading: IconButton(icon: Icon(_iconData,color: Colors.white,), onPressed: (){
+                            if(_height < MediaQuery.of(context).size.height){
+                              _height = MediaQuery.of(context).size.height;
+                              _iconData = Icons.keyboard_arrow_down;
+                            }else{
+                              _height = MediaQuery.of(context).size.height*0.3;
+                              _iconData = Icons.keyboard_arrow_up;
+                            }
+                            streamSink(_personaSeleccionada);
+                          }),
                         )
                         ),
                       Expanded(
-                        child: Container(
-                          child: Stack(
-                            children: <Widget>[
-                              BackgroundWidget(),
-                              listItem(context, gente),
-                            ],
-                          ),
+                        child: Stack(
+                          children: <Widget>[
+                            BackgroundWidget(),
+                            listItem(context, gente),
+                          ],
                         ),
                       )
                     ],
@@ -109,22 +119,21 @@ class Modal{
       decoration: BoxDecoration(
       color: Colors.white.withOpacity(0.5),
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
-      child: ListTile(
-        onTap: () {},
-        title: Text(gente[x]['grado'] + ' ' + gente[x]['nombre']),
-        leading: Icon(Icons.face),
-        trailing: Checkbox(
-          value: gente[x]['seleccion'], 
-          onChanged: (boolean){
-              for(var i = 0; i < gente.length; i++ ){
+      child: RadioListTile(
+        controlAffinity: ListTileControlAffinity.trailing,
+        groupValue: _personaSeleccionada,
+        onChanged: (value){
+          for(var i = 0; i < gente.length; i++ ){
                 gente[i]['seleccion']=false;
               }
-              gente[x]['seleccion']=boolean;
+              gente[x]['seleccion']=true;
               _isSelected = gente[x]['seleccion'];
               _personaSeleccionada=gente[x];
               streamSink(_personaSeleccionada);
-          },
-          ),
+        },
+        value: gente[x],
+        title: Text(gente[x]['grado'] + ' ' + gente[x]['nombre']),
+        selected: gente[x]['seleccion'],
       ),
     );
   }
