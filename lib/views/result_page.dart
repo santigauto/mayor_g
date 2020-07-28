@@ -145,7 +145,6 @@ class ResultPage extends StatelessWidget {
   }
 
   Widget _resultadoText(questions, n, resultado, context) {
-    print(questions.preguntas[n-1].respuestaCorrecta);
     if (resultado) {
       return BorderedText(
         strokeColor: Colors.green,

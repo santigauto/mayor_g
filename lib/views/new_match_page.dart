@@ -72,14 +72,23 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   Widget _initMatchButton(context) {
     if (_canPlay){
-    return RaisedButton(
+    return RaisedButton( 
       child: Container(
         height: 200,
         width: 200,
         decoration: BoxDecoration(
-            image: DecorationImage(
-          image: AssetImage('assets/shape15.png'),
-        )),
+          borderRadius: BorderRadius.circular(200),
+          image: DecorationImage(
+            image: AssetImage('assets/shape15.png'),),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              offset: Offset(0, 0),
+              color: Colors.black,
+              spreadRadius: 20,
+              blurRadius: 50
+            ),
+          ]
+        ),
         child: Center(
             child: Text(
           '¡JUGAR!',
@@ -88,6 +97,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
       ),
       onPressed: _playAction,
       shape: CircleBorder(),
+      disabledTextColor: Colors.grey,
     );
     }else{
       return Container();

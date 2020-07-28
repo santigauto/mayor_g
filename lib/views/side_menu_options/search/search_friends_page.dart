@@ -32,8 +32,8 @@ class FriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     BlocFriends bloc = new BlocFriends();
-    ListaPreguntas preguntas;
-
+    
+    ListaPreguntas preguntasX;
     gente.forEach((persona){
       persona.addAll({'seleccion':false});
     });
@@ -54,7 +54,7 @@ class FriendsPage extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                _playMatchButton(context, snapshot.data, preguntas),
+                _playMatchButton(context, snapshot.data, preguntasX),
                 Positioned(
                   right: 10,
                   child: FloatingActionButton(
