@@ -1,10 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+
 import 'package:mayor_g/models/profileInfo.dart';
 import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/utils/search_delegate.dart';
+
 import 'package:mayor_g/widgets/background_widget.dart';
 
 
@@ -26,14 +27,12 @@ class FriendsPage extends StatelessWidget {
     {'nombre':'Octavio','grado':'SG'}, 
     {'nombre':'Jose','grado':'TT'}
   ];
-
+  final BlocFriends bloc = new BlocFriends();
 
   @override
   Widget build(BuildContext context) {
 
-    BlocFriends bloc = new BlocFriends();
     
-    ListaPreguntas preguntasX;
     gente.forEach((persona){
       persona.addAll({'seleccion':false});
     });
@@ -54,7 +53,7 @@ class FriendsPage extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                _playMatchButton(context, snapshot.data, preguntasX),
+                _playMatchButton(context, snapshot.data),
                 Positioned(
                   right: 10,
                   child: FloatingActionButton(
@@ -99,13 +98,13 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
-  Widget _playMatchButton(BuildContext context, data, ListaPreguntas preguntas,){
+  Widget _playMatchButton(BuildContext context, data){
     if (data != null){
     return FloatingActionButton.extended(
       backgroundColor: Theme.of(context).primaryColor,
       onPressed: ()async{
         //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
-        preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+        ListaPreguntas preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
         Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
       }, 
       label: Text('¡Comenzar Duelo!'));
