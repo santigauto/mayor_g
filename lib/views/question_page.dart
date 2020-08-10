@@ -8,8 +8,6 @@ import 'package:mayor_g/widgets/custom_header_widget.dart';
 import 'package:mayor_g/widgets/timer_widget.dart';
 
 class QuestionPage extends StatefulWidget {
-   
-  const QuestionPage({Key key}) : super(key: key);
 
   @override
   _QuestionPageState createState() => _QuestionPageState();

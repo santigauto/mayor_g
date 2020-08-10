@@ -200,10 +200,10 @@ class _AnswerType4 extends StatefulWidget {
 final Map<String,bool> score = {};
 
   final Map choices = {
-    'A': 'a',
-    'B': 'b',
-    'C': 'c',
-    'D': 'd'
+    'A Habia una vez un circo que alegraba siempre el corazon': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+    'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC': 'cccccccccccccccccccccccccccccccc',
+    'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD': 'dddddddddddddddddddddddddddddddd'
   }; // ESTO SE VA!
 
 
@@ -253,9 +253,10 @@ Widget _inicial(String text, Size size, Color color){
             style: TextStyle(
               color: Colors.black, 
               fontWeight: FontWeight.normal,
-              fontSize: 20,
+              fontSize: 15,
               decorationColor: Colors.white.withOpacity(0)
               ),
+              textAlign: TextAlign.center,
             )
           ),
       )
