@@ -163,6 +163,7 @@ Widget _selecionado(BuildContext context, ListaPreguntas preguntas){
             trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
               //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
               preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+              Navigator.pop(context);
               Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
             }),
           )
