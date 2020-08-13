@@ -47,7 +47,7 @@ String get timerString{
                     animation: widget.controller, 
                     builder: (BuildContext context,Widget child){
                       return Text(
-                        timerString, style: Theme.of(context).textTheme.headline4,);
+                        timerString, style: Theme.of(context).textTheme.headline4.copyWith(color:((widget.controller.duration * widget.controller.value).inSeconds <= 3)?Colors.red:Colors.white,),);
                     })
                 ],
               ),

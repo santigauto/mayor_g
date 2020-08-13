@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //DEPENDENCIAS
 import 'package:bordered_text/bordered_text.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 //WIDGETS
 import 'package:mayor_g/widgets/input_text_widget.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 //SERVICIOS
 import 'package:mayor_g/services/auth_service.dart';
+import 'package:mayor_g/widgets/loading_widget.dart';
 import '../services/auth_service.dart';
 
 
@@ -175,24 +175,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 )),
           ),
-          _isLoading ? Positioned.fill(
-              child: Container(
-                color: Colors.black45,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SpinKitDoubleBounce(
-                      color: Colors.white70,
-                      size: size.width * 0.2,
-                    ),
-                    SizedBox(height: 25,),
-                    Text(!_recuperandoContrasenia ? 'Usted está ingresando a MayorG' : 'Recuperando contraseña',
-                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)
-                    )
-                  ],
-                ),
-              )
-            ) : Container(),
+          _isLoading ? LoadingWidget(
+            caption:Text(!_recuperandoContrasenia ? 'Usted está ingresando a MayorG' : 'Recuperando contraseña',
+              style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)
+            )) : Container(),
         ],
       )),
     );

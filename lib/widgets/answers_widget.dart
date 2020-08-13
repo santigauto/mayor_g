@@ -8,13 +8,15 @@ class Answers extends StatefulWidget {
   final int tipo;
   final int n;
   final ListaPreguntas questions;
-  const Answers({Key key,this.tipo,this.questions,this.n}) : super(key: key);
+  final AnimationController controller;
+  const Answers({Key key,this.tipo,this.questions,this.n, this.controller}) : super(key: key);
 
   @override
   _AnswersState createState() => _AnswersState();
 }
 
 class _AnswersState extends State<Answers> {
+  
   @override
   Widget build(BuildContext context) {
   final size = MediaQuery.of(context).size;

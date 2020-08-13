@@ -5,6 +5,7 @@ import 'package:mayor_g/models/question_model.dart';
 import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/utils/friend_modal.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
+import 'package:mayor_g/widgets/loading_widget.dart';
 
 
 
@@ -18,6 +19,7 @@ class NewMatchPage extends StatefulWidget {
 
 class _NewMatchPageState extends State<NewMatchPage> {
 
+  bool _isLoading = false;
   bool _modoClasico = true;
   bool _modoDuelo = true;
   bool _selecOponente = true;
@@ -28,12 +30,10 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   Modal modal = new Modal();
 
-  void _playAction(){
+  void _playAction()async{
     if(_canPlay == true){
-      setState(() async {
-        preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
-        Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
-      });
+      preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+      Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
   }
 }
 
@@ -63,6 +63,11 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 ],
               ),
             ),
+            (_isLoading)
+              ? LoadingWidget(
+                caption: Text('Cargando partida, aguarde...',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)),
+              ) 
+              : Container()
           ],
         ),
       ),
@@ -95,7 +100,13 @@ class _NewMatchPageState extends State<NewMatchPage> {
           style: TextStyle(fontSize: 35, color: Colors.white),
         )),
       ),
-      onPressed: _playAction,
+      onPressed: (){
+        setState(() {
+          _isLoading = true;
+        });
+        _playAction();
+      },
+      
       shape: CircleBorder(),
       disabledTextColor: Colors.grey,
     );
