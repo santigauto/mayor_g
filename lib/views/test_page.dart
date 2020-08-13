@@ -28,6 +28,9 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Ajustes'),
+      ),
       body: Stack(
         children: <Widget>[
           BackgroundWidget(),
@@ -43,44 +46,7 @@ class _TestPageState extends State<TestPage> {
                   ],
                 ),
                 Text('Aquí podrá fitrar a su criterio las características de las preguntas', style: TextStyle(color:Colors.white),), 
-                Divider(color:Colors.white.withOpacity(0.2)),
-                getDropdown(
-                  size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma,
-                  onChanged: (value){
-                    setState(() {
-                      selectedArma = value;
-                      prefs.arma = value;
-                    });
-                  },
-                ),
-                getDropdown(
-                  size: size, title:'Colegio', jsonFrac:'colegios', selectedValues: selectedColegio,
-                  onChanged: (value){
-                    setState(() {
-                      selectedColegio = value;
-                      prefs.colegio = value;
-                    });
-                  },
-                ),
-                getDropdown(
-                  size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso,
-                  onChanged: (value){
-                    setState(() {
-                      selectedCurso = value;
-                      prefs.curso = value;
-                    });
-                  },
-                ),
-                getDropdown(
-                  size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria,
-                  onChanged: (value){
-                    setState(() {
-                      selectedMateria = value;
-                      prefs.materia = value;  
-                    });
-                  },
-                ),
-                Divider(color:Colors.white.withOpacity(0.2))
+                _opciones(size),
               ],
             ),
           )
@@ -89,7 +55,53 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
-Widget getDropdown({String title, String jsonFrac, Function onChanged, Size size, String selectedValues }){
+
+Widget _opciones(Size size){
+  return Column(
+    children: <Widget>[
+      Divider(color:Colors.white.withOpacity(0.2)),
+      _getDropdown(
+        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma,
+        onChanged: (value){
+          setState(() {
+            selectedArma = value;
+            prefs.arma = value;
+          });
+        },
+      ),
+      _getDropdown(
+        size: size, title:'Colegio', jsonFrac:'colegios', selectedValues: selectedColegio,
+        onChanged: (value){
+          setState(() {
+            selectedColegio = value;
+            prefs.colegio = value;
+          });
+        },
+      ),
+      _getDropdown(
+        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso,
+        onChanged: (value){
+          setState(() {
+            selectedCurso = value;
+            prefs.curso = value;
+          });
+        },
+      ),
+      _getDropdown(
+        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria,
+        onChanged: (value){
+          setState(() {
+            selectedMateria = value;
+            prefs.materia = value;  
+          });
+        },
+      ),
+      Divider(color:Colors.white.withOpacity(0.2)),
+    ],
+  );
+}
+
+Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size size, String selectedValues }){
   return Padding(
     padding: const EdgeInsets.symmetric(vertical:8.0),
     child: ClipRRect(
