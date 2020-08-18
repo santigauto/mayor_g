@@ -15,8 +15,40 @@ class Answers extends StatefulWidget {
   _AnswersState createState() => _AnswersState();
 }
 
-class _AnswersState extends State<Answers> {
-  
+class _AnswersState extends State<Answers> with SingleTickerProviderStateMixin{
+
+final Map choices = {
+  'A Habia una vez un circo que alegraba siempre el corazon': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+  'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC': 'cccccccccccccccccccccccccccccccc',
+  'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD': 'dddddddddddddddddddddddddddddddd'
+};
+
+final Map<String,bool> score = {};
+
+AnimationController controller;
+
+Animation<double> moving;
+Animation<double> fading;
+
+@override
+  void initState() {
+
+    controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 2000));
+
+    moving = Tween(begin:-50.0, end: 0.0).animate(controller);
+    fading = Tween(begin:0.0, end: 1.0).animate(controller);
+
+    super.initState();
+  }
+
+
+@override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
   final size = MediaQuery.of(context).size;
@@ -27,10 +59,10 @@ class _AnswersState extends State<Answers> {
       case 1:
         return _answerType2(size);
         break;
-      case 3:
+      case 2:
         return _answerType3(size);
-        break;
-      default: return _AnswerType4();
+        break;  
+      default: return _answerType4(size);
     }
   }
 
@@ -40,15 +72,27 @@ class _AnswersState extends State<Answers> {
 
 
 Widget _answerType1(Size size){
+  controller.forward();
   return Expanded(
-    child: Container(
-    padding: EdgeInsets.symmetric(horizontal: 5),
-    child: Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: _respuestas(size),
-    ),
-  ));
+    child:  AnimatedBuilder(
+      animation: controller,
+      builder: (context,child){
+        return Transform.translate(
+          offset: Offset(0, moving.value),
+          child: Opacity(
+            opacity: fading.value,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _respuestas(size),
+              ),
+            ),
+          ),
+        );
+      },
+    ) );
 }
 
 List<Widget> _respuestas(Size size) {
@@ -184,8 +228,87 @@ Widget _answerType3(Size size){
 
 //-------------------------------------------------- UNIR CON FLECHAS -------------------------------------------------------------------------
 
+Widget _answerType4(Size size){
 
+  return Expanded(
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: choices.keys.map((e) {
+            return Draggable<String>(
+              data: e,
+              child: _inicial(e, size, Colors.white),
+              feedback: _inicial(e, size, Colors.white.withOpacity(0.5)),
+              childWhenDragging: Container(width: size.width*0.4, height: size.height*0.1,),
+            );
+          }).toList()
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: choices.keys.map((e) {
+            return _target('hola', size, score, e, choices);
+          }).toList()
+          ..shuffle(Random(1))
+        ),
+      ],
+    ),
+  );
 
+  
+
+}
+
+Widget _inicial(String text, Size size, Color color){
+  return Material(
+      child: ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+        width: size.width*0.4,
+        height: size.height*0.1,
+        color: color,
+        child: Center(
+          child: Text(text, 
+            style: TextStyle(
+              color: Colors.black, 
+              fontWeight: FontWeight.normal,
+              fontSize: 15,
+              decorationColor: Colors.white.withOpacity(0)
+              ),
+              textAlign: TextAlign.center,
+            )
+          ),
+      )
+    ),
+  );
+}
+Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
+  return DragTarget<String>(
+    builder: (BuildContext context, List<String> incoming, List rejected){
+      if(score[e] == true){
+        return _inicial('correcto', size, Colors.green);
+      } else if (score[e] == false){
+        return _inicial('incorrecto', size, Colors.red);
+      } else {
+        return _inicial(choices[e], size, Colors.amber);
+      }
+    },
+    onWillAccept: (data) => data == e, 
+    onAccept: (data){
+      setState(() {
+        score[e] = true;
+      });
+    },
+    onLeave: (data){
+      setState(() {
+        score[e] = false;
+      });
+    },
+  );
+}
 
 
 
@@ -194,7 +317,7 @@ Widget _answerType3(Size size){
 
 }
 
-class _AnswerType4 extends StatefulWidget {
+/* class _AnswerType4 extends StatefulWidget {
   @override
   __AnswerType4State createState() => __AnswerType4State();
 }
@@ -291,4 +414,4 @@ Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
     },
   );
 }
-}
+} */
