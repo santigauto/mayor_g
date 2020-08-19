@@ -6,6 +6,7 @@ import 'package:mayor_g/services/commons/questions_service.dart';
 import 'package:mayor_g/utils/friend_modal.dart';
 import 'package:mayor_g/widgets/background_widget.dart';
 import 'package:mayor_g/widgets/loading_widget.dart';
+import 'package:mayor_g/widgets/pulse_animator.dart';
 
 
 
@@ -77,10 +78,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   Widget _initMatchButton(context) {
     if (_canPlay){
-    return RaisedButton( 
+    return RaisedButton(
+      color: Colors.transparent,
       child: Container(
         height: 200,
         width: 200,
+        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(200),
           image: DecorationImage(
@@ -89,23 +92,25 @@ class _NewMatchPageState extends State<NewMatchPage> {
             BoxShadow(
               offset: Offset(0, 0),
               color: Colors.black,
-              spreadRadius: 20,
-              blurRadius: 50
+              blurRadius: 5
             ),
           ]
         ),
         child: Center(
+          child: PulseAnimatorWidget(
+            begin: 0.5,
             child: Text(
-          '¡JUGAR!',
-          style: TextStyle(fontSize: 35, color: Colors.white),
-        )),
-      ),
-      onPressed: (){
-        setState(() {
-          _isLoading = true;
-        });
-        _playAction();
-      },
+              '¡JUGAR!',
+              style: TextStyle(fontSize: 35, color: Colors.white),
+            ),
+          )),
+        ),
+        onPressed: (){
+          setState(() {
+            _isLoading = true;
+          });
+          _playAction();
+        },
       
       shape: CircleBorder(),
       disabledTextColor: Colors.grey,

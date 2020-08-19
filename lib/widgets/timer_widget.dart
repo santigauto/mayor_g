@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:mayor_g/widgets/pulse_animator.dart';
 
 class TimerWidget extends StatefulWidget {
   final AnimationController controller;
@@ -23,36 +24,39 @@ String get timerString{
       alignment: FractionalOffset.topCenter,
       child: AspectRatio(
         aspectRatio: 1.0,
-        child: Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: widget.controller, 
-                builder:(BuildContext context, Widget child){
-                  return CustomPaint(
-                    painter: TimerPainter(
-                      color: ((widget.controller.duration * widget.controller.value).inSeconds <= 3)?Colors.red:Colors.white,
-                      backgroundColor: Colors.white.withOpacity(0.3),
-                      animation: widget.controller
-                      )
-                  );
-                }),
-            ),
-            Align(
-              alignment: FractionalOffset.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  AnimatedBuilder(
-                    animation: widget.controller, 
-                    builder: (BuildContext context,Widget child){
-                      return Text(
-                        timerString, style: Theme.of(context).textTheme.headline4.copyWith(color:((widget.controller.duration * widget.controller.value).inSeconds <= 3)?Colors.red:Colors.white,),);
-                    })
-                ],
+        child: PulseAnimatorWidget(
+          begin: 0.5,
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: AnimatedBuilder(
+                  animation: widget.controller, 
+                  builder:(BuildContext context, Widget child){
+                    return CustomPaint(
+                      painter: TimerPainter(
+                        color: ((widget.controller.duration * widget.controller.value).inSeconds <= 3)?Colors.red:Colors.white,
+                        backgroundColor: Colors.white.withOpacity(0.3),
+                        animation: widget.controller
+                        )
+                    );
+                  }),
               ),
-            )
-          ],
+              Align(
+                alignment: FractionalOffset.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    AnimatedBuilder(
+                      animation: widget.controller, 
+                      builder: (BuildContext context,Widget child){
+                        return Text(
+                          timerString, style: Theme.of(context).textTheme.headline4.copyWith(color:((widget.controller.duration * widget.controller.value).inSeconds <= 3)?Colors.red:Colors.white,),);
+                      })
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         ),
     );

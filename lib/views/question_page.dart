@@ -23,21 +23,39 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   String imagenString;            // ES EL STRING QUE LLAMARA EL NETWORK IMAGE
   ListaPreguntas questions;       //LISTA DE PREGUNTAS (CON RESPUESTAS)
   int n;                          //INDICE DE LA PRENGUNTA DENTRO DE LA LISTA
+  bool rush = false;
 
 //-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
 
   @override
   void initState() {
     
-    super.initState();
-    
     controller = AnimationController(
         vsync: this,
-        duration: Duration(seconds: 15),
+        duration: Duration(seconds: 7),
       );
-    
+    controller.reverse(
+      from: controller.value == 0 ? 1 : controller.value,
+    );
+    controller.addListener((){
+      if(controller.value <= 0.25)setState(() {
+        rush=true;
+      });
+      if (aux == true) {
+        Navigator.pop(context);
+      }
+      if(controller.value == 0)Navigator.pushReplacementNamed(context, 'result',arguments: {'n': n,'questions': questions,'resultado': false});
+    });
+
+    super.initState();
   }
 
+  @override
+    void dispose() {
+      controller.dispose();
+      //preguntasController.dispose();
+      super.dispose();
+    }
 //-------------------------------------        BUILD          -----------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -53,19 +71,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     if(imagenString != null && imagenString != 'null' && imagenString != ''){
       imagenString = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagenString';
       imagen = NetworkImage(imagenString);
-      print(imagenString);
     }  //SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS
-      
-    controller.reverse(
-      from: controller.value == 0 ? 1 : controller.value,
-    );
-    controller.addStatusListener((state) {
-      if (aux == true) {
-        Navigator.pop(context);
-      }
-      return Navigator.pushReplacementNamed(context, 'result',arguments: {'n': n,'questions': questions,'resultado': false});
-    });
-
     
 
     return WillPopScope(
@@ -87,7 +93,8 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                 _pregunta(size),
                 Answers(tipo: 0, questions: questions, n: n,)
               ],
-            )
+            ),
+            (rush)?Image.asset('assets/MayorGAnimaciones/MayorG-apurando.gif'):Container()
           ],
         ),
       ),
@@ -160,10 +167,5 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   }
 
 
-  @override
-  void dispose() {
-    controller.dispose();
-    //preguntasController.dispose();
-    super.dispose();
-  }
+  
 }
