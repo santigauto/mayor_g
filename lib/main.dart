@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:mayor_g/routes/routes.dart';
-import 'package:mayor_g/models/profileInfo.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/routes/routes.dart';
 
 void main() async{
 
