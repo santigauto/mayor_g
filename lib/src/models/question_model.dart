@@ -21,6 +21,24 @@ for (var i = 0; i < jsonDecoded['preguntas'].length ; i++) {
   }
 }
 
+  //NUEVO MODELO DE LISTA
+
+ class ListaPreguntasNuevas {
+  List<PreguntaNueva> preguntas;
+
+  ListaPreguntasNuevas({
+    this.preguntas,
+  });
+  factory ListaPreguntasNuevas.fromJson(List<dynamic> jsonDecoded){
+    for(var i = 0; i <jsonDecoded.length;i++){
+      jsonDecoded[i] = PreguntaNueva.fromJson(jsonDecoded[i]);
+    }
+    return ListaPreguntasNuevas(
+      preguntas: jsonDecoded.cast<PreguntaNueva>()
+    );
+  }
+} 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////            VIEJO MODELO DE PREGUNTA        ///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,11 +104,16 @@ class Pregunta {
 ///////////////////       NUEVO MODELO DE PREGUNTA          //////////////////
 //////////////////////////////////////////////////////////////////////////////
 
-class PreguntaYRespuestaNueva {
+class PreguntaNueva {
   String id;
   String nivel;
-  int indiceTipoPregunta;
-  dynamic imagen;
+  bool imagenPregunta;
+  bool imagenRespuesta;
+  bool unirConFlechas;
+  bool verdaderoFalso;
+  bool esPrivada;
+  String nombreArchivoImagen;
+  String imagen;
   String pregunta;
   String organismo;
   String arma;
@@ -101,10 +124,15 @@ class PreguntaYRespuestaNueva {
   List<String> respuestas;
   int respuestaCorrecta;
 
-  PreguntaYRespuestaNueva({
+  PreguntaNueva({
     this.id,
     this.nivel,
-    this.indiceTipoPregunta,
+    this.imagenPregunta,
+    this.imagenRespuesta,
+    this.unirConFlechas,
+    this.verdaderoFalso,
+    this.esPrivada,
+    this.nombreArchivoImagen,
     this.imagen,
     this.pregunta,
     this.organismo,
@@ -117,21 +145,27 @@ class PreguntaYRespuestaNueva {
     this.respuestaCorrecta,
   });
 
-factory PreguntaYRespuestaNueva.fromJson(Map<String,dynamic> jsonDecoded){
-    return PreguntaYRespuestaNueva(
-      id: jsonDecoded['id'],
-      nivel: jsonDecoded['nivel'],
-      indiceTipoPregunta: jsonDecoded['indiceTipoPregunta'],
-      imagen: jsonDecoded['imagen'],
-      pregunta: jsonDecoded['pregunta'],
-      organismo: jsonDecoded['organismno'],
-      arma: jsonDecoded['arma'],
-      curso: jsonDecoded['curso'],
-      materia: jsonDecoded['materia'],
-      prescripcion: jsonDecoded['prescripcion'],
-      longitud: jsonDecoded['longitud'],
-      respuestaCorrecta: jsonDecoded['respuestaCorrecta'],
-      respuestas: jsonDecoded['respuestas'].cast<String>(),
+
+factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
+    return PreguntaNueva(
+      id                    : jsonDecoded['id'],
+      nivel                 : jsonDecoded['nivel'],
+      imagen                : jsonDecoded['imagen'],
+      pregunta              : jsonDecoded['pregunta'],
+      organismo             : jsonDecoded['organismno'],
+      arma                  : jsonDecoded['arma'],
+      curso                 : jsonDecoded['curso'],
+      materia               : jsonDecoded['materia'],
+      prescripcion          : jsonDecoded['prescripcion'],
+      longitud              : jsonDecoded['longitud'],
+      respuestaCorrecta     : jsonDecoded['respuestaCorrecta'],
+      respuestas            : jsonDecoded['respuestas'].cast<String>(),
+      imagenPregunta        : jsonDecoded['imagenPregunta'],
+      imagenRespuesta       : jsonDecoded['imagenRespuesta'],
+      unirConFlechas        : jsonDecoded['unirConFlechas'],
+      verdaderoFalso        : jsonDecoded['verdaderoFalso'],
+      esPrivada             : jsonDecoded['esPrivada'],
+      nombreArchivoImagen   : jsonDecoded['nombreArchivoImagen'],
       );
   }
 

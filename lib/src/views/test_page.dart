@@ -61,7 +61,7 @@ Widget _opciones(Size size){
     children: <Widget>[
       Divider(color:Colors.white.withOpacity(0.2)),
       _getDropdown(
-        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma,
+        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma, hint: prefs.arma,
         onChanged: (value){
           setState(() {
             selectedArma = value;
@@ -70,7 +70,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Colegio', jsonFrac:'colegios', selectedValues: selectedColegio,
+        size: size, title:'Colegio', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,
         onChanged: (value){
           setState(() {
             selectedColegio = value;
@@ -79,7 +79,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso,
+        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso, hint: prefs.curso,
         onChanged: (value){
           setState(() {
             selectedCurso = value;
@@ -88,7 +88,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria,
+        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria, hint: prefs.arma,
         onChanged: (value){
           setState(() {
             selectedMateria = value;
@@ -101,7 +101,7 @@ Widget _opciones(Size size){
   );
 }
 
-Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size size, String selectedValues }){
+Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size size, String selectedValues, String hint }){
   return Padding(
     padding: const EdgeInsets.symmetric(vertical:8.0),
     child: ClipRRect(
@@ -125,6 +125,7 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
               child: DropdownButton(
                 style: TextStyle(color:Colors.white),
                 iconEnabledColor: Colors.white,
+                hint: DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
                 underline: Container(),
                 dropdownColor: Theme.of(context).primaryColor,
                 value: selectedValues,

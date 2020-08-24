@@ -57,7 +57,7 @@ class AuthService {
         prefs.materia = "-";
 
         Navigator.pushReplacementNamed(context, 'menu');
-        print('${[_user.token.generatedAt,_user.dni.toString()]}');
+        print('${[_user.token.generatedAt,_user.toString()]}');
     }catch(e){
       return Alert.alert(context, body: Text("${e.toString()}\nPor favor vuelva a intentarlo, en caso de que persista el error intente recuperar su contraseña."));
     }

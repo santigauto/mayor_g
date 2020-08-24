@@ -69,6 +69,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     imagenString = '${questions.preguntas[n].pregunta.foto}';
 
     if(imagenString != null && imagenString != 'null' && imagenString != ''){
+      print(imagenString);
       imagenString = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagenString';
       imagen = NetworkImage(imagenString);
     }  //SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS

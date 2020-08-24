@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 
 import 'package:mayor_g/config.dart';
@@ -29,44 +30,25 @@ class QuestionsService{
   }   
 }
 
+/*  NUEVO MODELO DE SERVICIO DE PREGUNTAS*/
 
-
-
-
-
-
-
-/*IONIC CODE
-----
-private urlObtener = 'https://www.maderosolutions.com.ar/MayorG2/modelo/jugador_modelo10.php';
-  private urlComprobar =
-    'https://www.maderosolutions.com.ar/MayorG2/modelo/almacenar_historial.php';
-  private _pregunta = new BehaviorSubject<Pregunta>(
-    new Pregunta({id:null,nivel:null,foto:null,pregunta:'',categoria:'',prescripcion:'',tema:''}, 1, ['', '', '', ''])
-  );
-----
-async obtenerPregunta(dni) {
-    return new Promise((resolve)=>{
-      this.http.post<any>(this.urlObtener,JSON.stringify(dni),this.httpOptions)
-        .subscribe(data => {
-          resolve(data);
-        })
-    })
+class QuestionServicePrueba{
+    getNewQuestions(BuildContext context,{@required cantidad}) async{
+      print('hola2');
+      String _url = 'cps-ea.mil.ar:5261';
+      final url = Uri.https(_url, 'api/Json/Obtener_Preguntas',{
+        'cantidad' : cantidad.toString()
+      });
+    final resp = await http.get(url);
+    print(resp.toString());
+    final decodedData = json.decode(resp.body);
+    ListaPreguntasNuevas preguntas = ListaPreguntasNuevas.fromJson(decodedData);
+    print(decodedData.toString());
+    if(preguntas == null) {
+      return Alert.alert(context, body: Text("ha ocurrido un error"));
+    }
+    else{
+      return preguntas;
+    }
   }
-
-  get pregunta() {
-    return this._pregunta.asObservable();
-  }
-
-  enviarDatos(datos) {
-    return this.http.post(this.urlComprobar, datos, this.httpOptions);
-  }
-
-  // Para que, cuando la app esté cargando una nueva pregunta
-  // no se vea la preg anterior atrás del cuadrito de cargando,
-  // emito una pregunta vacía momentánea.
-  clearPregunta() {
-    const preg = new Pregunta({id:null,nivel:null,foto:null,pregunta:'',categoria:'',prescripcion:'',tema:''}, 1, ['', '', '', '']);
-    this._pregunta.next(preg);
-  }
- */
+} 

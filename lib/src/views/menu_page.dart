@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/custom_header_widget.dart';
 import 'package:mayor_g/src/widgets/side_menu_widget.dart';
 
 class MenuPage extends StatelessWidget{
@@ -31,57 +32,34 @@ class MenuPage extends StatelessWidget{
   }
 
 
-    final size = MediaQuery.of(context).size;
+  final size = MediaQuery.of(context).size;
+
     return WillPopScope(
       onWillPop: _back,
       child: Scaffold(
         drawer: Container(width: 300, child: SideMenuWidget()),
-        appBar: AppBar(
-          title: Text('MayorG App'),
-        ),
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
+            HeaderCurvo(),
+            SafeArea(
+              child: Builder(
+                builder: (context) => IconButton(
+                  color: Colors.white,
+                  icon: new Icon(Icons.menu),
+                  onPressed: () /* async{
+                    ListaPreguntasNuevas hola = await QuestionServicePrueba().getNewQuestions(context, cantidad: 2);
+                    print('${hola.preguntas[0].pregunta}');
+                  } */
+=> Scaffold.of(context).openDrawer() ),
+                ),
+              ),
             Center(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Opacity(
-                          opacity: 0.6,
-                          child: Container(
-                            padding: EdgeInsets.only(left: size.width * 0.05),
-                            height: 310,
-                            width: 250,
-                            child: Image.asset(
-                              'assets/MayorG-Fumando.gif',
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: size.width * 0.5),
-                          height: 310,
-                          width: 250,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/MayorG-Fumando.gif'))),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 215),
-                          child: Container(
-                            height: 100,
-                            width: 250,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage('assets/mayorG@3x.png'))),
-                          ),
-                        ),
-                      ],
-                    ),
+                    _logoMenu(size),
                     SizedBox(
                       height: 45,
                     ),
@@ -109,6 +87,43 @@ class MenuPage extends StatelessWidget{
           ],
         ),
       ),
+    );
+  }
+
+  Widget _logoMenu(Size size){
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          left: 30,
+          child: Opacity(
+            opacity: 0.6,
+            child: Container(
+              height: 310,
+              width: 250,
+              child: Image.asset(
+                'assets/MayorG-Fumando.gif',
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 310,
+          width: 250,
+          child: Image.asset(
+            'assets/MayorG-Fumando.gif',
+          ),),
+        Padding(
+          padding: const EdgeInsets.only(top: 215),
+          child: Container(
+            height: 100,
+            width: 250,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/mayorG@3x.png'))),
+          ),
+        ),
+      ],
     );
   }
 }
