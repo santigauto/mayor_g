@@ -40,8 +40,8 @@ class QuestionServicePrueba{
         'cantidad' : cantidad.toString()
       });
     final resp = await http.get(url);
-    print(resp.toString());
     final decodedData = json.decode(resp.body);
+    print(decodedData);
     ListaPreguntasNuevas preguntas = ListaPreguntasNuevas.fromJson(decodedData);
     print(decodedData.toString());
     if(preguntas == null) {

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/models/profileInfo.dart';
+/* import 'package:mayor_g/src/models/profileInfo.dart'; */
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
@@ -16,7 +16,7 @@ class ResultPage extends StatelessWidget {
   final Map mapa = ModalRoute.of(context).settings.arguments;
   bool resultado = mapa['resultado'];
   int n = mapa['n'] + 1;
-  ListaPreguntas questions= mapa['questions'];
+  ListaPreguntasNuevas questions= mapa['questions'];
   String imagen =(resultado)? 'assets/MayorGAnimaciones/mayorContento.gif':'assets/MayorGAnimaciones/mayorEnojado.gif';
 
   /* if (widget.resultado) {
@@ -72,10 +72,13 @@ class ResultPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async{
-            if (n % 5 == 0 && n % 10 != 0 && n != 0){
+            /* if (n % 5 == 0 && n % 10 != 0 && n != 0){
               var aux = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
               questions.preguntas.addAll(aux.preguntas);
-            }
+            } */
+            if (n % 2 == 0){
+              var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 2);
+              questions.preguntas.addAll(aux.preguntas);}
             Navigator.pushReplacementNamed(context, 'question', arguments: {'n':n , 'questions': questions});
           },
           icon: Icon(Icons.keyboard_arrow_right),

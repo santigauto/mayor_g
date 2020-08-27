@@ -150,7 +150,7 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
     return PreguntaNueva(
       id                    : jsonDecoded['id'],
       nivel                 : jsonDecoded['nivel'],
-      imagen                : jsonDecoded['imagen'],
+      imagen                : jsonDecoded['Imagen'],
       pregunta              : jsonDecoded['pregunta'],
       organismo             : jsonDecoded['organismno'],
       arma                  : jsonDecoded['arma'],

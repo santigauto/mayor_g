@@ -45,7 +45,7 @@ class Modal{
 
 
 //---MAIN---
-  mainBottomSheet (BuildContext context, ListaPreguntas preguntas){
+  mainBottomSheet (BuildContext context, ListaPreguntasNuevas preguntas){
     
 //---AGREGO AL MAPA LA KEY BOOLEANA 'SELECCION'--- 
     gente.forEach((persona){
@@ -142,7 +142,7 @@ class Modal{
   }
 
 //---WIDGET ITEM (AMIGO) SELECCIONADO---
-Widget _selecionado(BuildContext context, ListaPreguntas preguntas){
+Widget _selecionado(BuildContext context, ListaPreguntasNuevas preguntas){
 
   if(_isSelected){
     return Column(

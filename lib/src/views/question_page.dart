@@ -1,7 +1,12 @@
-//ESTA PAGINA MOSTRARA LA PREGUNTA, EL RELOJ, LA IMAGEN (OPCIONAL) Y LAS OPCIONES
+//ESTA PAGINA MOSTRARA LA PREGUNTA, EL TIMER, LA IMAGEN (OPCIONAL) Y LAS OPCIONES DE RESPUESTAS
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
+
+//MODELOS
 import 'package:mayor_g/src/models/question_model.dart';
+
+//WIDGETS PERSONALIZADOS
 import 'package:mayor_g/src/widgets/answers_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
@@ -21,9 +26,10 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   bool aux = false;               // BANDERA DEL CONTROLADOR QUE ME PERMITE GENERAR UN POP EXTRA EN EL CASO DE QUE UN ALERTA NO SE CIERRE CUANDO SE ACABE EL TIEMPO
   ImageProvider imagen;           // CONTENDRÁ LA IMAGEN DE LA PREGUNTA
   String imagenString;            // ES EL STRING QUE LLAMARA EL NETWORK IMAGE
-  ListaPreguntas questions;       //LISTA DE PREGUNTAS (CON RESPUESTAS)
+  ListaPreguntasNuevas questions; //LISTA DE PREGUNTAS (CON RESPUESTAS)
   int n;                          //INDICE DE LA PRENGUNTA DENTRO DE LA LISTA
   bool rush = false;
+  int tipo;
 
 //-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
 
@@ -34,17 +40,14 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
         vsync: this,
         duration: Duration(seconds: 7),
       );
-    controller.reverse(
-      from: controller.value == 0 ? 1 : controller.value,
-    );
+    
     controller.addListener((){
-      if(controller.value <= 0.25)setState(() {
-        rush=true;
-      });
+      if(controller.value <= 0.25) rush=true;
       if (aux == true) {
         Navigator.pop(context);
       }
-      if(controller.value == 0)Navigator.pushReplacementNamed(context, 'result',arguments: {'n': n,'questions': questions,'resultado': false});
+      if(controller.value == 0)Navigator.pushReplacementNamed(
+        context, 'result',arguments: {'n': n,'questions': questions,'resultado': false});
     });
 
     super.initState();
@@ -56,24 +59,42 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
       //preguntasController.dispose();
       super.dispose();
     }
-//-------------------------------------        BUILD          -----------------------------------------------
+
+//--------------------------------------------------------        BUILD          -------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
-    final Map mapa = ModalRoute.of(context).settings.arguments;
+    //DECLARACION DE VARIABLES
     
+    final size = MediaQuery.of(context).size; //SIZES DEL CANVAS
+    final Map mapa = ModalRoute.of(context).settings.arguments; //ARGUMENTOS QUE RESIVE LA PAGINA 
+    
+    //DEFINO LOS PARAMETROS QUE LLEGAN DE LA PAGINA ANTERIOR
     questions = mapa['questions'];
     n= mapa['n'];
 
-    imagenString = '${questions.preguntas[n].pregunta.foto}';
+    //DEFINO EL TIPO DE PREGUNTA
+    if(questions.preguntas[n].verdaderoFalso == true) tipo = 2;
+    else if(questions.preguntas[n].unirConFlechas)tipo = 3;
+    else if(questions.preguntas[n].imagenRespuesta)tipo = 1;
+    else tipo = 0;
 
-    if(imagenString != null && imagenString != 'null' && imagenString != ''){
-      print(imagenString);
-      imagenString = 'http://www.maderosolutions.com.ar/MayorG1/img/$imagenString';
-      imagen = NetworkImage(imagenString);
-    }  //SI LA IMAGEN EXISTE, LA BUSCARÁ EN LA URL DE MADERO SOLUTIONS
-    
+    //SI LA IMAGEN EXISTE, LA BUSCARÁ
+    if(questions.preguntas[n].imagen != null || questions.preguntas[n].imagen != 'null' || questions.preguntas[n].imagen != ''){
+      imagenString = '${questions.preguntas[n].imagen}';
+      imagenString = imagenString.replaceFirst('data:image/jpeg;base64,', '');
+      if(imagenString.length < 2){imagenString = '';}
+      print('esta es la imagen $imagenString');
+      imagen = MemoryImage(
+      base64Decode(imagenString),
+    ); 
+    }  
+
+    //COMIENZO DE LA CUENTA REGRESIVA
+    controller.reverse(
+      from: controller.value == 0 ? 1 : controller.value,
+    ); 
 
     return WillPopScope(
       onWillPop: _back,
@@ -92,7 +113,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                Answers(tipo: 0, questions: questions, n: n,)
+                Answers(tipo: tipo, questions: questions, n: n,)
               ],
             ),
             (rush)?Image.asset('assets/MayorGAnimaciones/MayorG-apurando.gif'):Container()
@@ -102,6 +123,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     );
   }
 
+  
   Widget _pregunta(Size size){
 
     double d;
@@ -118,7 +140,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
               children: <Widget>[
                 Center(
                   child: Text(
-                    questions.preguntas[n].pregunta.pregunta,
+                    questions.preguntas[n].pregunta,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 17),
                   ),

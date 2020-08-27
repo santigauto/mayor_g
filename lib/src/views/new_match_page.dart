@@ -1,6 +1,5 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
@@ -26,17 +25,19 @@ class _NewMatchPageState extends State<NewMatchPage> {
   bool _selecOponente = true;
   bool _selecAlAzar = true;
   bool _canPlay = false;
-  ListaPreguntas preguntas;
+  ListaPreguntasNuevas preguntas;
   
 
   Modal modal = new Modal();
 
   void _playAction()async{
     if(_canPlay == true){
-      preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
-      Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
+      /* preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+      Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas}); */
+      preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 3);
+      Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0, 'questions': preguntas});
+    }
   }
-}
 
 
   @override
@@ -184,7 +185,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
     );
   }
 
-  Widget _seleccionOponente(Color colorSelec, Color colorNoSelec, ListaPreguntas preguntas) {
+  Widget _seleccionOponente(Color colorSelec, Color colorNoSelec, ListaPreguntasNuevas preguntas) {
     if(_modoDuelo && !_modoClasico){return Column(
       children: <Widget>[
         Padding(

@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:mayor_g/src/models/question_model.dart';
 class Answers extends StatefulWidget {
   final int tipo;
   final int n;
-  final ListaPreguntas questions;
+  final ListaPreguntasNuevas questions;
   final AnimationController controller;
   const Answers({Key key,this.tipo,this.questions,this.n, this.controller}) : super(key: key);
 
@@ -24,7 +25,9 @@ final Map choices = {
   'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD': 'dddddddddddddddddddddddddddddddd'
 };
 
+
 final Map<String,bool> score = {};
+PreguntaNueva paquete;
 
 AnimationController controller;
 
@@ -38,7 +41,13 @@ Animation<double> fading;
 
     moving = Tween(begin:-50.0, end: 0.0).animate(controller);
     fading = Tween(begin:0.0, end: 1.0).animate(controller);
-
+    paquete = widget.questions.preguntas[widget.n];
+    if(paquete.imagenRespuesta == true){
+      for (var i = 0; i < paquete.respuestas.length; i++) {
+        paquete.respuestas[i] = paquete.respuestas[i].replaceFirst('data:image/jpeg;base64,', '');
+      }
+    }
+    print('esta es la respuestaCorrecta ${paquete.respuestaCorrecta.toString()}');
     super.initState();
   }
 
@@ -49,15 +58,30 @@ Animation<double> fading;
     super.dispose();
   }
 
+  void _addAuxiliarReferences(aux){
+    for (var i = 0;
+          i < paquete.respuestas.length;
+          i++) {
+        aux.add({
+          'respuesta': '${paquete.respuestas[i]}',
+          'id': i
+        });
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
+
   final size = MediaQuery.of(context).size;
+  List<dynamic> aux = [];
+  _addAuxiliarReferences(aux);
+
     switch (widget.tipo) {
       case 0:
-        return _answerType1(size);
+        return _answerType1(size,aux);
         break;
       case 1:
-        return _answerType2(size);
+        return _answerType2(size,aux);
         break;
       case 2:
         return _answerType3(size);
@@ -71,7 +95,7 @@ Animation<double> fading;
 //--------------------------------------- MULTIPLE CHOICE ( CLASICO ) -----------------------------------------------
 
 
-Widget _answerType1(Size size){
+Widget _answerType1(Size size, aux){
   controller.forward();
   return Expanded(
     child:  AnimatedBuilder(
@@ -86,7 +110,7 @@ Widget _answerType1(Size size){
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: _respuestas(size),
+                children: _respuestas(size, aux),
               ),
             ),
           ),
@@ -95,18 +119,8 @@ Widget _answerType1(Size size){
     ) );
 }
 
-List<Widget> _respuestas(Size size) {
+List<Widget> _respuestas(Size size, aux) {
     final List<Widget> answers = [];
-    List<dynamic> aux = [];
-
-    for (var i = 0;
-        i < widget.questions.preguntas[widget.n].respuestas.length;
-        i++) {
-      aux.add({
-        'respuesta': '${widget.questions.preguntas[widget.n].respuestas[i]}',
-        'id': i
-      });
-    }
 
     for (var i = 0; i < aux.length; i++) {
       answers.add(
@@ -123,7 +137,7 @@ List<Widget> _respuestas(Size size) {
               ),
               onPressed: () {
                 bool boolean;
-                if (aux[i]['id'] != widget.questions.preguntas[widget.n].respuestaCorrecta) {
+                if (aux[i]['id'] != paquete.respuestaCorrecta) {
                   boolean = false;
                 } else {boolean = true;}
                 Navigator.pushReplacementNamed(context, 'result', arguments: {'n': widget.n,'questions': widget.questions,'resultado': boolean});
@@ -146,44 +160,62 @@ List<Widget> _respuestas(Size size) {
 
 //-------------------------------------------- MULTIPLE CHOICE ( 4 IMAGENES ) ---------------------------------------------
 
-Widget _answerType2(Size size){
+Widget _answerType2(Size size, aux){
   return Container(
     height: size.height*0.55,
-    child: Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _imagen(Colors.pink, size,),
-            _imagen(Colors.amber, size,),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _imagen(Colors.deepPurple, size,),
-            _imagen(Colors.lightBlue, size,),
-          ],
-        ),
-      ],
+    child: Table(
+      children: _rows(size,aux)
     ),
   );
 }
 
-Widget _imagen(Color color, Size size,){
-  return Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-        width: 3,
-        color: Theme.of(context).primaryColor
+List<TableRow> _rows(Size size, aux){
+  List<TableRow> rows = [];
+  for (var i = 0; i < paquete.respuestas.length/2; i++) {
+    rows.add(TableRow(
+      children: [
+        _imagen(size,i*2, aux),
+        _imagen(size, i*2+1, aux)
+      ],
+    ));
+  }
+  
+  return rows;
+}
+
+Widget _imagen(Size size,int i, aux){
+
+  return GestureDetector(
+    onTap: () {
+      bool boolean;
+      if (aux[i]['id'] != paquete.respuestaCorrecta) {
+        boolean = false;
+      } else {boolean = true;}
+      Navigator.pushReplacementNamed(context, 'result', arguments: {'n': widget.n,'questions': widget.questions,'resultado': boolean});
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          width: 3,
+          color: Theme.of(context).primaryColor
+        ),
       ),
-      color: color
-    ),
-    height: size.width*0.45,
-    width: size.width*0.45,
-    );
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: FadeInImage(
+          fit: BoxFit.fill,
+          placeholder: AssetImage('assets/soldier.png'), 
+          image: (MemoryImage(
+              base64Decode(paquete.respuestas[i])
+            )
+          )
+        ),
+      ),
+      height: size.width*0.45,
+      width: size.width*0.45,
+      ),
+  );
 }
 
 //----------------------------------------------- VERDADERO Y FALSO -----------------------------------------------------------

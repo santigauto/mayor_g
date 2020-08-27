@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+/* import 'package:mayor_g/src/models/question_model.dart';
+import 'package:mayor_g/src/services/commons/questions_service.dart'; */
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
@@ -50,10 +52,11 @@ class MenuPage extends StatelessWidget{
                   onPressed: () /* async{
                     ListaPreguntasNuevas hola = await QuestionServicePrueba().getNewQuestions(context, cantidad: 2);
                     print('${hola.preguntas[0].pregunta}');
-                  } */
-=> Scaffold.of(context).openDrawer() ),
+                  } , */
+                    =>Scaffold.of(context).openDrawer()
                 ),
               ),
+            ),
             Center(
               child: SingleChildScrollView(
                 child: Column(
