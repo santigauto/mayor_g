@@ -59,6 +59,15 @@ class PreferenciasUsuario{
     _prefs.setString('foto', value);
   }
 
+   //score
+  get score{
+    return _prefs.getInt('score') ?? 0;
+  }
+
+  set score(value){
+    _prefs.setInt('score', value);
+  }
+
   //ARMA
   get arma{
     return _prefs.getString('arma') ?? 'General';
@@ -92,5 +101,6 @@ class PreferenciasUsuario{
   set materia(String value){
     _prefs.setString('materia', value);
   }
+
 
 }

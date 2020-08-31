@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 
 class Answers extends StatefulWidget {
@@ -18,16 +19,11 @@ class Answers extends StatefulWidget {
 
 class _AnswersState extends State<Answers> with SingleTickerProviderStateMixin{
 
-final Map choices = {
-  'A Habia una vez un circo que alegraba siempre el corazon': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-  'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-  'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC': 'cccccccccccccccccccccccccccccccc',
-  'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD': 'dddddddddddddddddddddddddddddddd'
-};
-
+Map choices = {};
 
 final Map<String,bool> score = {};
 PreguntaNueva paquete;
+PreferenciasUsuario prefs = new PreferenciasUsuario();
 
 AnimationController controller;
 
@@ -36,18 +32,19 @@ Animation<double> fading;
 
 @override
   void initState() {
-
+    prefs.score = 0;
     controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 2000));
 
-    moving = Tween(begin:-50.0, end: 0.0).animate(controller);
+    moving = Tween(begin:50.0, end: 0.0).animate(controller);
     fading = Tween(begin:0.0, end: 1.0).animate(controller);
+
     paquete = widget.questions.preguntas[widget.n];
+
     if(paquete.imagenRespuesta == true){
       for (var i = 0; i < paquete.respuestas.length; i++) {
         paquete.respuestas[i] = paquete.respuestas[i].replaceFirst('data:image/jpeg;base64,', '');
       }
     }
-    print('esta es la respuestaCorrecta ${paquete.respuestaCorrecta.toString()}');
     super.initState();
   }
 
@@ -74,6 +71,7 @@ Animation<double> fading;
 
   final size = MediaQuery.of(context).size;
   List<dynamic> aux = [];
+  
   _addAuxiliarReferences(aux);
 
     switch (widget.tipo) {
@@ -86,7 +84,7 @@ Animation<double> fading;
       case 2:
         return _answerType3(size);
         break;  
-      default: return _answerType4(size);
+      default: return _answerType4(size,widget.n);
     }
   }
 
@@ -260,7 +258,15 @@ Widget _answerType3(Size size){
 
 //-------------------------------------------------- UNIR CON FLECHAS -------------------------------------------------------------------------
 
-Widget _answerType4(Size size){
+Widget _answerType4(Size size, int n){
+
+  
+  for (var i = 0; i < paquete.respuestas.length; i++) {
+    List aux = paquete.respuestas[i].split(':');
+    String aux1 = '{"'+ aux[0] +'"';
+    String aux2 = '"'+ aux[1] +'"}';
+    choices.addAll(json.decode(aux1+':'+aux2));
+  }
 
   return Expanded(
       child: Row(
@@ -282,9 +288,9 @@ Widget _answerType4(Size size){
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: choices.keys.map((e) {
-            return _target('hola', size, score, e, choices);
+            return _target('hola', size, e);
           }).toList()
-          ..shuffle(Random(1))
+          ..shuffle(Random(n))
         ),
       ],
     ),
@@ -317,7 +323,7 @@ Widget _inicial(String text, Size size, Color color){
     ),
   );
 }
-Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
+Widget _target(String text,Size size,dynamic e){
   return DragTarget<String>(
     builder: (BuildContext context, List<String> incoming, List rejected){
       if(score[e] == true){
@@ -328,15 +334,14 @@ Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
         return _inicial(choices[e], size, Colors.amber);
       }
     },
-    onWillAccept: (data) => data == e, 
     onAccept: (data){
       setState(() {
-        score[e] = true;
-      });
-    },
-    onLeave: (data){
-      setState(() {
-        score[e] = false;
+
+        if(data==e){
+          score[e] = true;
+          prefs.score = prefs.score + 1;
+        }
+        else score[e] = false;
       });
     },
   );
@@ -348,102 +353,3 @@ Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
 
 
 }
-
-/* class _AnswerType4 extends StatefulWidget {
-  @override
-  __AnswerType4State createState() => __AnswerType4State();
-}
-
-final Map<String,bool> score = {};
-
-  final Map choices = {
-    'A Habia una vez un circo que alegraba siempre el corazon': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-    'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-    'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC': 'cccccccccccccccccccccccccccccccc',
-    'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD': 'dddddddddddddddddddddddddddddddd'
-  }; // ESTO SE VA!
-
-
-class __AnswerType4State extends State<_AnswerType4> {
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Expanded(
-      child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.max,
-          children: choices.keys.map((e) {
-            return Draggable<String>(
-              data: e,
-              child: _inicial(e, size, Colors.white),
-              feedback: _inicial(e, size, Colors.white.withOpacity(0.5)),
-              childWhenDragging: Container(width: size.width*0.4, height: size.height*0.1,),
-            );
-          }).toList()
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: choices.keys.map((e) {
-            return _target('hola', size, score, e, choices);
-          }).toList()
-          ..shuffle(Random(1))
-        ),
-      ],
-    ),
-  );
-  }
-
-Widget _inicial(String text, Size size, Color color){
-  return Material(
-      child: ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        width: size.width*0.4,
-        height: size.height*0.1,
-        color: color,
-        child: Center(
-          child: Text(text, 
-            style: TextStyle(
-              color: Colors.black, 
-              fontWeight: FontWeight.normal,
-              fontSize: 15,
-              decorationColor: Colors.white.withOpacity(0)
-              ),
-              textAlign: TextAlign.center,
-            )
-          ),
-      )
-    ),
-  );
-}
-Widget _target(String text,Size size,dynamic score,dynamic e, dynamic choices){
-  return DragTarget<String>(
-    builder: (BuildContext context, List<String> incoming, List rejected){
-      if(score[e] == true){
-        return _inicial('correcto', size, Colors.green);
-      } else if (score[e] == false){
-        return _inicial('incorrecto', size, Colors.red);
-      } else {
-        return _inicial(choices[e], size, Colors.amber);
-      }
-    },
-    onWillAccept: (data) => data == e, 
-    onAccept: (data){
-      setState(() {
-        score[e] = true;
-      });
-      print(score[e]);
-    },
-    onLeave: (data){
-      setState(() {
-        score[e] = false;
-      });
-      print(score[e]);
-    },
-  );
-}
-} */

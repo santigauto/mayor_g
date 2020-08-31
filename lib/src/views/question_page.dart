@@ -30,16 +30,17 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   int n;                          //INDICE DE LA PRENGUNTA DENTRO DE LA LISTA
   bool rush = false;
   int tipo;
+  int segundos = 15;
 
 //-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
 
   @override
   void initState() {
-    
     controller = AnimationController(
         vsync: this,
-        duration: Duration(seconds: 7),
+        duration: Duration(seconds: segundos),
       );
+    
     
     controller.addListener((){
       if(controller.value <= 0.25) rush=true;
@@ -56,7 +57,6 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   @override
     void dispose() {
       controller.dispose();
-      //preguntasController.dispose();
       super.dispose();
     }
 
@@ -70,10 +70,20 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     final size = MediaQuery.of(context).size; //SIZES DEL CANVAS
     final Map mapa = ModalRoute.of(context).settings.arguments; //ARGUMENTOS QUE RESIVE LA PAGINA 
     
+    
     //DEFINO LOS PARAMETROS QUE LLEGAN DE LA PAGINA ANTERIOR
     questions = mapa['questions'];
     n= mapa['n'];
 
+    /* switch (questions.preguntas[n].longitud) {
+      case 1:
+        segundos = 15;
+        break;
+      case 2:
+        segundos = 20;
+        break;
+      default: segundos = 25;
+    }  */
     //DEFINO EL TIPO DE PREGUNTA
     if(questions.preguntas[n].verdaderoFalso == true) tipo = 2;
     else if(questions.preguntas[n].unirConFlechas)tipo = 3;
@@ -85,12 +95,11 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
       imagenString = '${questions.preguntas[n].imagen}';
       imagenString = imagenString.replaceFirst('data:image/jpeg;base64,', '');
       if(imagenString.length < 2){imagenString = '';}
-      print('esta es la imagen $imagenString');
       imagen = MemoryImage(
       base64Decode(imagenString),
     ); 
     }  
-
+    
     //COMIENZO DE LA CUENTA REGRESIVA
     controller.reverse(
       from: controller.value == 0 ? 1 : controller.value,

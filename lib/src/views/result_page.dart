@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 /* import 'package:mayor_g/src/models/profileInfo.dart'; */
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
@@ -17,13 +18,15 @@ class ResultPage extends StatelessWidget {
   bool resultado = mapa['resultado'];
   int n = mapa['n'] + 1;
   ListaPreguntasNuevas questions= mapa['questions'];
-  String imagen =(resultado)? 'assets/MayorGAnimaciones/mayorContento.gif':'assets/MayorGAnimaciones/mayorEnojado.gif';
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
+   String imagen ;/*=(resultado)? 'assets/MayorGAnimaciones/mayorContento.gif':'assets/MayorGAnimaciones/mayorEnojado.gif'; */
 
-  /* if (widget.resultado) {
+  if(questions.preguntas[n-1].unirConFlechas) imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';
+  else if (resultado) {
       imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
-    } else
-      imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';
-  } */
+    } else{
+      imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';}
+  
   
   Future<bool> _back() {
     return showDialog(
@@ -65,6 +68,8 @@ class ResultPage extends StatelessWidget {
       ));
   }
     final size = MediaQuery.of(context).size;
+
+
     return WillPopScope(
       onWillPop: _back,
       child: Scaffold(
@@ -72,15 +77,12 @@ class ResultPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async{
-            /* if (n % 5 == 0 && n % 10 != 0 && n != 0){
-              var aux = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+            if (n % 5 == 0 /* && n % 10 != 0 */ && n != 0){
+              var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
               questions.preguntas.addAll(aux.preguntas);
-            } */
-            if (n % 2 == 0){
-              var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 2);
-              questions.preguntas.addAll(aux.preguntas);}
+            }
             Navigator.pushReplacementNamed(context, 'question', arguments: {'n':n , 'questions': questions});
-          },
+          }, 
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),
         ),
@@ -115,8 +117,10 @@ class ResultPage extends StatelessWidget {
               children: <Widget>[
                 Container(
                   height: size.height * 0.4,
+                  width: size.height * 0.4,
                   decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(imagen)),
+                    image: DecorationImage(image: AssetImage(imagen),fit: BoxFit.fill),
+                    
                   ),
                 ),
                 Container(
@@ -131,7 +135,7 @@ class ResultPage extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
-                        child: _resultadoText(questions, n, resultado, context),
+                        child: _resultadoText(questions, n, resultado, context, prefs),
                       ),
                     ),
                   ),
@@ -147,7 +151,8 @@ class ResultPage extends StatelessWidget {
     );
   }
 
-  Widget _resultadoText(questions, n, resultado, context) {
+  Widget _resultadoText(ListaPreguntasNuevas questions, n, resultado, context, prefs) {
+    var paquete = questions.preguntas[n-1];
     if (resultado) {
       return BorderedText(
         strokeColor: Colors.green,
@@ -155,7 +160,7 @@ class ResultPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 30, color: Colors.white)),
       );
-    } else {
+    } else if (!paquete.unirConFlechas){
       return Column(
         children: <Widget>[
           BorderedText(
@@ -168,7 +173,7 @@ class ResultPage extends StatelessWidget {
           ),
           Text('La respuesta era:', style: TextStyle(color: Colors.white),),
           Hero(
-            tag: questions.preguntas[n-1].respuestaCorrecta,
+            tag: paquete.respuestaCorrecta,
               child: Padding(
               padding: const EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
               child: Container(
@@ -190,6 +195,21 @@ class ResultPage extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      );
+    }
+    else{
+      return Column(
+        children: [
+          BorderedText(
+            strokeColor: Colors.amber[600],
+            child: Text(
+              'Acertaste',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 30, color: Colors.white),
+            ),
+          ),
+          Text('${prefs.score}/4', style: TextStyle(color: Colors.white),),
         ],
       );
     }

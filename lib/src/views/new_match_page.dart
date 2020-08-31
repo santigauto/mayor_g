@@ -34,7 +34,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
     if(_canPlay == true){
       /* preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
       Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas}); */
-      preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 3);
+      preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
       Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0, 'questions': preguntas});
     }
   }
