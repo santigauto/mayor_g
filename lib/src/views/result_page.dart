@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
@@ -8,18 +10,36 @@ import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/models/question_model.dart';
+import 'package:mayor_g/src/widgets/loading_widget.dart';
+
+class _Bloc{
+  StreamController _controller = StreamController.broadcast();
+
+    Function get streamSink => _controller.sink.add;
+
+    Stream get streamStream => _controller.stream;
+
+    void disposeStreams() { 
+      _controller.close();
+    }
+}
 
 class ResultPage extends StatelessWidget {
 
+    
+
   @override
   Widget build(BuildContext context) {
+
 
   final Map mapa = ModalRoute.of(context).settings.arguments;
   bool resultado = mapa['resultado'];
   int n = mapa['n'] + 1;
   ListaPreguntasNuevas questions= mapa['questions'];
   PreferenciasUsuario prefs = new PreferenciasUsuario();
-   String imagen ;/*=(resultado)? 'assets/MayorGAnimaciones/mayorContento.gif':'assets/MayorGAnimaciones/mayorEnojado.gif'; */
+  String imagen ;
+
+  _Bloc streamBloc = _Bloc();
 
   if(questions.preguntas[n-1].unirConFlechas) imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';
   else if (resultado) {
@@ -77,6 +97,7 @@ class ResultPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async{
+            streamBloc.streamSink(true);
             if (n % 5 == 0 /* && n % 10 != 0 */ && n != 0){
               var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
               questions.preguntas.addAll(aux.preguntas);
@@ -120,7 +141,6 @@ class ResultPage extends StatelessWidget {
                   width: size.height * 0.4,
                   decoration: BoxDecoration(
                     image: DecorationImage(image: AssetImage(imagen),fit: BoxFit.fill),
-                    
                   ),
                 ),
                 Container(
@@ -135,15 +155,26 @@ class ResultPage extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
-                        child: _resultadoText(questions, n, resultado, context, prefs),
+                        child: _resultadoText(questions, n, resultado, context, prefs, size),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: size.height*0.15,
-                )
+                SizedBox(height: 40)
               ],
+            ),
+            StreamBuilder(
+              stream: streamBloc.streamStream ,
+              initialData: false,
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                return Container(
+                  child: (snapshot.data)
+                  ? LoadingWidget(
+                    caption: Text('Cargando pregunta, aguarde...',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)),
+                  ) 
+                  : Container(),
+                );
+              },
             ),
           ],
         ),
@@ -151,7 +182,7 @@ class ResultPage extends StatelessWidget {
     );
   }
 
-  Widget _resultadoText(ListaPreguntasNuevas questions, n, resultado, context, prefs) {
+  Widget _resultadoText(ListaPreguntasNuevas questions, n, resultado, context, prefs, size) {
     var paquete = questions.preguntas[n-1];
     if (resultado) {
       return BorderedText(
@@ -174,26 +205,7 @@ class ResultPage extends StatelessWidget {
           Text('La respuesta era:', style: TextStyle(color: Colors.white),),
           Hero(
             tag: paquete.respuestaCorrecta,
-              child: Padding(
-              padding: const EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
-              child: Container(
-                width: double.infinity,
-                child: FlatButton(
-                  padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                  disabledColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-                  ),
-                  onPressed: null,
-                  child: Text(
-                    questions.preguntas[n-1].respuestas[questions.preguntas[n-1].respuestaCorrecta],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ),
-            ),
+              child: _respuesta(questions.preguntas[n-1], context, size)
           ),
         ],
       );
@@ -213,5 +225,53 @@ class ResultPage extends StatelessWidget {
         ],
       );
     }
+  }
+  Widget _respuesta(PreguntaNueva question, BuildContext context, Size size){
+    if(question.imagenRespuesta == false){
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
+        child: Container(
+          width: double.infinity,
+          child: FlatButton(
+            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+            disabledColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+            ),
+            onPressed: null,
+            child: Text(
+              question.respuestas[question.respuestaCorrecta],
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          width: 3,
+          color: Theme.of(context).primaryColor
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: FadeInImage(
+          fit: BoxFit.fill,
+          placeholder: AssetImage('assets/soldier.png'), 
+          image: (MemoryImage(
+              base64Decode(question.respuestas[question.respuestaCorrecta])
+            )
+          )
+        ),
+      ),
+      height: size.width*0.45,
+      width: size.width*0.45,
+      );
+    }
+      
   }
 }
