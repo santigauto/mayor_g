@@ -10,26 +10,27 @@ Map<String,dynamic> jsonExample = {
     'materias':['matematias','fisica','quimica','historia','contabilidad']
   
 };
+
+
+class AjustesPartidaPage extends StatefulWidget {
+  @override
+  _AjustesPartidaPageState createState() => _AjustesPartidaPageState();
+}
+
+class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
+
 final prefs = new PreferenciasUsuario();
 String selectedArma;
 String selectedMateria;
 String selectedColegio;
 String selectedCurso;
 
-class TestPage extends StatefulWidget {
-  @override
-  _TestPageState createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
-
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajustes'),
+        title: Text('Ajustes de Partida'),
       ),
       body: Stack(
         children: <Widget>[
@@ -129,7 +130,7 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
                 underline: Container(),
                 dropdownColor: Theme.of(context).primaryColor,
                 value: selectedValues,
-                items: getItems(jsonFrac),
+                items: getItems(jsonFrac, hint),
                 onChanged: onChanged
               ),
             ),
@@ -140,8 +141,11 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
   );
 }
 
-List<DropdownMenuItem<String>> getItems(String jsonFrac){
+List<DropdownMenuItem<String>> getItems(String jsonFrac, String hint){
   List<DropdownMenuItem<String>> lista = new List();
+  lista.add(
+    DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+  );
 
   jsonExample[jsonFrac].forEach((item){
     lista.add(DropdownMenuItem(

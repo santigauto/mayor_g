@@ -21,7 +21,7 @@
             "texto": "Sugerir pregunta"
         },
         {
-            "ruta": "test",
+            "ruta": "ajustes",
             "icon": "settings",
             "texto": "Ajustes"
         }

@@ -41,11 +41,25 @@ class ResultPage extends StatelessWidget {
 
   _Bloc streamBloc = _Bloc();
 
-  if(questions.preguntas[n-1].unirConFlechas) imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';
-  else if (resultado) {
-      imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
-    } else{
-      imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';}
+  if(questions.preguntas[n-1].unirConFlechas) {
+    switch (prefs.score) {
+      case 0:
+        imagen = 'assets/MayorGAnimaciones/MayorG-Frustrado.gif';
+        break;
+      case 1:
+        imagen = 'assets/MayorGAnimaciones/MayorG-Regaña.gif';
+        break;
+      case 2:
+        imagen = 'assets/MayorGAnimaciones/MayorG-aplasta.gif';
+        break;
+      case 2:
+        imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';
+        break;
+      default: imagen = 'assets/MayorGAnimaciones/MayorG-Celebra.gif';
+    }
+  }
+  else if (resultado) {imagen = 'assets/MayorGAnimaciones/mayorContento.gif';} 
+  else{imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';}
   
   
   Future<bool> _back() {

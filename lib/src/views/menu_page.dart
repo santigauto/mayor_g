@@ -104,7 +104,7 @@ class MenuPage extends StatelessWidget{
               height: 310,
               width: 250,
               child: Image.asset(
-                'assets/MayorG-Fumando.gif',
+                'assets/MayorGAnimaciones/MayorG-Fumando.gif',
                 color: Colors.black,
               ),
             ),
@@ -114,7 +114,7 @@ class MenuPage extends StatelessWidget{
           height: 310,
           width: 250,
           child: Image.asset(
-            'assets/MayorG-Fumando.gif',
+            'assets/MayorGAnimaciones/MayorG-Fumando.gif',
           ),),
         Padding(
           padding: const EdgeInsets.only(top: 215),

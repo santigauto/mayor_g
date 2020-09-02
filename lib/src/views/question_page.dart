@@ -29,6 +29,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
   ListaPreguntasNuevas questions; //LISTA DE PREGUNTAS (CON RESPUESTAS)
   int n;                          //INDICE DE LA PRENGUNTA DENTRO DE LA LISTA
   bool rush = false;
+  bool flag = true;
   int tipo;
   int segundos = 15;
 
@@ -43,7 +44,6 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
     
     
     controller.addListener((){
-      if(controller.value <= 0.25) rush=true;
       if (aux == true) {
         Navigator.pop(context);
       }
