@@ -25,6 +25,15 @@ String selectedMateria;
 String selectedColegio;
 String selectedCurso;
 
+@override
+void dispose() { 
+  prefs.arma = selectedArma;
+  prefs.materia = selectedMateria;
+  prefs.colegio = selectedColegio;
+  prefs.curso = selectedCurso;
+  super.dispose();
+}
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; 
@@ -46,7 +55,7 @@ String selectedCurso;
                     Icon(Icons.tune, color: Colors.white,)
                   ],
                 ),
-                Text('Aquí podrá fitrar a su criterio las características de las preguntas', style: TextStyle(color:Colors.white),), 
+                Text('Aquí podrá filtrar a su criterio las características de las preguntas', style: TextStyle(color:Colors.white),), 
                 _opciones(size),
               ],
             ),
@@ -143,16 +152,21 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
 
 List<DropdownMenuItem<String>> getItems(String jsonFrac, String hint){
   List<DropdownMenuItem<String>> lista = new List();
-  lista.add(
-    DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
-  );
+
+if(jsonExample[jsonFrac][0] != '-') jsonExample[jsonFrac].insert(0,'-');
 
   jsonExample[jsonFrac].forEach((item){
     lista.add(DropdownMenuItem(
       value: item,
       child: Center(child: Container(
         width: 200,
-        child: Text(item, style: TextStyle(fontSize:Theme.of(context).textTheme.headline6.fontSize),textAlign: TextAlign.center,)))));
+        child: Text(
+          item, 
+          style: TextStyle(
+            fontSize:Theme.of(context).textTheme.headline6.fontSize),
+          textAlign: TextAlign.center,
+        ))
+      )));
   });
 return lista;
 } 

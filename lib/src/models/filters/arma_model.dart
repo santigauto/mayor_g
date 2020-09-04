@@ -1,3 +1,18 @@
+class ListaArma{
+  List<Arma> listaArma = new List();
+
+  ListaArma();
+
+  ListaArma.fromJsonList(List<dynamic> jsonList){
+    if(jsonList == null) return;
+    for(var item in jsonList){
+      final arma = new Arma.fromJson(item);
+      listaArma.add(arma);
+    }
+  }
+  
+}
+
 
 class Arma {
   String id;

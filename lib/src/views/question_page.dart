@@ -122,7 +122,7 @@ class _QuestionPageState extends State<QuestionPage> with TickerProviderStateMix
                       child: TimerWidget(controller: controller)),
                 ),
                 _pregunta(size),
-                Answers(tipo: tipo, questions: questions, n: n,)
+                Answers(tipo: 2, questions: questions, n: n,)
               ],
             ),
             (rush)?Image.asset('assets/MayorGAnimaciones/MayorG-apurando.gif'):Container()
