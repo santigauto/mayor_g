@@ -37,8 +37,15 @@ class _NewMatchPageState extends State<NewMatchPage> {
       Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas}); */
        preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
       /*Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0, 'questions': preguntas}); */
-      var route = new MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas, n: 0));
-      Navigator.pushReplacement(context, route);
+      if(preguntas == null){
+        setState(() {
+        _isLoading = false;
+      });
+      }else{
+        var route = new MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas, n: 0));
+        Navigator.pushReplacement(context, route);
+      }
+      
     }
   }
 

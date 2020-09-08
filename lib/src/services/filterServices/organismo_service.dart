@@ -8,7 +8,7 @@ class OrganismoService extends ServiceFiltros{
 
   @override
   final apiRoute = 'api/Json/Obtener_Organismos';
-  
+
   @override
   List getLista(_decodedData) {
     final listaOrganismos = ListaOrganismo.fromJsonList(_decodedData);

@@ -1,6 +1,8 @@
 
 // MODELO DE LISTA DE PREGUNTAS
 
+import 'dart:convert';
+
 class ListaPreguntas {
   List<PreguntaYRespuesta> preguntas;
 
@@ -186,6 +188,17 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
     else if(unirConFlechas)return 3;
     else if(imagenRespuesta)return 1;
     else return 0;
+  }
+
+  Map getMapChoices(){
+    Map choices = new Map();
+    for (var i = 0; i < respuestas.length; i++) {
+    List aux = respuestas[i].split(':');
+    String aux1 = '{"'+ aux[0] +'"';
+    String aux2 = '"'+ aux[1] +'"}';
+    choices.addAll(json.decode(aux1+':'+aux2));
+  }
+  return choices;
   }
 
 

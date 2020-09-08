@@ -191,28 +191,31 @@ Widget _imagen(Size size,int i, aux){
       } else {boolean = true;}
       Navigator.pushReplacementNamed(context, 'result', arguments: {'n': widget.n,'questions': widget.questions,'resultado': boolean});
     },
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          width: 3,
-          color: Theme.of(context).primaryColor
+    child: Hero(
+      tag: aux[i]['id'],
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 3,
+            color: Theme.of(context).primaryColor
+          ),
         ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: FadeInImage(
-          fit: BoxFit.fill,
-          placeholder: AssetImage('assets/soldier.png'), 
-          image: (MemoryImage(
-              base64Decode(paquete.respuestas[i])
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: FadeInImage(
+            fit: BoxFit.fill,
+            placeholder: AssetImage('assets/soldier.png'), 
+            image: (MemoryImage(
+                base64Decode(paquete.respuestas[i])
+              )
             )
-          )
+          ),
         ),
-      ),
-      height: size.width*0.45,
-      width: size.width*0.45,
-      ),
+        height: size.width*0.45,
+        width: size.width*0.45,
+        ),
+    ),
   );
 }
 
@@ -260,13 +263,7 @@ Widget _answerType3(Size size){
 
 Widget _answerType4(Size size, int n){
 
-  
-  for (var i = 0; i < paquete.respuestas.length; i++) {
-    List aux = paquete.respuestas[i].split(':');
-    String aux1 = '{"'+ aux[0] +'"';
-    String aux2 = '"'+ aux[1] +'"}';
-    choices.addAll(json.decode(aux1+':'+aux2));
-  }
+  choices = paquete.getMapChoices();
 
   return Expanded(
       child: Row(

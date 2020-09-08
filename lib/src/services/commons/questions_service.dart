@@ -33,19 +33,18 @@ class QuestionsService{
 /*  NUEVO MODELO DE SERVICIO DE PREGUNTAS*/
 
 class QuestionServicePrueba{
-    getNewQuestions(BuildContext context,{@required cantidad}) async{
-      print('hola2');
-      String _url = 'cps-ea.mil.ar:5261';
-      final url = Uri.https(_url, 'api/Json/Obtener_Preguntas',{
-        'cantidad' : cantidad.toString()
-      });
+  getNewQuestions(BuildContext context,{@required cantidad}) async{
+    String _url = 'cps-ea.mil.ar:5261';
+    final url = Uri.https(_url, 'api/Json/Obtener_Preguntas',{
+      'cantidad' : cantidad.toString()
+    });
     final resp = await http.get(url);
     final decodedData = json.decode(resp.body);
     print(decodedData);
     ListaPreguntasNuevas preguntas = ListaPreguntasNuevas.fromJson(decodedData);
     print(decodedData.toString());
-    if(preguntas == null) {
-      return Alert.alert(context, body: Text("ha ocurrido un error"));
+    if(preguntas == null || preguntas.preguntas.isEmpty) {
+      return Alert.alert(context, body: Text("ERROR! No se encontraron preguntas, intente nuevamente"));
     }
     else{
       return preguntas;

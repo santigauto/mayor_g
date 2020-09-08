@@ -92,6 +92,7 @@ class _QuestionPageState extends State<QuestionPage>
       if (imagenString.length < 2) {
         imagenString = '';
       }
+      imagenString = imagenString.replaceFirst('data:image/jpeg;base64,', '');
       imagen = MemoryImage(
         base64Decode(imagenString),
       );
@@ -170,9 +171,9 @@ class _QuestionPageState extends State<QuestionPage>
       return Container(
         height: size.height * 0.3,
         child: FadeInImage(
-            placeholder:
-                AssetImage('assets/MayorGAnimaciones/Canon_animado.gif'),
-            image: imagen),
+          placeholder:
+              AssetImage('assets/MayorGAnimaciones/Canon_animado.gif'),
+          image: imagen),
       );
     }
   }

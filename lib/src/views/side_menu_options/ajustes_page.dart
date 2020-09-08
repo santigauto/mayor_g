@@ -135,7 +135,7 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
               child: DropdownButton(
                 style: TextStyle(color:Colors.white),
                 iconEnabledColor: Colors.white,
-                hint: DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+                hint: DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),textAlign: TextAlign.center,)),
                 underline: Container(),
                 dropdownColor: Theme.of(context).primaryColor,
                 value: selectedValues,
