@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
+import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
 import 'package:mayor_g/src/widgets/pulse_animator.dart';
@@ -34,8 +35,10 @@ class _NewMatchPageState extends State<NewMatchPage> {
     if(_canPlay == true){
       /* preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
       Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas}); */
-      preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
-      Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0, 'questions': preguntas});
+       preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
+      /*Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0, 'questions': preguntas}); */
+      var route = new MaterialPageRoute(builder: (context)=>QuestionPage(questions: preguntas, n: 0));
+      Navigator.pushReplacement(context, route);
     }
   }
 

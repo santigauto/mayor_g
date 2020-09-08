@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mayor_g/src/services/filterServices/arma_service.dart';
-/* import 'package:mayor_g/src/models/question_model.dart';
-import 'package:mayor_g/src/services/commons/questions_service.dart'; */
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
@@ -13,7 +10,6 @@ class MenuPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-  
   Future<bool> _back() {
     return showDialog(
       context: context,
@@ -50,11 +46,8 @@ class MenuPage extends StatelessWidget{
                 builder: (context) => IconButton(
                   color: Colors.white,
                   icon: new Icon(Icons.menu),
-                  onPressed: () /* async{
-                    ListaPreguntasNuevas hola = await QuestionServicePrueba().getNewQuestions(context, cantidad: 2);
-                    print('${hola.preguntas[0].pregunta}');
-                  } , */
-                    =>Scaffold.of(context).openDrawer()
+                  onPressed: ()
+                    => Scaffold.of(context).openDrawer()
                 ),
               ),
             ),

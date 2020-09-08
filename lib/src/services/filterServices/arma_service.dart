@@ -1,15 +1,16 @@
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:mayor_g/src/models/filters/arma_model.dart';
+import 'package:mayor_g/src/services/commons/filter_service.dart';
 
-class ArmaService{
+class ArmaService extends ServiceFiltros{
 
-  Future<List<Arma>> getArmas() async{
-    final _url = Uri.https('cps-ea.mil.ar:5261', 'api/Json/Obtener_Armas');
+  ArmaService();
 
-    final resp = await http.get(_url);
-    final _decodedData = json.decode(resp.body);
+  @override
+  final apiRoute = 'api/Json/Obtener_Armas';
+
+  @override
+  List getLista(_decodedData) {
     final listaArmas = ListaArma.fromJsonList(_decodedData);
     return listaArmas.listaArma;
   }

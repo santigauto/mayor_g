@@ -169,4 +169,25 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
       );
   }
 
+  int getDuration(){
+    switch (longitud) {
+      case 1:
+        return 15;
+        break;
+      case 2:
+        return 20;
+        break;
+      default: return 25;
+    } 
+  }
+
+  int getTipoPregunta(){
+    if(verdaderoFalso == true) return 2;
+    else if(unirConFlechas)return 3;
+    else if(imagenRespuesta)return 1;
+    else return 0;
+  }
+
+
+
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 /* import 'package:mayor_g/src/models/profileInfo.dart'; */
 import 'package:mayor_g/src/services/commons/questions_service.dart';
+import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/models/question_model.dart';
@@ -116,7 +117,9 @@ class ResultPage extends StatelessWidget {
               var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
               questions.preguntas.addAll(aux.preguntas);
             }
-            Navigator.pushReplacementNamed(context, 'question', arguments: {'n':n , 'questions': questions});
+            var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: questions,n:n));
+            Navigator.pushReplacement(context,route);
+            /* Navigator.pushReplacementNamed(context, 'question', arguments: {'n':n , 'questions': questions}); */
           }, 
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),
