@@ -5,7 +5,7 @@ class ListaOrganismo{
   ListaOrganismo();
 
   ListaOrganismo.fromJsonList(List<dynamic> jsonList){
-    if(jsonList == null) return;
+    if(jsonList == null || jsonList.isEmpty) return;
     for(var item in jsonList){
       final organismo = new Organismo.fromJson(item);
       organismos.add(organismo);

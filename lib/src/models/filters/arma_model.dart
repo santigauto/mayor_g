@@ -4,7 +4,7 @@ class ListaArma{
   ListaArma();
 
   ListaArma.fromJsonList(List<dynamic> jsonList){
-    if(jsonList == null) return;
+    if(jsonList == null || jsonList.isEmpty) return;
     for(var item in jsonList){
       final arma = new Arma.fromJson(item);
       listaArma.add(arma);

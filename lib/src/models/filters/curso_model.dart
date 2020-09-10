@@ -2,7 +2,7 @@ class ListaCurso {
   List<Curso> cursos = new List();
   ListaCurso();
   ListaCurso.fromJsonList(List<dynamic> jsonList){
-    if(jsonList == null) return;
+    if(jsonList == null || jsonList.isEmpty) return;
     for(var item in jsonList){
       final curso = Curso.fromJson(item);
       cursos.add(curso);

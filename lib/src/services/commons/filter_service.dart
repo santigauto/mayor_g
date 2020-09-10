@@ -17,7 +17,6 @@ abstract class ServiceFiltros<T>{
 
     final resp = await http.get(_url);
     final _decodedData = json.decode(resp.body);
-    print(_decodedData);
     return getLista(_decodedData);
   }
 

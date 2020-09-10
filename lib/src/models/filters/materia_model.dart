@@ -2,7 +2,7 @@ class ListaMateria{
   List<Materia> materias= new List();
   ListaMateria();
   ListaMateria.fromJsonList(List<dynamic> jsonList){
-    if(jsonList == null) return;
+    if(jsonList == null || jsonList.isEmpty) return;
     for(var item in jsonList){
       final materia = Materia.fromJson(item);
       materias.add(materia);

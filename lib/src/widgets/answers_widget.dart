@@ -82,7 +82,7 @@ Animation<double> fading;
         return _answerType2(size,aux);
         break;
       case 2:
-        return _answerType3(size);
+        return _answerType3(size,aux);
         break;  
       default: return _answerType4(size,widget.n);
     }
@@ -221,42 +221,43 @@ Widget _imagen(Size size,int i, aux){
 
 //----------------------------------------------- VERDADERO Y FALSO -----------------------------------------------------------
 
-Widget _answerType3(Size size){
+Widget _answerType3(Size size, aux){
   return Expanded(
       child: Container(
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(25)
-              ),
-              child: ListTile(
-                title: Text('VERDADERO', textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.red[400],
-                borderRadius: BorderRadius.circular(25)
-              ),
-              child: ListTile(
-                title: Text('FALSO', textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-              ),
-            ),
-          ),
-        ],
+        children: _respuestasVoF(aux)
       ),
     ),
   );
+}
+
+List<Widget> _respuestasVoF(aux){
+  List<Widget> lista = [];
+  for(int i=0;i<paquete.respuestas.length;i++) {
+    lista.add(Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color:(paquete.respuestas[i].toLowerCase() == 'verdadero')? Theme.of(context).primaryColor: Colors.red[400],
+          borderRadius: BorderRadius.circular(25)
+        ),
+        child: ListTile(
+          onTap: (){
+            bool boolean;
+            if (aux[i]['id'] != paquete.respuestaCorrecta) {
+              boolean = false;
+            } else {boolean = true;}
+            Navigator.pushReplacementNamed(context, 'result', arguments: {'n': widget.n,'questions': widget.questions,'resultado': boolean});
+          },
+          title: Text(paquete.respuestas[i], textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+        ),
+      ),
+    ));
+  }
+  return lista;
 }
 
 //-------------------------------------------------- UNIR CON FLECHAS -------------------------------------------------------------------------

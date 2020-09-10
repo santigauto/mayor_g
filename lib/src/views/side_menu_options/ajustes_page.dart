@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/filterServices/arma_service.dart';
+import 'package:mayor_g/src/services/filterServices/curso_service.dart';
+import 'package:mayor_g/src/services/filterServices/materia_service.dart';
+import 'package:mayor_g/src/services/filterServices/organismo_service.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
-
-Map<String,dynamic> jsonExample = {
-  
-    'armas':['General','Caballeria','Artilleria','Comunicaciones'],
-    'colegios':['DEOP','EM Formosa', 'EM Mendoza'],
-    'cursos':['1er Año','2do Año','3er Año','4to Año'],
-    'materias':['matematias','fisica','quimica','historia','contabilidad']
-  
-};
 
 
 class AjustesPartidaPage extends StatefulWidget {
@@ -71,16 +66,7 @@ Widget _opciones(Size size){
     children: <Widget>[
       Divider(color:Colors.white.withOpacity(0.2)),
       _getDropdown(
-        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma, hint: prefs.arma,
-        onChanged: (value){
-          setState(() {
-            selectedArma = value;
-            prefs.arma = value;
-          });
-        },
-      ),
-      _getDropdown(
-        size: size, title:'Colegio', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,
+        size: size, title:'Organismos', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,future: OrganismoService().getAll(),
         onChanged: (value){
           setState(() {
             selectedColegio = value;
@@ -89,7 +75,16 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso, hint: prefs.curso,
+        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma, hint: prefs.arma, future: ArmaService().getAll(),
+        onChanged: (value){
+          setState(() {
+            selectedArma = value;
+            prefs.arma = value;
+          });
+        },
+      ),
+      _getDropdown(
+        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso, hint: prefs.curso, future: CursoService().getAll(),
         onChanged: (value){
           setState(() {
             selectedCurso = value;
@@ -98,7 +93,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria, hint: prefs.arma,
+        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria, hint: prefs.materia,future: Materia2Service().getAll(),
         onChanged: (value){
           setState(() {
             selectedMateria = value;
@@ -111,7 +106,7 @@ Widget _opciones(Size size){
   );
 }
 
-Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size size, String selectedValues, String hint }){
+Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size size, String selectedValues, String hint, Future future }){
   return Padding(
     padding: const EdgeInsets.symmetric(vertical:8.0),
     child: ClipRRect(
@@ -132,15 +127,20 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
             ),
             Padding(
               padding: const EdgeInsets.all(5.0),
-              child: DropdownButton(
-                style: TextStyle(color:Colors.white),
-                iconEnabledColor: Colors.white,
-                hint: DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),textAlign: TextAlign.center,)),
-                underline: Container(),
-                dropdownColor: Theme.of(context).primaryColor,
-                value: selectedValues,
-                items: getItems(jsonFrac, hint),
-                onChanged: onChanged
+              child: FutureBuilder(
+                future: future,
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){return DropdownButton(
+                    style: TextStyle(color:Colors.white),
+                    iconEnabledColor: Colors.white,
+                    hint: DropdownMenuItem(child: Text(hint, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),textAlign: TextAlign.center,)),
+                    underline: Container(),
+                    dropdownColor: Theme.of(context).primaryColor,
+                    value: selectedValues,
+                    items: getItems(snapshot.data, hint),
+                    onChanged: onChanged
+                  );}else return CircularProgressIndicator();
+                }
               ),
             ),
           ],
@@ -150,24 +150,24 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
   );
 }
 
-List<DropdownMenuItem<String>> getItems(String jsonFrac, String hint){
+List<DropdownMenuItem<String>> getItems( List data, String hint){
   List<DropdownMenuItem<String>> lista = new List();
 
-if(jsonExample[jsonFrac][0] != '-') jsonExample[jsonFrac].insert(0,'-');
 
-  jsonExample[jsonFrac].forEach((item){
+
+  if(data.isNotEmpty){data.forEach((item){
     lista.add(DropdownMenuItem(
-      value: item,
+      value: item.nombre,
       child: Center(child: Container(
         width: 200,
         child: Text(
-          item, 
+          item.nombre, 
           style: TextStyle(
             fontSize:Theme.of(context).textTheme.headline6.fontSize),
           textAlign: TextAlign.center,
         ))
       )));
-  });
+  });}
 return lista;
 } 
 }
