@@ -5,6 +5,7 @@ import 'package:mayor_g/src/services/filterServices/curso_service.dart';
 import 'package:mayor_g/src/services/filterServices/materia_service.dart';
 import 'package:mayor_g/src/services/filterServices/organismo_service.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/loading_widget.dart';
 
 
 class AjustesPartidaPage extends StatefulWidget {
@@ -20,14 +21,21 @@ String selectedMateria;
 String selectedColegio;
 String selectedCurso;
 
+String auxArma;
+String auxMateria;
+String auxColegio;
+String auxCurso;
+
+bool _isLoading = false;
+
 @override
-void dispose() { 
-  prefs.arma = selectedArma;
-  prefs.materia = selectedMateria;
-  prefs.colegio = selectedColegio;
-  prefs.curso = selectedCurso;
-  super.dispose();
-}
+  void initState() {
+     auxArma = prefs.arma;
+     auxMateria = prefs.materia;
+     auxColegio = prefs.colegio;
+     auxCurso = prefs.curso;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +62,45 @@ void dispose() {
                 _opciones(size),
               ],
             ),
-          )
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: Container()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: RaisedButton(
+                      onPressed: (){
+                        prefs.arma = auxArma; 
+                        prefs.materia = auxMateria; 
+                        prefs.colegio = auxColegio; 
+                        prefs.curso = auxCurso; 
+                        Navigator.pop(context);
+                      },
+                      child: Text('Reestablecer'),
+                      ),
+                    ),
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: RaisedButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      child: Text('Guardar'),
+                      ),
+                    ),
+                ],
+              )
+            ],
+          ),
+          (_isLoading)
+            ?LoadingWidget(
+              caption: Text('Buscando preguntas, aguarde...',
+              style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)),)
+            :Container()
         ],
       ),
     );
@@ -66,7 +112,7 @@ Widget _opciones(Size size){
     children: <Widget>[
       Divider(color:Colors.white.withOpacity(0.2)),
       _getDropdown(
-        size: size, title:'Organismos', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,future: OrganismoService().getAll(),
+        size: size, title:'Organismo', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,future: OrganismoService().getAll(),
         onChanged: (value){
           setState(() {
             selectedColegio = value;
