@@ -325,9 +325,9 @@ Widget _target(String text,Size size,dynamic e){
   return DragTarget<String>(
     builder: (BuildContext context, List<String> incoming, List rejected){
       if(score[e] == true){
-        return Container(width: size.width*0.4, height: size.height*0.1,);
+        return Container();
       } else if (score[e] == false){
-        return Container(width: size.width*0.4, height: size.height*0.1,);
+        return Container();
       } else {
         return _inicial(choices[e], size, Colors.amber);
       }
