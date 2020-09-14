@@ -54,12 +54,12 @@ class _QuestionPageState extends State<QuestionPage>
     );
 
     controller.addListener(() {
-      if (aux == true) {
-        Navigator.pop(context);
-      }
       if (controller.value == 0)
-        Navigator.pushReplacementNamed(context, 'result',
-            arguments: {'n': n, 'questions': questions, 'resultado': false});
+        {
+        if (aux == true) {
+          Navigator.pop(context);
+        }
+        Navigator.pushReplacementNamed(context, 'result',arguments: {'n': n, 'questions': questions, 'resultado': false});}
     });
 
     super.initState();

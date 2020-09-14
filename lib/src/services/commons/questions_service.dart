@@ -33,6 +33,7 @@ class QuestionsService{
 /*  NUEVO MODELO DE SERVICIO DE PREGUNTAS*/
 
 class QuestionServicePrueba{
+
   getNewQuestions(BuildContext context,{@required cantidad}) async{
     String _url = 'cps-ea.mil.ar:5261';
     final url = Uri.https(_url, 'api/Json/Obtener_Preguntas',{
@@ -50,4 +51,5 @@ class QuestionServicePrueba{
       return preguntas;
     }
   }
+  
 } 

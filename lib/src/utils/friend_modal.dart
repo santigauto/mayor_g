@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
+import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
 
@@ -162,9 +163,10 @@ Widget _selecionado(BuildContext context, ListaPreguntasNuevas preguntas){
             title: Text(_personaSeleccionada['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
             trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
               //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
-              preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
+              preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
+              var route = MaterialPageRoute(builder: (BuildContext context) => QuestionPage(n: 0,questions: preguntas,));
+              Navigator.pushReplacement(context, route);
             }),
           )
         )

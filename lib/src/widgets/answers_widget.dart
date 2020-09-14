@@ -119,11 +119,11 @@ Widget _answerType1(Size size, aux){
 
 List<Widget> _respuestas(Size size, aux) {
     final List<Widget> answers = [];
-
     for (var i = 0; i < aux.length; i++) {
+      int tag = (aux[i]['id'] * (widget.n+1)) + widget.n;
       answers.add(
         Hero(
-          tag: aux[i]['id'],
+          tag: tag,
           child: Container(
             width: double.infinity,
             child: FlatButton(
@@ -192,7 +192,7 @@ Widget _imagen(Size size,int i, aux){
       Navigator.pushReplacementNamed(context, 'result', arguments: {'n': widget.n,'questions': widget.questions,'resultado': boolean});
     },
     child: Hero(
-      tag: aux[i]['id'],
+      tag: (aux[i]['id'] * (widget.n+1)) + widget.n,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -325,9 +325,9 @@ Widget _target(String text,Size size,dynamic e){
   return DragTarget<String>(
     builder: (BuildContext context, List<String> incoming, List rejected){
       if(score[e] == true){
-        return _inicial('correcto', size, Colors.green);
+        return Container(width: size.width*0.4, height: size.height*0.1,);
       } else if (score[e] == false){
-        return _inicial('incorrecto', size, Colors.red);
+        return Container(width: size.width*0.4, height: size.height*0.1,);
       } else {
         return _inicial(choices[e], size, Colors.amber);
       }

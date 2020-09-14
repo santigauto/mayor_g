@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
-/* import 'package:mayor_g/src/models/profileInfo.dart'; */
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
@@ -32,31 +31,26 @@ class ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
   final Map mapa = ModalRoute.of(context).settings.arguments;
   bool resultado = mapa['resultado'];
   int n = mapa['n'] + 1;
   ListaPreguntasNuevas questions= mapa['questions'];
   PreferenciasUsuario prefs = new PreferenciasUsuario();
   String imagen ;
-
   _Bloc streamBloc = _Bloc();
 
   if(questions.preguntas[n-1].unirConFlechas) {
     switch (prefs.score) {
       case 0:
-        imagen = 'assets/MayorGAnimaciones/MayorG-Frustrado.gif';
-        break;
+        imagen = 'assets/MayorGAnimaciones/MayorG-Frustrado.gif';break;
       case 1:
-        imagen = 'assets/MayorGAnimaciones/MayorG-Regaña.gif';
-        break;
+        imagen = 'assets/MayorGAnimaciones/MayorG-Regaña.gif';break;
       case 2:
-        imagen = 'assets/MayorGAnimaciones/MayorG-aplasta.gif';
-        break;
-      case 2:
-        imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';
-        break;
-      default: imagen = 'assets/MayorGAnimaciones/MayorG-Celebra.gif';
+        imagen = 'assets/MayorGAnimaciones/MayorG-aplasta.gif';break;
+      case 3:
+        imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';break;
+      default: 
+        imagen = 'assets/MayorGAnimaciones/MayorG-Celebra.gif';
     }
   }
   else if (resultado) {imagen = 'assets/MayorGAnimaciones/mayorContento.gif';} 
@@ -119,7 +113,6 @@ class ResultPage extends StatelessWidget {
             }
             var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: questions,n:n));
             Navigator.pushReplacement(context,route);
-            /* Navigator.pushReplacementNamed(context, 'question', arguments: {'n':n , 'questions': questions}); */
           }, 
           icon: Icon(Icons.keyboard_arrow_right),
           label: Text('Seguir'),
@@ -221,7 +214,7 @@ class ResultPage extends StatelessWidget {
           ),
           Text('La respuesta era:', style: TextStyle(color: Colors.white),),
           Hero(
-            tag: paquete.respuestaCorrecta,
+            tag: (questions.preguntas[n-1].respuestaCorrecta * (n))+n-1,
               child: _respuesta(questions.preguntas[n-1], context, size)
           ),
         ],
@@ -269,20 +262,14 @@ class ResultPage extends StatelessWidget {
       return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          width: 3,
-          color: Theme.of(context).primaryColor
-        ),
+        border: Border.all(width: 3,color: Theme.of(context).primaryColor),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: FadeInImage(
           fit: BoxFit.fill,
           placeholder: AssetImage('assets/soldier.png'), 
-          image: (MemoryImage(
-              base64Decode(question.respuestas[question.respuestaCorrecta])
-            )
-          )
+          image: (MemoryImage(base64Decode(question.respuestas[question.respuestaCorrecta])))
         ),
       ),
       height: size.width*0.45,

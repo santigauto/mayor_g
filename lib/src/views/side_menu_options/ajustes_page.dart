@@ -112,7 +112,7 @@ Widget _opciones(Size size){
     children: <Widget>[
       Divider(color:Colors.white.withOpacity(0.2)),
       _getDropdown(
-        size: size, title:'Organismo', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,future: OrganismoService().getAll(),
+        size: size, title:'Organismo', jsonFrac:'colegios', selectedValues: selectedColegio, hint: prefs.colegio,future: OrganismoService().getAll(context,'organismo'),
         onChanged: (value){
           setState(() {
             selectedColegio = value;
@@ -121,7 +121,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma, hint: prefs.arma, future: ArmaService().getAll(),
+        size: size, title:'Arma', jsonFrac:'armas', selectedValues: selectedArma, hint: prefs.arma, future: ArmaService().getAll(context, 'arma'),
         onChanged: (value){
           setState(() {
             selectedArma = value;
@@ -130,7 +130,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso, hint: prefs.curso, future: CursoService().getAll(),
+        size: size, title:'Curso', jsonFrac:'cursos', selectedValues: selectedCurso, hint: prefs.curso, future: CursoService().getAll(context, 'curso'),
         onChanged: (value){
           setState(() {
             selectedCurso = value;
@@ -139,7 +139,7 @@ Widget _opciones(Size size){
         },
       ),
       _getDropdown(
-        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria, hint: prefs.materia,future: Materia2Service().getAll(),
+        size: size, title:'Materia', jsonFrac:'materias', selectedValues: selectedMateria, hint: prefs.materia,future: Materia2Service().getAll(context, 'materia'),
         onChanged: (value){
           setState(() {
             selectedMateria = value;

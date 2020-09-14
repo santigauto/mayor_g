@@ -70,7 +70,7 @@ class PreferenciasUsuario{
 
   //ARMA
   get arma{
-    return _prefs.getString('arma') ?? 'General';
+    return _prefs.getString('arma') ?? '';
   }
 
   set arma(String value){
@@ -79,7 +79,7 @@ class PreferenciasUsuario{
 
   //COLEGIO
   get colegio{
-    return _prefs.getString('colegio') ?? '';
+    return _prefs.getString('colegio') ?? 'General';
   }
 
   set colegio(String value){

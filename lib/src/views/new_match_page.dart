@@ -33,10 +33,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   void _playAction()async{
     if(_canPlay == true){
-      /* preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
-      Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas}); */
        preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
-      /*Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0, 'questions': preguntas}); */
       if(preguntas == null){
         setState(() {
         _isLoading = false;
