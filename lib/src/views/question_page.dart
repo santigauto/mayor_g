@@ -1,6 +1,8 @@
 //ESTA PAGINA MOSTRARA LA PREGUNTA, EL TIMER, LA IMAGEN (OPCIONAL) Y LAS OPCIONES DE RESPUESTAS
 
+import 'dart:async';
 import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 //MODELOS
@@ -32,9 +34,18 @@ class _QuestionPageState extends State<QuestionPage>
   ListaPreguntasNuevas questions; //LISTA DE PREGUNTAS (CON RESPUESTAS)
   int n; //INDICE DE LA PRENGUNTA DENTRO DE LA LISTA
   bool rush = false;
-  bool flag = true;
+  bool flag = false;
   int tipo;
   int segundos;
+
+  StreamController _controller = new StreamController.broadcast();
+
+  Stream get streamQ => _controller.stream;
+  Function get sinkQ => _controller.sink.add;
+
+  void disposeController() { 
+    _controller.close();
+  }
 
 //-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
 
@@ -54,6 +65,11 @@ class _QuestionPageState extends State<QuestionPage>
     );
 
     controller.addListener(() {
+      if(controller.value < 0.25 && flag == false){
+        print('hola');
+          flag = true;
+          sinkQ(flag);
+      }
       if (controller.value == 0)
         {
         if (aux == true) {
@@ -127,9 +143,12 @@ class _QuestionPageState extends State<QuestionPage>
                 )
               ],
             ),
-            (rush)
-                ? Image.asset('assets/MayorGAnimaciones/MayorG-apurando.gif')
-                : Container()
+            StreamBuilder(
+              stream: streamQ,
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                return(flag)?Image.asset('assets/MayorGAnimaciones/MayorG-apurando.gif'):Container();
+                }
+            ),
           ],
         ),
       ),
@@ -151,8 +170,9 @@ class _QuestionPageState extends State<QuestionPage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: Text(
+              child: AutoSizeText(
                 questions.preguntas[n].pregunta,
+                maxLines: (questions.preguntas[n].imagenPregunta)? 2:7,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 17),
               ),
@@ -170,10 +190,7 @@ class _QuestionPageState extends State<QuestionPage>
     } else {
       return Container(
         height: size.height * 0.3,
-        child: FadeInImage(
-          placeholder:
-              AssetImage('assets/MayorGAnimaciones/Canon_animado.gif'),
-          image: imagen),
+        child: Image(image: imagen,),
       );
     }
   }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/filterServices/arma_service.dart';
@@ -169,7 +170,10 @@ Widget _getDropdown({String title, String jsonFrac, Function onChanged, Size siz
                 color: Colors.white,
                 border: Border(right: BorderSide(color:Colors.black.withOpacity(0.4)))
               ),
-              child: Center(child: Text(title,style: TextStyle(color: Theme.of(context).primaryColor, fontSize:Theme.of(context).textTheme.headline6.fontSize,fontWeight: FontWeight.bold) ))
+              child: Center(child: AutoSizeText(
+                title,
+                maxLines: 1,
+                style: TextStyle(color: Theme.of(context).primaryColor, fontSize:Theme.of(context).textTheme.headline6.fontSize,fontWeight: FontWeight.bold) ))
             ),
             Padding(
               padding: const EdgeInsets.all(5.0),

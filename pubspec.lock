@@ -22,13 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.2"
-  audioplayers:
+  auto_size_text:
     dependency: "direct main"
     description:
-      name: audioplayers
+      name: auto_size_text
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.15.1"
+    version: "2.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -378,13 +378,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  uuid:
-    dependency: transitive
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
   vector_math:
     dependency: transitive
     description:
