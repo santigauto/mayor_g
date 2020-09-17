@@ -1,4 +1,7 @@
 
+
+
+
 import 'dart:convert';
 import 'dart:math';
 
@@ -6,7 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 
+
+
 class Answers extends StatefulWidget {
+
   final int tipo;
   final int n;
   final ListaPreguntasNuevas questions;
@@ -16,6 +22,7 @@ class Answers extends StatefulWidget {
   @override
   _AnswersState createState() => _AnswersState();
 }
+
 
 class _AnswersState extends State<Answers> with SingleTickerProviderStateMixin{
 

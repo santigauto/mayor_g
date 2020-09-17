@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/search_delegate.dart';
+import 'package:mayor_g/src/views/question_page.dart';
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
@@ -104,8 +104,9 @@ class FriendsPage extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       onPressed: ()async{
         //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
-        ListaPreguntas preguntas = await QuestionsService().getQuestions(context, dni: PreferenciasUsuario().dni);
-        Navigator.pushReplacementNamed(context, 'question',arguments: {'n': 0,'questions': preguntas});
+        ListaPreguntasNuevas preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 10);
+        var route = new MaterialPageRoute(builder: (BuildContext context)=> QuestionPage(n: 0,questions: preguntas,));
+        Navigator.pushReplacement(context, route);
       }, 
       label: Text('¡Comenzar Duelo!'));
     }else return Container();

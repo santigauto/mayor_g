@@ -38,9 +38,9 @@ class _QuestionPageState extends State<QuestionPage>
   int tipo;
   int segundos;
 
-  StreamController _controller = new StreamController.broadcast();
+  StreamController<Object> _controller = new StreamController.broadcast();
 
-  Stream get streamQ => _controller.stream;
+  Stream<Object> get streamQ => _controller.stream;
   Function get sinkQ => _controller.sink.add;
 
   void disposeController() { 

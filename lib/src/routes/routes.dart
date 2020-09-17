@@ -16,12 +16,13 @@ import 'package:mayor_g/src/views/result_page.dart';
 import 'package:mayor_g/src/views/splash_page.dart';
 import 'package:mayor_g/src/views/login_page.dart';
 import 'package:mayor_g/src/views/menu_page.dart';
+import 'package:mayor_g/src/widgets/custom_drawer_flipped.dart';
 
 
 Map<String, WidgetBuilder> getApplicationRoutes(){
   return <String, WidgetBuilder>{
-    '/'               : (BuildContext context) => MenuPage(),
-    'menu'            : (BuildContext context) => MenuPage(),
+    '/'               : (BuildContext context) => CustomFlippedDrawer(child: MenuPage(),),
+    'menu'            : (BuildContext context) => CustomFlippedDrawer(child: MenuPage(),),
     'new_match'       : (BuildContext context) => NewMatchPage(),
     'ranking'         : (BuildContext context) => RankingOptionsPage(),
     'rank'            : (BuildContext context) => RankingPage(),
@@ -34,7 +35,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'search_people'   : (BuildContext context) => SearchPeoplePage(),
     'result'          : (BuildContext context) => ResultPage(),
     'suggestQuestion' : (BuildContext context) => SuggestQuestionPage(),
-    'ajustes'         : (BuildContext context) => AjustesPartidaPage()
+    'ajustes'         : (BuildContext context) => AjustesPartidaPage(),
   };
 }
 

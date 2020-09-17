@@ -36,12 +36,12 @@ class MenuPage extends StatelessWidget{
     return WillPopScope(
       onWillPop: _back,
       child: Scaffold(
-        drawer: Container(width: 300, child: SideMenuWidget()),
+        /* drawer: Container(width: 300, child: SideMenuWidget()), */
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
             HeaderCurvo(),
-            SafeArea(
+            /* SafeArea(
               child: Builder(
                 builder: (context) => IconButton(
                   color: Colors.white,
@@ -50,7 +50,7 @@ class MenuPage extends StatelessWidget{
                     => Scaffold.of(context).openDrawer()
                 ),
               ),
-            ),
+            ), */
             Center(
               child: SingleChildScrollView(
                 child: Column(

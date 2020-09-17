@@ -24,7 +24,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
 
   Camara camaraController = new Camara();
 
-  Pregunta _pregunta = new Pregunta();
+  PreguntaNueva _pregunta = new PreguntaNueva();
   List<String> _correctas = ['','','','',''];
   List<String> _incorrectas = ['','','','',''];
 
@@ -68,9 +68,9 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
               _createIncorrects(),
               SizedBox(height: 25),
 
-              _pregunta.foto == null || _pregunta.foto.isEmpty ? Container() :
+              _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() :
                 Image.memory(
-                  base64Decode(_pregunta.foto), fit: BoxFit.cover,
+                  base64Decode(_pregunta.imagen), fit: BoxFit.cover,
                 ),
               RaisedButton.icon(
                 icon: Icon(Icons.camera),
@@ -107,7 +107,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   }
 
   uploadImage()async{
-    _pregunta.foto = await camaraController.getImage();
+    _pregunta.imagen = await camaraController.getImage();
     setState((){});
   }
 
