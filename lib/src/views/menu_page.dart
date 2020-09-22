@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
-import 'package:mayor_g/src/widgets/side_menu_widget.dart';
 
 class MenuPage extends StatelessWidget{
   

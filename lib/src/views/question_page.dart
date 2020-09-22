@@ -65,8 +65,7 @@ class _QuestionPageState extends State<QuestionPage>
     );
 
     controller.addListener(() {
-      if(controller.value < 0.25 && flag == false){
-        print('hola');
+      if(controller.value < 0.25 && flag == false){ //SI SE ESTA ACABANDO EL TIEMPO, SE LEVANTARA EL FLAG PARA APURAR AL JUGADOR
           flag = true;
           sinkQ(flag);
       }
@@ -94,11 +93,6 @@ class _QuestionPageState extends State<QuestionPage>
     //DECLARACION DE VARIABLES
 
     final size = MediaQuery.of(context).size; //SIZES DEL CANVAS
-
-    /*final Map mapa = ModalRoute.of(context).settings.arguments; //ARGUMENTOS QUE RESIVE LA PAGINA 
-    //DEFINO LOS PARAMETROS QUE LLEGAN DE LA PAGINA ANTERIOR
-     questions = mapa['questions'];
-    n= mapa['n']; */
 
     //SI LA IMAGEN EXISTE, LA BUSCARÁ
     if (questions.preguntas[n].imagen != null ||
@@ -188,9 +182,17 @@ class _QuestionPageState extends State<QuestionPage>
     if (imagenString == '' || imagenString == null || imagenString == 'null') {
       return Container();
     } else {
-      return Container(
-        height: size.height * 0.3,
-        child: Image(image: imagen,),
+      return Column(
+        children: [
+          Divider(color: Colors.black.withOpacity(0.7),),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              height: size.height * 0.3,
+              child: Image(image: imagen,),
+            ),
+          ),
+        ],
       );
     }
   }
