@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
@@ -25,7 +26,6 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   bool _canBeDragged = false;
-  final double maxSlide = 300.0;
 
   Animation rotation;
 
@@ -53,12 +53,15 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
   @override
   Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+    final maxSlide = size.width*0.75;
+    
     return GestureDetector(
       onHorizontalDragStart: _onDragStart,
       onHorizontalDragUpdate: _onDragUpdate,
       onHorizontalDragEnd: _onDragEnd,
       behavior: HitTestBehavior.translucent,
-      onTap: toggle,
       child: AnimatedBuilder(
         animation: animationController,
         builder: (context, _) {
@@ -67,9 +70,19 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
             child: Stack(
               children: <Widget>[
                 BackgroundWidget(),
+                Transform.translate(
+                  offset: Offset(maxSlide * animationController.value, 0),
+                  child: Transform(
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateY(-math.pi * animationController.value / 2),
+                    alignment: Alignment.centerLeft,
+                    child: widget.child,
+                  ),
+                ),
                 Positioned(
                   top: MediaQuery.of(context).size.height*0.25,
-                  left: animationController.value * maxSlide /2,
+                  left: (-250) + animationController.value * (maxSlide + 100)  ,
                   child: Transform.rotate(
                     angle:rotation.value,
                     child: Container(
@@ -87,17 +100,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(maxSlide * animationController.value, 0),
-                  child: Transform(
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateY(-math.pi * animationController.value / 2),
-                    alignment: Alignment.centerLeft,
-                    child: widget.child,
+                    child: MyDrawer(width:maxSlide),
                   ),
                 ),
                 Positioned(
@@ -125,13 +128,13 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_canBeDragged) {
-      double delta = details.primaryDelta / maxSlide;
+      double delta = details.primaryDelta / MediaQuery.of(context).size.width *0.75;
       animationController.value += delta;
     }
   }
 
   void _onDragEnd(DragEndDetails details) {
-    //I have no idea what it means, copied from Drawer
+
     double _kMinFlingVelocity = 365.0;
 
     if (animationController.isDismissed || animationController.isCompleted) {
@@ -151,11 +154,15 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 }
 
 class MyDrawer extends StatelessWidget {
+  final double width;
+  MyDrawer({@required this.width});
+
   final prefs = new PreferenciasUsuario();
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300.0,
+      width: width,
       child: Column(
         children: <Widget>[
           _drawerProfile(context,prefs),
@@ -198,24 +205,30 @@ class MyDrawer extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
-                ImagenPerfil(photoData: prefs.foto,radius: 20,),
+                ImagenPerfil(photoData: prefs.foto,radius: 25,),
                 SizedBox(width: 7,),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  //nombre de usuario
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      prefs.apellido,
-                      style: TextStyle(fontSize: 15, color: Colors.white)),
-                    Text(
-                      prefs.nombre,
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    )
-                  ],
-                ),
-                Expanded(child: Container()),
+                Expanded(child: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    //nombre de usuario
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      AutoSizeText(
+                        '${prefs.apellido}',
+                        maxLines: 1,
+                        maxFontSize: 20,
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                      AutoSizeText(
+                        '${prefs.nombre}',
+                        maxLines: 1,
+                        minFontSize: 12,
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      )
+                    ],
+                  ),
+                )),
+                IconButton(icon: Icon(Icons.edit), onPressed: (){})
               ],
             ), 
           ],
