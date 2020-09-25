@@ -21,6 +21,7 @@ class NewMatchPage extends StatefulWidget {
 class _NewMatchPageState extends State<NewMatchPage> {
 
   bool _isLoading = false;
+  bool _modalActivated = false;
   bool _modoClasico = true;
   bool _modoDuelo = true;
   bool _selecOponente = true;
@@ -72,6 +73,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 ],
               ),
             ),
+            (_modalActivated)?_modal(context):Container(),
             (_isLoading)
               ? LoadingWidget(
                 caption: Text('Cargando partida, aguarde...',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)),
@@ -221,8 +223,9 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   _selecAlAzar = false;
                   _canPlay = false;
                   _selecOponente = true;
+                  _modalActivated = true;
                 });
-                modal.mainBottomSheet(context, preguntas);
+                //modal.mainBottomSheet(context, preguntas);
               },
               textColor: Colors.white,
               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -259,6 +262,56 @@ class _NewMatchPageState extends State<NewMatchPage> {
   }else{
     return Container();
   }
+}
+
+Widget _modal(context){
+  return NotificationListener<OverscrollIndicatorNotification>(
+    onNotification: (notification){
+      notification.disallowGlow();
+      return false;
+    },
+      child: DraggableScrollableSheet(
+      initialChildSize: 0.3,
+      minChildSize: 0.3,
+      maxChildSize: 0.8,
+      builder: (context,controller){
+        return Column(
+          children: [
+            Container(
+              color: Theme.of(context).primaryColor,
+              height: 60.0,
+              child: Stack(
+                children: [
+                  ListTile(
+                  title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                  trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
+                  leading: IconButton(icon: Icon(Icons.keyboard_arrow_up,color: Colors.white,), onPressed: (){setState(() {
+                    _modalActivated = false;
+                  });})),
+                  ListView(
+                    itemExtent: 60.0,
+                    controller: controller,
+                    children:[
+                      Container(height: 80.0,width: double.infinity,)
+                    ] 
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index){
+                  return ListTile(
+                    title: Text('tile numero $index'),
+                  );
+                },
+              ),
+            )
+          ],
+        );
+    }),
+  );
 }
 
 }
