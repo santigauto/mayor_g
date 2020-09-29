@@ -34,7 +34,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
   void _playAction()async{
     if(_canPlay == true){
-       preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
+       preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 10);
       if(preguntas == null){
         setState(() {
         _isLoading = false;
@@ -73,7 +73,25 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 ],
               ),
             ),
-            (_modalActivated)?_modal(context):Container(),
+            (_modalActivated)
+              ?Stack(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        _modalActivated = !_modalActivated;
+                      });
+                    },
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      color: Colors.black.withOpacity(0.5),
+                    )
+                    ),
+                  _modal(context)
+                ]
+                )
+              :Container(),
             (_isLoading)
               ? LoadingWidget(
                 caption: Text('Cargando partida, aguarde...',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)),
@@ -273,39 +291,70 @@ Widget _modal(context){
       child: DraggableScrollableSheet(
       initialChildSize: 0.3,
       minChildSize: 0.3,
-      maxChildSize: 0.8,
+      maxChildSize: 1.0,
       builder: (context,controller){
         return Column(
           children: [
             Container(
-              color: Theme.of(context).primaryColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                color: Theme.of(context).primaryColor,
+              ),
               height: 60.0,
               child: Stack(
                 children: [
-                  ListTile(
-                  title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-                  trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
-                  leading: IconButton(icon: Icon(Icons.keyboard_arrow_up,color: Colors.white,), onPressed: (){setState(() {
-                    _modalActivated = false;
-                  });})),
+                  Padding(
+                    padding: const EdgeInsets.only(top:5.0),
+                    child: ListTile(
+                      title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                      trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
+                      leading: IconButton(
+                        icon: Icon(Icons.keyboard_arrow_up,color: Colors.white,), 
+                        onPressed: (){
+                          print(_modalActivated);
+                          _modalActivated = !_modalActivated;
+                          print(_modalActivated);
+                          setState(() {});})),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.drag_handle, color: Colors.white)
+                    ],
+                  ),
                   ListView(
-                    itemExtent: 60.0,
                     controller: controller,
                     children:[
-                      Container(height: 80.0,width: double.infinity,)
+                      ListTile(
+                    trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.transparent,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
+                    leading: Padding(
+                      padding: const EdgeInsets.only(bottom:8.0),
+                      child: IconButton(
+                        iconSize: 30,
+                        icon: Icon(Icons.keyboard_arrow_up,color: Colors.transparent,), 
+                        onPressed: (){
+                          print(_modalActivated);
+                          _modalActivated = !_modalActivated;
+                          print(_modalActivated);
+                          setState(() {});}),
+                    )),
                     ] 
                   ),
                 ],
               ),
             ),
             Flexible(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index){
-                  return ListTile(
-                    title: Text('tile numero $index'),
-                  );
-                },
+              child: Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index){
+                    return ListTile(
+                      title: Text('tile numero $index'),
+                    );
+                  },
+                ),
               ),
             )
           ],

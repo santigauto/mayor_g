@@ -97,26 +97,9 @@ class ResultPage extends StatelessWidget {
       ));
   }
     final size = MediaQuery.of(context).size;
-
-
     return WillPopScope(
       onWillPop: _back,
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () async{
-            streamBloc.streamSink(true);
-            if (n % 5 == 0 /* && n % 10 != 0 */ && n != 0){
-              var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
-              questions.preguntas.addAll(aux.preguntas);
-            }
-            var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: questions,n:n));
-            Navigator.pushReplacement(context,route);
-          }, 
-          icon: Icon(Icons.keyboard_arrow_right),
-          label: Text('Seguir'),
-        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: false,
@@ -173,6 +156,34 @@ class ResultPage extends StatelessWidget {
                 SizedBox(height: 40)
               ],
             ),
+            Positioned(
+              bottom: 20,
+              right: 30,
+              child: RaisedButton.icon(
+                color: Theme.of(context).primaryColor,
+                shape: StadiumBorder(),
+                onPressed: () async{
+                  streamBloc.streamSink(true);
+                  int largo = questions.preguntas.length;
+                  if (n == (largo-5)){
+                    var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 10);
+                    questions.preguntas.addAll(aux.preguntas);
+                    for(int i = 0; i < (largo - 5) ; i++){
+                      questions.preguntas.removeAt(0);
+                      n--;
+                    }
+                  }
+                  var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: questions,n:n));
+                  Navigator.pushReplacement(context,route);
+                },
+                textColor: Colors.white,
+                label: Icon(Icons.arrow_forward_ios),
+                icon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Continuar'),
+                ),
+              ),
+            ),  
             StreamBuilder(
               stream: streamBloc.streamStream ,
               initialData: false,
