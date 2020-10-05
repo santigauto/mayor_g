@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/scrolleable_animated_bottom_sheet.dart';
 
 
 
@@ -51,58 +51,14 @@ class Modal{
     gente.forEach((persona){
       persona.addAll({'seleccion':false});
     });
-    double _height = MediaQuery.of(context).size.height*0.3;
-    IconData _iconData = Icons.keyboard_arrow_up;
+    /* double _height = MediaQuery.of(context).size.height*0.3;
+    IconData _iconData = Icons.keyboard_arrow_up; */
 //---CUERPO DEL MODAL---
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context, 
       builder: (context){
-        return StreamBuilder<Object>(
-          stream: streamStream,
-          builder: (context, snapshot) {
-            return Container(
-              height: _height,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topRight: Radius.circular(20) ,topLeft: Radius.circular(20) ,),
-                color: Theme.of(context).primaryColor
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        child: ListTile(
-                          title: Text('Amigos',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-                          trailing: IconButton(icon: Icon(Icons.person_add,color: Colors.white,), onPressed: (){Navigator.popAndPushNamed(context, 'search');}),
-                          leading: IconButton(icon: Icon(_iconData,color: Colors.white,), onPressed: (){
-                            if(_height < MediaQuery.of(context).size.height){
-                              _height = MediaQuery.of(context).size.height;
-                              _iconData = Icons.keyboard_arrow_down;
-                            }else{
-                              _height = MediaQuery.of(context).size.height*0.3;
-                              _iconData = Icons.keyboard_arrow_up;
-                            }
-                            streamSink(_personaSeleccionada);
-                          }),
-                        )
-                        ),
-                      Expanded(
-                        child: Stack(
-                          children: <Widget>[
-                            BackgroundWidget(),
-                            listItem(context, gente),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                _selecionado(context, preguntas)  
-                ],
-              ),
-            );
-          }
-        );
-      });
+        return DraggableAnimatedModal(()=> Navigator.pop(context));});
   }
 
 //---WIDGET LISTA DE AMIGOS---

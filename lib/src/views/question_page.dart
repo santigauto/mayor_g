@@ -137,12 +137,6 @@ class _QuestionPageState extends State<QuestionPage>
                 )
               ],
             ),
-            StreamBuilder(
-              stream: streamQ,
-              builder: (BuildContext context, AsyncSnapshot snapshot){
-                return(flag)?Image.asset('assets/MayorGAnimaciones/MayorG-apurando.gif'):Container();
-                }
-            ),
           ],
         ),
       ),

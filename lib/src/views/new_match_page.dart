@@ -1,5 +1,7 @@
-import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
+
+import 'package:bordered_text/bordered_text.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
@@ -7,7 +9,6 @@ import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
 import 'package:mayor_g/src/widgets/pulse_animator.dart';
-import 'package:mayor_g/src/widgets/scrollable_exhibition_bottom_sheet.dart';
 /* import 'package:mayor_g/src/widgets/scrollable_exhibition_bottom_sheet.dart'; */
 
 class NewMatchPage extends StatefulWidget {
@@ -19,16 +20,17 @@ class NewMatchPage extends StatefulWidget {
 
 class _NewMatchPageState extends State<NewMatchPage> {
   bool _isLoading = false;
-  bool _modalActivated = false;
   bool _modoClasico = true;
   bool _modoDuelo = true;
   bool _selecOponente = true;
   bool _selecAlAzar = true;
   bool _canPlay = false;
   ListaPreguntasNuevas preguntas;
+  
 
   @override
   void initState() {
+
     super.initState();
   }
 
@@ -75,27 +77,6 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 ],
               ),
             ),
-            (_modalActivated)
-                ? Stack(children: <Widget>[
-                    GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _modalActivated = !_modalActivated;
-                          });
-                        },
-                        child: Container(
-                          height: double.infinity,
-                          width: double.infinity,
-                          color: Colors.black.withOpacity(0.5),
-                        )),
-                    /* SafeArea(child: _modal(context)) */
-                    DraggableAnimatedModal((){
-                                  _modalActivated = !_modalActivated;
-                                  setState(() {});
-                                })
-                      /* ScrollableExhibitionSheet() */
-                  ])
-                : Container(),
             (_isLoading)
                 ? LoadingWidget(
                     caption: Text('Cargando partida, aguarde...',
@@ -247,9 +228,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     _selecAlAzar = false;
                     _canPlay = false;
                     _selecOponente = true;
-                    _modalActivated = true;
                   });
-                  //modal.mainBottomSheet(context, preguntas);
+                  modal.mainBottomSheet(context, preguntas);
                 },
                 textColor: Colors.white,
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -290,124 +270,4 @@ class _NewMatchPageState extends State<NewMatchPage> {
 
 }
 
-class DraggableAnimatedModal extends StatefulWidget {
-  final Function dismissModal;
-  DraggableAnimatedModal(this.dismissModal);
-  @override
-  _DraggableAnimatedModalState createState() => _DraggableAnimatedModalState();
-}
 
-class _DraggableAnimatedModalState extends State<DraggableAnimatedModal> {
-  @override
-  Widget build(BuildContext context) {
-    double initialPercentage = 0.3;
-    return NotificationListener<OverscrollIndicatorNotification>(
-      onNotification: (notification) {
-        notification.disallowGlow();
-        return false;
-      },
-      child:  Positioned.fill(
-              child: DraggableScrollableSheet(
-            initialChildSize: initialPercentage,
-            minChildSize: initialPercentage,
-            builder: (context, scrollController) {
-              return AnimatedBuilder(
-                animation: scrollController,
-                builder: (context, _ ) {
-                  double percentage = initialPercentage;
-                if (scrollController.hasClients) {
-                  percentage = (scrollController.position.viewportDimension) /
-                      (MediaQuery.of(context).size.height);
-                }
-                double scaledPercentage =
-                    (percentage - initialPercentage) / (1 - initialPercentage);
-                  return Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)),
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        height: 70.0,
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: ListTile(
-                                  title: Text(
-                                    'Amigos',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  leading: IconButton(
-                                      icon: Icon(
-                                        Icons.search,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.popAndPushNamed(
-                                            context, 'search');
-                                      }),
-                                  trailing: IconButton(
-                                      icon: Icon(
-                                        Icons.clear,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: widget.dismissModal)),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(Icons.drag_handle, color: Colors.white)
-                              ],
-                            ),
-                            ListView(controller: scrollController, children: [
-                              ListTile(
-                                  leading: IconButton(
-                                      icon: Icon(
-                                        Icons.person_add,
-                                        color: Colors.transparent,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.popAndPushNamed(
-                                            context, 'search');
-                                      }),
-                                  trailing: Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 8.0),
-                                    child: IconButton(
-                                        iconSize: 30,
-                                        icon: Icon(
-                                          Icons.keyboard_arrow_up,
-                                          color: Colors.transparent,
-                                        ),
-                                        onPressed: widget.dismissModal,
-                                  )),)
-                            ]),
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: Container(
-                          color: Colors.white,
-                          child: ListView.builder(
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text('tile numero $index'),
-                              );
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                }
-              );
-          }),
-    ));
-}
-}
