@@ -58,7 +58,38 @@ class Modal{
       isScrollControlled: true,
       context: context, 
       builder: (context){
-        return DraggableAnimatedModal(()=> Navigator.pop(context));});
+        return DraggableAnimatedModal(
+          modalBody:Container(
+            color: Colors.white,
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: ()=>print(index),
+                  title: Text('tile numero $index'),
+                );
+              },
+            ),
+          ),
+          trailing: IconButton(
+            iconSize: 30,
+            icon: Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+            onPressed: ()=> Navigator.pop(context),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () =>Navigator.popAndPushNamed(context, 'search')
+          ),
+          title: Text(
+            'Amigos',
+            style: TextStyle(color: Colors.white,fontSize: Theme.of(context).textTheme.headline6.fontSize),
+          ),);});
   }
 
 //---WIDGET LISTA DE AMIGOS---

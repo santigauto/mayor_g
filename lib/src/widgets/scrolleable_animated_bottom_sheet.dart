@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
 class DraggableAnimatedModal extends StatefulWidget {
-  final Function dismissModal;
-  DraggableAnimatedModal(this.dismissModal);
+  ///The [trailing] the [DraggableAnimatedModal] is a positioned widget which is in the topRight of the modal, 
+  ///it is thought for a small widget like an [IconButton] or an [CircleAvatar].
+  final Widget trailing;
+  ///The [leading] the [DraggableAnimatedModal] is a positioned widget which is in the topRight of the modal, 
+  ///it is thought for a small widget like an [IconButton] or an [CircleAvatar].
+  final Widget leading;
+  ///The [title] is a widget spotted in the middle of the header of the modal.
+  final Widget title;
+  ///The [modalBody] is a widget which will be the flexible content of the modal, it is thought for a scrollable widget
+  ///like the [ListView], [SingleChildScrollView] or the [CustomScrollView]
+  final Widget modalBody;
+  DraggableAnimatedModal({this.trailing, this.leading, this.title, this.modalBody});
   @override
   _DraggableAnimatedModalState createState() => _DraggableAnimatedModalState();
 }
@@ -12,7 +22,8 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
   @override
   Widget build(BuildContext context) {
     double initialPercentage = 0.4;
-    double border = 15.0;
+    double border = 20.0;
+    double size = 17.0;
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (notification) {
         notification.disallowGlow();
@@ -31,14 +42,18 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
                 percentage = (scrollController.position.viewportDimension) /
                   (MediaQuery.of(context).size.height);
               }
+              double scaledPercentage =
+                  (percentage - initialPercentage) / (1 - initialPercentage);
+              double auxSize = (size * scaledPercentage <= 0)? 0:size * scaledPercentage;
+              double auxBorder = (percentage > 0.7)? ((MediaQuery.of(context).size.height - scrollController.position.viewportDimension) * border) / (MediaQuery.of(context).size.height *0.3): border;
               return Stack(
                 children: [
                   Container(
                     decoration: BoxDecoration(
                       color:Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.only(
-                        topLeft:(percentage > 0.7)?Radius.circular(border * (1-percentage)):Radius.circular(border),
-                        topRight:(percentage > 0.7)?Radius.circular(border * (1-percentage)):Radius.circular(border),)
+                        topLeft: Radius.circular(auxBorder),
+                        topRight: Radius.circular(auxBorder),)
                     ),
                     height:double.infinity,width:double.infinity,
                     child: ListView(
@@ -48,79 +63,50 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
                   Column(
                     children: [
                       IgnorePointer(
-                        child: Container(
-                          height: 70.0,
-                          child: Stack(
-                            children: [
-                              IgnorePointer(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: ListTile(
-                                    title: Text(
-                                      'Amigos',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white,fontSize: Theme.of(context).textTheme.headline6.fontSize),
-                                    ),
-                                  )
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: Column(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white.withOpacity(1 - percentage),
-                                    ),
-                                    margin: EdgeInsets.only(top:10),
-                                    height: 4.0,
-                                    width: 90.0,
-                                  )
+                                  SizedBox(height: auxSize),
+                                  ListTile(
+                                    title: (widget.title != null)? Container(width:double.infinity, child: Center(child:widget.title)) : Container()
+                                  ),
                                 ],
-                              ),
-                            ],
-                          ),
+                              )
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white.withOpacity(1 - percentage),
+                                  ),
+                                  margin: EdgeInsets.only(top:10),
+                                  height: 4.0,
+                                  width: 90.0,
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                       Flexible(
-                        child: Container(
-                          color: Colors.white,
-                          child: ListView.builder(
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text('tile numero $index'),
-                              );
-                            },
-                          ),
-                        ),
+                        child: widget.modalBody
                       )
                     ],
                   ),
                   Positioned(
-                    top: 10,
-                    right: 15,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Navigator.popAndPushNamed(
-                          context, 'search');
-                  }),),
+                    top: 10 + auxSize,
+                    left: 0,
+                    child: (widget.leading != null)? widget.leading : Container()),
                   Positioned(
-                    top: 10,
-                    left: 15,
-                    child: IconButton(
-                      iconSize: 30,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Colors.white,
-                      ),
-                      onPressed: widget.dismissModal,
-                    )),
+                    top: 10 + auxSize,
+                    right: 0,
+                    child: (widget.trailing != null)? widget.trailing : Container()),
                 ],
               );
             }
