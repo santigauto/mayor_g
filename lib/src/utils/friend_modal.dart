@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
+import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/scrolleable_animated_bottom_sheet.dart';
 
 
@@ -15,7 +16,6 @@ import 'package:mayor_g/src/widgets/scrolleable_animated_bottom_sheet.dart';
 
 class Modal{
 
-  
   List<Map<String,dynamic>> gente = [   // AUXILIAR HARCODEADO(NO SE VAN A USAR) 
     {'nombre':'Carlos','grado':'VS'}, 
     {'nombre':'Raul','grado':'CT'}, 
@@ -23,7 +23,9 @@ class Modal{
     {'nombre':'Jose','grado':'TT'},
     {'nombre':'Ramon','grado':'VS'},
     {'nombre':'Oscar','grado':'VS'}, 
-    {'nombre':'Miguel','grado':'CT'}, 
+    {'nombre':'Miguel','grado':'CT'},
+    {'nombre':'Fernando','grado':'VP'}, 
+    {'nombre':'Julieta','grado':'CR'},  
     {'nombre':'Pedro','grado':'SG'}, 
     {'nombre':'Uriel','grado':'TT'},];
   bool _isSelected = false;                                            // BANDERA QUE HABILITARA EL FOOTER DE SELECCION DE PERSONA
@@ -51,54 +53,57 @@ class Modal{
     gente.forEach((persona){
       persona.addAll({'seleccion':false});
     });
-    /* double _height = MediaQuery.of(context).size.height*0.3;
-    IconData _iconData = Icons.keyboard_arrow_up; */
 //---CUERPO DEL MODAL---
     showModalBottomSheet(
       isScrollControlled: true,
       context: context, 
       builder: (context){
-        return DraggableAnimatedModal(
-          modalBody:Container(
-            color: Colors.white,
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: ()=>print(index),
-                  title: Text('tile numero $index'),
-                );
-              },
-            ),
-          ),
-          trailing: IconButton(
-            iconSize: 30,
-            icon: Icon(
-              Icons.keyboard_arrow_down,
-              color: Colors.white,
-            ),
-            onPressed: ()=> Navigator.pop(context),
-          ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: () =>Navigator.popAndPushNamed(context, 'search')
-          ),
-          title: Text(
-            'Amigos',
-            style: TextStyle(color: Colors.white,fontSize: Theme.of(context).textTheme.headline6.fontSize),
-          ),);});
+        return StreamBuilder<Object>(
+          stream: streamStream,
+          builder: (context, snapshot) {
+            return DraggableAnimatedModal(
+              modalBody:Container(
+                color: Colors.transparent,
+                child: Stack(
+                  children: [
+                    BackgroundWidget(),
+                    listItem(context, gente),
+                    _selecionado(context, preguntas)
+                  ],
+                )
+              ),
+              trailing: IconButton(
+                iconSize: 30,
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white,
+                ),
+                onPressed: ()=> Navigator.pop(context),
+              ),
+              leading: IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                onPressed: () =>Navigator.popAndPushNamed(context, 'search')
+              ),
+              title: Text(
+                'Amigos',
+                style: TextStyle(color: Colors.white,fontSize: Theme.of(context).textTheme.headline6.fontSize),
+              ),);
+          }
+        );});
   }
 
 //---WIDGET LISTA DE AMIGOS---
   Widget listItem(context, gente){
     return 
         ListView.builder(
-          itemCount: gente.length,
+          itemCount: gente.length + 1,
           itemBuilder: (context, x){
-            return _listItem(x);
+            return (x == gente.length)?
+             Container(color: Colors.white.withOpacity(0.5),child: ListTile()):
+             _listItem(x);
           });
   }
 

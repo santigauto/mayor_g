@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
@@ -11,6 +12,7 @@ import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
+import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
 class _Bloc{
   StreamController _controller = StreamController.broadcast();
@@ -96,6 +98,7 @@ class ResultPage extends StatelessWidget {
         ],
       ));
   }
+    
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _back,
@@ -126,35 +129,36 @@ class ResultPage extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: size.height * 0.4,
-                  width: size.height * 0.4,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(imagen),fit: BoxFit.fill),
+            Positioned.fill(
+              top:(resultado) ? size.height * 0.07 : size.height * 0.03,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: size.height * 0.4,
+                    width: size.height * 0.4,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(image: AssetImage(imagen),fit: BoxFit.fill),
+                    ),
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      color: Theme.of(context).primaryColor,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
-                        child: _resultadoText(questions, n, resultado, context, prefs, size),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Card(
+                        color: Theme.of(context).primaryColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
+                          child: _resultadoText(questions, n, resultado, context, prefs, size),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 40)
-              ],
+                ],
+              ),
             ),
             Positioned(
               bottom: 20,
@@ -177,10 +181,12 @@ class ResultPage extends StatelessWidget {
                   Navigator.pushReplacement(context,route);
                 },
                 textColor: Colors.white,
-                label: Icon(Icons.arrow_forward_ios),
+                label: PulseAnimatorWidget(begin:0.5,child: Icon(Icons.arrow_forward_ios)),
                 icon: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Continuar'),
+                  child: PulseAnimatorWidget(
+                    begin: 0.5,
+                    child: Text('Continuar')),
                 ),
               ),
             ),  
@@ -254,15 +260,16 @@ class ResultPage extends StatelessWidget {
         child: Container(
           width: double.infinity,
           child: FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
             disabledColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
               side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
             ),
             onPressed: null,
-            child: Text(
+            child: AutoSizeText(
               question.respuestas[question.respuestaCorrecta],
+              maxLines: 3,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14),
             ),

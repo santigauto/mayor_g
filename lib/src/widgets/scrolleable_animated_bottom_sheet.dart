@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 class DraggableAnimatedModal extends StatefulWidget {
   ///The [trailing] the [DraggableAnimatedModal] is a positioned widget which is in the topRight of the modal, 
   ///it is thought for a small widget like an [IconButton] or an [CircleAvatar].
@@ -12,15 +12,27 @@ class DraggableAnimatedModal extends StatefulWidget {
   ///The [modalBody] is a widget which will be the flexible content of the modal, it is thought for a scrollable widget
   ///like the [ListView], [SingleChildScrollView] or the [CustomScrollView]
   final Widget modalBody;
-  DraggableAnimatedModal({this.trailing, this.leading, this.title, this.modalBody});
+  /// Determinates if the top drag handler appears.
+  /// [dragHandler] is [true] by default.
+  final bool dragHandler;
+  ///This [DraggableAnimatedModal] was thought to being used as the content of a [showModalBottomSheet]
+///to obtain the full modal dragging manipulation. However, it also can be implemented as an independent widget.
+  DraggableAnimatedModal({this.trailing, this.leading, this.title, this.modalBody, this.dragHandler});
+
   @override
   _DraggableAnimatedModalState createState() => _DraggableAnimatedModalState();
 }
 
 class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
 
+  
+  
+
   @override
   Widget build(BuildContext context) {
+    bool auxDragHandler = true;
+    if(widget.dragHandler == false) auxDragHandler = false;
+    print(auxDragHandler);
     double initialPercentage = 0.4;
     double border = 20.0;
     double size = 17.0;
@@ -29,88 +41,91 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
         notification.disallowGlow();
         return false;
       },
-      child: Positioned.fill(
-        child: DraggableScrollableSheet(
-          initialChildSize: initialPercentage,
-          minChildSize: initialPercentage,
-          builder: (context, scrollController) {
-          return AnimatedBuilder(
-            animation: scrollController,
-            builder: (context, _ ) {
-              double percentage = initialPercentage;
-              if (scrollController.hasClients) {
-                percentage = (scrollController.position.viewportDimension) /
-                  (MediaQuery.of(context).size.height);
-              }
-              double scaledPercentage =
-                  (percentage - initialPercentage) / (1 - initialPercentage);
-              double auxSize = (size * scaledPercentage <= 0)? 0:size * scaledPercentage;
-              double auxBorder = (percentage > 0.7)? ((MediaQuery.of(context).size.height - scrollController.position.viewportDimension) * border) / (MediaQuery.of(context).size.height *0.3): border;
-              return Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color:Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(auxBorder),
-                        topRight: Radius.circular(auxBorder),)
-                    ),
-                    height:double.infinity,width:double.infinity,
-                    child: ListView(
-                      controller: scrollController,
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      IgnorePointer(
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: auxSize),
-                                  ListTile(
-                                    title: (widget.title != null)? Container(width:double.infinity, child: Center(child:widget.title)) : Container()
-                                  ),
-                                ],
-                              )
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white.withOpacity(1 - percentage),
-                                  ),
-                                  margin: EdgeInsets.only(top:10),
-                                  height: 4.0,
-                                  width: 90.0,
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: widget.modalBody
-                      )
-                    ],
-                  ),
-                  Positioned(
-                    top: 10 + auxSize,
-                    left: 0,
-                    child: (widget.leading != null)? widget.leading : Container()),
-                  Positioned(
-                    top: 10 + auxSize,
-                    right: 0,
-                    child: (widget.trailing != null)? widget.trailing : Container()),
-                ],
-              );
+      child: DraggableScrollableSheet(
+        initialChildSize: initialPercentage,
+        minChildSize: initialPercentage,
+        builder: (context, scrollController) {
+        return AnimatedBuilder(
+          animation: scrollController,
+          builder: (context, _ ) {
+            double percentage = initialPercentage;
+            if (scrollController.hasClients) {
+              percentage = (scrollController.position.viewportDimension) /
+                (MediaQuery.of(context).size.height);
             }
-          );
-        }),
-      ));
-}}
+            double scaledPercentage =
+                (percentage - initialPercentage) / (1 - initialPercentage);
+            double auxSize = (size * scaledPercentage <= 0)? 0:size * scaledPercentage;
+            double auxBorder = (percentage > 0.7)? ((MediaQuery.of(context).size.height - scrollController.position.viewportDimension) * border) / (MediaQuery.of(context).size.height *0.3): border;
+            return Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color:Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(auxBorder),
+                      topRight: Radius.circular(auxBorder),)
+                  ),
+                  height:double.infinity,width:double.infinity,
+                  child: ListView(
+                    controller: scrollController,
+                  ),
+                ),
+                Column(
+                  children: [
+                    IgnorePointer(
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Column(
+                              children: [
+                                SizedBox(height: auxSize),
+                                ListTile(
+                                  title: (widget.title != null)? Container(width:double.infinity, child: Center(child:widget.title)) : Container()
+                                ),
+                              ],
+                            )
+                          ),
+                          (auxDragHandler)?_dragHandler(percentage): Container(),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: widget.modalBody
+                    )
+                  ],
+                ),
+                Positioned(
+                  top: 10 + auxSize,
+                  left: 0,
+                  child: (widget.leading != null)? widget.leading : Container()),
+                Positioned(
+                  top: 10 + auxSize,
+                  right: 0,
+                  child: (widget.trailing != null)? widget.trailing : Container()),
+              ],
+            );
+          }
+        );
+      }));
+}
+Widget _dragHandler(double percentage){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white.withOpacity(1 - percentage),
+        ),
+        margin: EdgeInsets.only(top:10),
+        height: 4.0,
+        width: 90.0,
+      )
+    ],
+  );
+}
+
+}
