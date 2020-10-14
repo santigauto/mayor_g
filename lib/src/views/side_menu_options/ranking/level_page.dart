@@ -53,6 +53,12 @@ class LevelPage extends StatelessWidget {
                   AnimatedProgressBar(
                     fullValue: 200,
                     reachedValue: 50,
+                    caption: 'Próximo Nivel',
+                    title: Row(
+                      children: <Widget>[
+                        Text('Proximo Nivel: - BRONCE II -',textAlign: TextAlign.start,style: TextStyle(color: Colors.white),),
+                      ],
+                    ),
                   ),
                   Divider(),
                   Row(

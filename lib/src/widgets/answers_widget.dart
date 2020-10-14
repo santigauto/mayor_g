@@ -147,7 +147,7 @@ List<Widget> _respuestas(Size size, aux) {
               child: Container(
                 width: double.infinity,
                 child: FlatButton(
-                  padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
