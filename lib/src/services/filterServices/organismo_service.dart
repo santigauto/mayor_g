@@ -7,7 +7,7 @@ class OrganismoService extends ServiceFiltros{
   OrganismoService();
 
   @override
-  final apiRoute = 'api/Json/Obtener_Organismos';
+  final apiRoute = '/api/Json/Obtener_Organismos';
 
   @override
   List getLista(_decodedData) {

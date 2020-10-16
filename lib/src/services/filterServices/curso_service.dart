@@ -6,7 +6,7 @@ class CursoService extends ServiceFiltros{
   CursoService();
 
   @override
-  final apiRoute = 'api/Json/Obtener_Cursos';
+  final apiRoute = '/api/Json/Obtener_Cursos';
   
   @override
   List getLista(_decodedData) {

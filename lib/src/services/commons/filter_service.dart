@@ -16,10 +16,9 @@ abstract class ServiceFiltros<T>{
 
   Future<List<T>> getAll(context,String filtro) async{
     final _url = Uri.https('cps-ea.mil.ar:5261', apiRoute);
-
     final resp = await http.get(_url);
 
-    if(!resp.headers['content-type'].contains('application/json; charset=utf-8')) {
+    if(!resp.headers['content-type'].contains('text/plain; charset=utf-8')) {
       Alert.alert(context, body: Text('Ups! No se encontraron filtros de $filtro. Por favor vuelva a intentar.'));
       return [];
     }

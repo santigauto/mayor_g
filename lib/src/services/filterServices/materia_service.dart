@@ -8,12 +8,11 @@ class Materia2Service extends ServiceFiltros{
   Materia2Service();
 
   @override
-  final apiRoute = 'api/Json/Obtener_Materias';
+  final apiRoute = '/api/Json/Obtener_Materias';
 
   @override
   List getLista(_decodedData) {
     final listaMaterias = ListaMateria.fromJsonList(_decodedData);
-    print(listaMaterias.materias[0].nombre);
     return listaMaterias.materias;
   }
 }

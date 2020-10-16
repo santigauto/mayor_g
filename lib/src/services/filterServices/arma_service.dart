@@ -7,7 +7,7 @@ class ArmaService extends ServiceFiltros{
   ArmaService();
 
   @override
-  final apiRoute = 'api/Json/Obtener_Armas';
+  final apiRoute = '/api/Json/Obtener_Armas';
 
   @override
   List getLista(_decodedData) {
