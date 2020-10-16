@@ -7,7 +7,7 @@ class PreferenciasUsuario{
   factory PreferenciasUsuario() {
     return _instancia;
   }
-
+  
   PreferenciasUsuario._internal();
 
   SharedPreferences _prefs;
@@ -16,17 +16,11 @@ class PreferenciasUsuario{
     this._prefs = await SharedPreferences.getInstance();
   }
   //APELLIDO
-  get apellido{
-    return _prefs.getString('apellido') ?? 'apellidoO';
-  }
+  get apellido{return _prefs.getString('apellido') ?? 'apellidoO';}
 
-  set apellido(String value){
-    _prefs.setString('apellido', value);
-  }
+  set apellido(String value)=> _prefs.setString('apellido', value);
 //NOMBRE
-  get nombre{
-    return _prefs.getString('nombre') ?? 'nombreO';
-  }
+  get nombre{return _prefs.getString('nombre') ?? 'nombreO';}
 
   set nombre(String value){
     
@@ -41,13 +35,10 @@ class PreferenciasUsuario{
     _prefs.setString('nombre', value);
   }
 //DNI
-  get dni{
-    return _prefs.getInt('dni') ?? 0;
-  }
+  get dni{return _prefs.getInt('dni') ?? 0;}
 
-  set dni(int value){
-    _prefs.setInt('dni', value);
-  }
+  set dni(int value)=>_prefs.setInt('dni', value);
+  
 //FOTO
   get foto{
     return _prefs.getString('foto') ?? null;
@@ -59,48 +50,35 @@ class PreferenciasUsuario{
     _prefs.setString('foto', value);
   }
 
-   //score
-  get score{
-    return _prefs.getInt('score') ?? 0;
-  }
+  //DEVICE ID
+  get deviceId{return _prefs.getString('deviceId');}
 
-  set score(value){
-    _prefs.setInt('score', value);
-  }
+  set deviceId(String value)=>_prefs.setString('deviceId', value);
+
+   //score
+  get score{return _prefs.getInt('score') ?? 0;}
+
+  set score(value)=>_prefs.setInt('score', value);
 
   //ARMA
-  get arma{
-    return _prefs.getString('arma') ?? '';
-  }
+  get arma{return _prefs.getString('arma') ?? '';}
 
-  set arma(String value){
-    _prefs.setString('arma', value);
-  }
+  set arma(String value)=>_prefs.setString('arma', value);
 
   //COLEGIO
-  get colegio{
-    return _prefs.getString('colegio') ?? 'General';
-  }
+  get colegio{return _prefs.getString('colegio') ?? 'General';}
 
-  set colegio(String value){
-    _prefs.setString('colegio', value);
-  }
+  set colegio(String value)=>_prefs.setString('colegio', value);
+
   //CURSO
-  get curso{
-    return _prefs.getString('curso') ?? '';
-  }
+  get curso{return _prefs.getString('curso') ?? '';}
 
-  set curso(String value){
-    _prefs.setString('curso', value);
-  }
+  set curso(String value)=>_prefs.setString('curso', value);
+
   //MATERIA
-  get materia{
-    return _prefs.getString('materia') ?? '';
-  }
+  get materia{return _prefs.getString('materia') ?? '';}
 
-  set materia(String value){
-    _prefs.setString('materia', value);
-  }
+  set materia(String value)=>_prefs.setString('materia', value);
 
 
 }

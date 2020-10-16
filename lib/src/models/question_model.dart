@@ -92,6 +92,7 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
   }
 
   int getDuration(){
+    print('longitud: '+ this.longitud.toString());
     switch (longitud) {
       case 1:
         return 15;
@@ -99,7 +100,10 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
       case 2:
         return 20;
         break;
-      default: return 25;
+      case 3:
+        return 25;
+        break;
+      default: return 20;
     } 
   }
 

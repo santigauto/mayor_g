@@ -51,13 +51,12 @@ class AuthService {
 
         await user.set(_decodedJson);
         _profile =await getUserProfile(await getAccessToken());
-
-        _profile.deviceId = await getDeviceDetails();
-
+        
         prefs.apellido=_profile.apellido;
         prefs.nombre=_profile.nombre;
         prefs.dni=_profile.dni;
         prefs.foto=_profile.foto;
+        prefs.deviceId =_profile.deviceId;
 
         Navigator.pushReplacementNamed(context, 'menu');
         print('${[_user.token.generatedAt,_user.toString()]}');
@@ -102,6 +101,7 @@ class AuthService {
     }
     else{
       _profile = User.fromJsonProfile(_decodedJson);
+      _profile.deviceId = await getDeviceDetails();
       print('${_decodedJson.toString()}');
       return _profile;
     }
@@ -137,7 +137,7 @@ recuperarContrasenia(BuildContext context, {@required String dni}) async {
 
   //----------------------------- OBTENER DEVICE INFO -------------------------------
 
-   static Future<String> getDeviceDetails() async {
+   Future<String> getDeviceDetails() async {
     //String deviceName;
     //String deviceVersion;
     String identifier;
@@ -165,5 +165,7 @@ return identifier/* [deviceName, deviceVersion, identifier] */;
 
 
 }
+
+
 
 

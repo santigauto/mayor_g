@@ -120,9 +120,9 @@ Widget _answerType1(Size size, aux){
   return Expanded(
     child:  AnimatedBuilder(
       animation: controller,
-      builder: (context,child){
+      builder: (context,_){
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
