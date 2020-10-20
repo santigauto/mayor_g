@@ -37,6 +37,7 @@ class _QuestionPageState extends State<QuestionPage>
   bool flag = false;
   int tipo;
   int segundos;
+  Animation hurryUp;
 
   StreamController<Object> _controller = new StreamController.broadcast();
 
@@ -63,7 +64,7 @@ class _QuestionPageState extends State<QuestionPage>
       vsync: this,
       duration: Duration(seconds: questions.preguntas[n].getDuration()),
     );
-
+    hurryUp = Tween(begin: 50.0, end: 150.0).animate(CurvedAnimation(parent: controller, curve: Interval(0.2, 0.4, curve: Curves.easeInOut)));
     controller.addListener(() {
       if(controller.value < 0.25 && flag == false){ //SI SE ESTA ACABANDO EL TIEMPO, SE LEVANTARA EL FLAG PARA APURAR AL JUGADOR
           flag = true;
@@ -137,6 +138,19 @@ class _QuestionPageState extends State<QuestionPage>
                 )
               ],
             ),
+            AnimatedBuilder(
+              animation: controller,
+              builder: (BuildContext context, _ ) {
+                return Positioned(
+                  left: -hurryUp.value,
+                  top: -hurryUp.value,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: Image(image:AssetImage('assets/MayorGAnimaciones/MayorG-apurando.gif')))
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -182,7 +196,7 @@ class _QuestionPageState extends State<QuestionPage>
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Container(
-              height: size.height * 0.3,
+              height: size.height * 0.25,
               child: Image(image: imagen,),
             ),
           ),

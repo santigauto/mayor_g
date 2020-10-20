@@ -28,6 +28,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   bool _canBeDragged = false;
 
   Animation rotation;
+  Animation fade;
 
   @override
   void initState() {
@@ -38,7 +39,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     );
 
     rotation = Tween( begin: 0.0, end: math.pi/2).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
-
+    fade = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
   }
 
   @override
@@ -106,11 +107,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                 Positioned(
                   top: 4.0 + MediaQuery.of(context).padding.top,
                   left: 4.0 + animationController.value * maxSlide,
-                  child: IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: toggle,
-                    color: Colors.white,
-                  ),
+                  child: IconButton(icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: fade), onPressed: toggle, color: Colors.white,),
                 ),
               ],
             ),

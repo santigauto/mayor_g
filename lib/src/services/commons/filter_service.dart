@@ -17,14 +17,18 @@ abstract class ServiceFiltros<T>{
   Future<List<T>> getAll(context,String filtro) async{
     final _url = Uri.https('cps-ea.mil.ar:5261', apiRoute);
     final resp = await http.get(_url);
+    List lista;
 
     if(!resp.headers['content-type'].contains('text/plain; charset=utf-8')) {
       Alert.alert(context, body: Text('Ups! No se encontraron filtros de $filtro. Por favor vuelva a intentar.'));
-      return [];
+      lista = [];
+    }else{
+      final _decodedData = json.decode(resp.body);
+      lista = getLista(_decodedData);
     }
 
-    final _decodedData = json.decode(resp.body);
-    return getLista(_decodedData);
+    return lista;
+    
   }
 
 }
