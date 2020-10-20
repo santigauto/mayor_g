@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //DEPENDENCIAS
 import 'package:bordered_text/bordered_text.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mayor_g/src/widgets/boton_widget.dart';
 //WIDGETS
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
@@ -125,17 +127,31 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                     children: [
                       Opacity(
                         opacity: fadeOutChoice.value,
-                        child: _buttonChoice((){_animationController.forward(); setState(() {
+                        child: _buttonChoice(
+                          (){_animationController.forward(); setState(() {
                           _isCivil = true;
                           _isMilitar = false;
-                        });}, size, Text('Ingresar como Civil'))
+                        });}, 
+                        size, 
+                        Text('Civil',style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white)),
+                        Colors.blue,
+                        Colors.blue[900],
+                        Container(margin:EdgeInsets.symmetric(horizontal:15),height:30,width: 30,child:SvgPicture.asset('assets/Icon_Civil.svg'))
+                        )
                       ),
                       Opacity(
                         opacity: fadeOutChoice.value,
-                        child: _buttonChoice((){_animationController.forward(); setState(() {
+                        child: _buttonChoice(
+                          (){_animationController.forward(); setState(() {
                           _isMilitar = true;
                           _isCivil = false;
-                        });}, size, Text('Ingresar como Militar'))
+                        });}, 
+                        size, 
+                        Text('Militar',style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white)),
+                        Theme.of(context).primaryColor,
+                        Colors.lightGreen[900],
+                        Container(margin:EdgeInsets.symmetric(horizontal:15),height:30,width: 30,child:SvgPicture.asset('assets/Icon_Mil.svg'))
+                        ),                        
                       ),
                     ],
                   ),
@@ -218,20 +234,17 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   }
 
 
-Widget _buttonChoice(Function open, Size size, Text text){
-  return Container(
-    padding: EdgeInsets.all(5.0),
-    height: size.height * 0.1,
-    width: size.width * 0.5,
-    decoration: BoxDecoration(
-      color: Theme.of(context).primaryColor,
-      borderRadius: BorderRadius.circular(30.0)
-    ),
-    child: RaisedButton(
-      shape: StadiumBorder(),
-      padding: EdgeInsets.all(5.0),
-      onPressed: open,
-      child: Center(child:text)
+Widget _buttonChoice(Function open, Size size, Text text, Color colorPrimario, Color colorSecundario, Widget leading){
+  return BotonWidget(
+    leading: leading,
+    colorPrimario: colorPrimario,
+    onTap: open,
+    text: text,
+    trailing: Container(
+      width: size.height * 0.1,
+      height: size.height * 0.1,
+      color: colorSecundario,
+      child: Icon(Icons.keyboard_arrow_right, color:Colors.white,size: size.width * 0.1,),
     ),
   );
 }
