@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/boton_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
 
 class MenuPage extends StatelessWidget{
@@ -59,19 +60,15 @@ class MenuPage extends StatelessWidget{
                     SizedBox(
                       height: 45,
                     ),
-                    RaisedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text("Comenzar", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+                    BotonWidget(
+                      text: Container(
+                        height: size.height * 0.1,
+                        child: Center(child: Text("Comenzar Juego", style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
                       ),
-                      onPressed: () {
+                      onTap: () {
                         Navigator.pushNamed(context, 'new_match');
                       },
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      splashColor: Colors.green[900],
-                      shape: StadiumBorder(),
+                      colorPrimario: Theme.of(context).primaryColor,
                     ),
                     SizedBox(
                       height: 40,

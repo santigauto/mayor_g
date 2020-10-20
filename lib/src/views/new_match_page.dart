@@ -133,67 +133,69 @@ class _NewMatchPageState extends State<NewMatchPage> {
   }
 
   Widget _modoDeJuego(Color colorSelec, Color colorNoSelec) {
-    return Column(
-      children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: BorderedText(
-              strokeColor: Colors.white,
-              child: Text(
-                'Modo de Juego',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
-                    decorationColor: Colors.white),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: BorderedText(
+                strokeColor: Colors.white,
+                child: Text(
+                  'Modo de Juego',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none,
+                      decorationColor: Colors.white),
+                ),
+              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              RaisedButton(
+                child: Container(
+                  child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
+                ),
+                color: (_modoClasico) ? colorSelec : colorNoSelec,
+                onPressed: () {
+                  setState(() {
+                    _canPlay = true;
+                    _modoClasico = true;
+                    _modoDuelo = false;
+                  });
+                },
+                textColor: Colors.white,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                splashColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(8.0),
+                  side: BorderSide(color: Colors.black),
+                ),
               ),
-            )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            RaisedButton(
-              child: Container(
-                child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
+              RaisedButton(
+                child: Container(
+                  child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
+                ),
+                color: (_modoDuelo) ? colorSelec : colorNoSelec,
+                onPressed: () {
+                  setState(() {
+                    _canPlay = false;
+                    _modoDuelo = true;
+                    _modoClasico = false;
+                  });
+                },
+                textColor: Colors.white,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                splashColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(8.0),
+                  side: BorderSide(color: Colors.black),
+                ),
               ),
-              color: (_modoClasico) ? colorSelec : colorNoSelec,
-              onPressed: () {
-                setState(() {
-                  _canPlay = true;
-                  _modoClasico = true;
-                  _modoDuelo = false;
-                });
-              },
-              textColor: Colors.white,
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              splashColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Colors.black),
-              ),
-            ),
-            RaisedButton(
-              child: Container(
-                child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
-              ),
-              color: (_modoDuelo) ? colorSelec : colorNoSelec,
-              onPressed: () {
-                setState(() {
-                  _canPlay = false;
-                  _modoDuelo = true;
-                  _modoClasico = false;
-                });
-              },
-              textColor: Colors.white,
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              splashColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Colors.black),
-              ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 

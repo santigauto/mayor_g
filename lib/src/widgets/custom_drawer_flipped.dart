@@ -1,12 +1,13 @@
 import 'dart:math' as math;
+import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
 import 'package:mayor_g/src/services/commons/drawer_service.dart';
 import 'package:mayor_g/src/utils/icon_string_util.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/boton_widget.dart';
 
 import 'imagen_perfil.dart';
 
@@ -101,7 +102,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(width:maxSlide),
+                    child: MyDrawer(width:maxSlide, height: size.height,),
                   ),
                 ),
                 Positioned(
@@ -152,7 +153,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
 class MyDrawer extends StatelessWidget {
   final double width;
-  MyDrawer({@required this.width});
+  final double height;
+  MyDrawer({@required this.width, this.height});
 
   final prefs = new PreferenciasUsuario();
 
@@ -165,18 +167,13 @@ class MyDrawer extends StatelessWidget {
           _drawerProfile(context,prefs),
           Container(child: _lista(), color: Colors.white,),
           Expanded(child: Container(color: Colors.white,)),
-          Container(
-            color: Theme.of(context).primaryColor,
-            child: ListTile(
-              leading: Icon(
-                Icons.power_settings_new,
-                color: Colors.red,
-              ),
-              title: Text('Log Out', style: TextStyle(color: Colors.white)),
-              trailing: Icon(Icons.keyboard_arrow_right),
+          BotonWidget(
+            colorPrimario: Theme.of(context).primaryColor,
+              text: Container(
+                height:height*0.1,
+                child: Center(child: Text('Cerrar sesión', style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)))),
               onTap: (){AuthService().logout(context: context);},
             ),
-          )
         ],
       ),
     );
