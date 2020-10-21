@@ -1,4 +1,5 @@
 //BASICS
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //DEPENDENCIAS
@@ -118,7 +119,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    print(size.height);
     return WillPopScope(
       onWillPop: onWillPop,
           child: Scaffold(
@@ -282,15 +282,15 @@ Widget _militarForm(Size size){
     child: Container(
       height: size.height,
       width: size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('Bienvenido a',style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.white),),
-          _mayorG(size),
-          SizedBox(height: size.height*0.1,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:20.0),
-            child: Form(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Bienvenido a',style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.white),),
+            _mayorG(size),
+            SizedBox(height: size.height*0.1,),
+            Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
@@ -332,31 +332,119 @@ Widget _militarForm(Size size){
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top:50.0),
-            child: BotonWidget(
-              text: Container(
-                height: size.height *0.1,
-                child: Center(
-                  child: Text("Ingresar",
-                      style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
+            Padding(
+              padding: EdgeInsets.only(top: size.height *0.1),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      color: Theme.of(context).primaryColor,
+                      child: ListTile(
+                        title: Center(
+                          child: AutoSizeText("Ingresar",
+                              style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
+                        onTap: () => _submit(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      color: Colors.white,
+                      child: ListTile(
+                        title: Center(
+                          child: AutoSizeText("Registrarme",
+                              style:Theme.of(context).textTheme.headline5.copyWith(color:Color(0xff49634B)))),
+                        onTap: _showMyDialog,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: Container(),),
+                      Container(
+                        width: size.width * 0.5,
+                        child: ListTile(
+                          onTap: ()=>_recuperandoContrasenia,
+                          title: AutoSizeText('Recuperar contraseña',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.right,),
+                        )
+                      ),
+                    ],
+                  ),
+                  /* Row(
+                children: [
+                  Container(
+                    width: size.width * 0.5,
+                    child: ListTile(
+                      title: AutoSizeText('Recuperar contraseña',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
+                    )
+                  ),
+                  Expanded(child: Container(),),
+                  Container(
+                    width: size.width * 0.4,
+                    child: ListTile(
+                      title: Text('Registrarse',style: TextStyle(color:Colors.white),textAlign: TextAlign.end,),
+                    )
+                  ),
+                ],
+              ), */
+              
+                  /* Container(
+                    width: size.width * 0.5,
+                    height: size.height *0.1,
+                    child: BotonWidget(
+                      text: Container(
+                        height: size.height *0.1,
+                        child: Center(
+                          child: AutoSizeText("Registrarse", style: TextStyle(fontSize: 15,)))),
+                      onTap: () => _recuperarContrasenia(),
+                      colorPrimario: Colors.white,
+                    ),
+                  ), */
+                ],
               ),
-              colorPrimario: Theme.of(context).primaryColor,
-              onTap: () => _submit(),
             ),
-          ),
-          CupertinoButton(
-            child: Text("Recuperar contraseña", style: TextStyle(fontSize: 15,)),
-            onPressed: () => _recuperarContrasenia(),
-          ),
-          CupertinoButton(
-            child: Text("Registrarse", style: TextStyle(fontSize: 15,color: Colors.white)),
-            onPressed: () => _recuperarContrasenia(),
-          ),
-        ],
+            
+          ],
+        ),
       ),
     ),
+  );
+}
+
+Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('¡Atención!'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Sí usted es personal militar en actividad, ya puede ingresar utilizando sus credenciales de SIAM.'),
+              Text('¿Quiere continuar con el registro?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          CupertinoButton(
+            child: Text('Atrás'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CupertinoButton(
+            child: Text('Registrarme'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
   );
 }
 

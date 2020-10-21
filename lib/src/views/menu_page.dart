@@ -58,20 +58,32 @@ class MenuPage extends StatelessWidget{
                   children: <Widget>[
                     _logoMenu(size),
                     SizedBox(
-                      height: 45,
+                      height: size.height * 0.1,
                     ),
-                    BotonWidget(
-                      text: Container(
-                        height: size.height * 0.1,
-                        child: Center(child: Text("Comenzar Juego", style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20.0, // soften the shadow
+                            spreadRadius: 0.0, //extend the shadow
+                            offset: Offset(0,10.0, // Move to bottom 10 Vertically
+                          ),)
+                        ]
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(context, 'new_match');
-                      },
-                      colorPrimario: Theme.of(context).primaryColor,
+                      child: BotonWidget(
+                        text: Container(
+                          height: size.height * 0.1,
+                          child: Center(child: Text("Comenzar Juego", style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, 'new_match');
+                        },
+                        colorPrimario: Theme.of(context).primaryColor,
+                      ),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     )
                   ],
                 ),

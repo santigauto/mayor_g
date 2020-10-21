@@ -6,13 +6,15 @@ class BotonWidget extends StatelessWidget {
   final Widget text;
   final Color colorPrimario;
   final Function onTap;
-  BotonWidget({this.leading, this.text, this.colorPrimario, this.trailing, this.onTap});
+  final double width;
+  BotonWidget({this.leading, this.text, this.colorPrimario, this.trailing, this.onTap, this.width});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      splashColor: Colors.white.withOpacity(0.5),
       onTap: onTap,
       child: Container(
-        width: double.infinity,
+        width: width,
         color: (colorPrimario != null)?colorPrimario: Colors.blue,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
