@@ -2,7 +2,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/views/signin_page.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
 //DEPENDENCIAS
 //import 'package:flutter_svg/flutter_svg.dart';
@@ -12,19 +11,18 @@ import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 //SERVICIOS
 import 'package:mayor_g/src/services/auth_service.dart';
-import 'package:mayor_g/src/widgets/loading_widget.dart';
 //import 'package:mayor_g/src/widgets/loading_widget.dart';
 import '../services/auth_service.dart';
 
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key key}) : super(key: key);
+class SignInPage extends StatefulWidget {
+  const SignInPage({Key key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin{
+class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin{
   final _formKey = GlobalKey<FormState>();
   var _username;
   var _password;
@@ -96,50 +94,24 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     }
   }
 
-  Future<bool> onWillPop(){
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-      title: Text('¿Quieres realmente abandonar la partida?'),
-      actions: <Widget>[
-        FlatButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: Text('Salir')),
-        FlatButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: Text('Cancelar'))
-      ],
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (notification) {
         notification.disallowGlow();
         return false;},
-      child: WillPopScope(
-        onWillPop: onWillPop,
-          child: Scaffold(
-            body: Stack(
-              children: [
-                BackgroundWidget(),
-                //HeaderCurvo(),
-                SafeArea(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: SingleChildScrollView(child: _militarForm(size))),
-                ),
-                (_isLoading)?LoadingWidget(
-                  caption: Text('Aguarde... Usted \nestá ingresando a MayorG', style: Theme.of(context).textTheme.headline6.copyWith(color:Colors.white),textAlign: TextAlign.center,),
-                ):Container()
-              ],
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BackgroundWidget(),
+            //HeaderCurvo(),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.center,
+                child: SingleChildScrollView(child: _militarForm(size))),
             ),
-          )
+          ],
+        ),
       ),
     );
   }
@@ -156,6 +128,22 @@ Widget _militarForm(Size size){
           key: _formKey,
           child: Column(
             children: <Widget>[
+              TextInput(
+                label: 'Nickname',
+                color: Colors.white,
+                inputType: TextInputType.text,
+                inputIcon: Icon(
+              Icons.person,
+              color: Colors.white,
+                ),
+                validator: (String text) {
+              if (text.isEmpty) {
+                return 'Por favor completar el campo';
+              }
+              this._username = text;
+              return null;
+                },
+              ),
         TextInput(
           label: 'DNI',
           color: Colors.white,
@@ -191,92 +179,47 @@ Widget _militarForm(Size size){
         return null;
           },
         ),
+        //------------------------------------------------
+        TextInput(
+          label: 'Confirmar contraseña',
+          password: true,
+          color: Colors.white,
+          inputIcon: Icon(
+        Icons.lock,
+        color: Colors.white,
+          ),
+          validator: (String text) {
+        if (text.isEmpty) {
+          return 'Por favor completar el campo';
+        }
+        this._password = text;
+        return null;
+          },
+        ),
+        SizedBox(height: 20,),
+        CheckboxListTile(
+          value: false,
+          onChanged: (bool){},
+            title: AutoSizeText('Acepto terminos y condiciones',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
+        ),
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: size.height *0.1),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  color: Theme.of(context).primaryColor,
-                  child: ListTile(
-                    title: Center(
-                      child: AutoSizeText("Ingresar",
-                          style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
-                    onTap: (){
-                      _submit();
-                      print('hola');
-                    }
-                  ),
-                ),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                children: [
-                  Container(
-                    width: size.width * 0.4,
-                    child: ListTile(
-                      onTap: ()=>_showMyDialog(),
-                      title: AutoSizeText('Registrarse',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
-                    )
-                  ),
-                  Expanded(child: Container(),),
-                  Container(
-                    width: size.width * 0.4,
-                    child: ListTile(
-                      onTap: ()=>_recuperarContrasenia(),
-                      title: AutoSizeText('Recuperar contraseña',maxLines: 2,style: TextStyle(color: Colors.white,),textAlign: TextAlign.center,),
-                    )
-                  ),
-                ],
-              ),
-            ],
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            color: Theme.of(context).primaryColor,
+            child: ListTile(
+              title: Center(
+                child: AutoSizeText("Registrarme",
+                    style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
+              onTap: () => _submit(),
+            ),
           ),
         ),
         
       ],
     ),
-  );
-}
-
-Future<void> _showMyDialog() async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('¡Atención!'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Sí usted es personal militar en actividad, ya puede ingresar utilizando sus credenciales de SomosEA.'),
-              Text('¿Quiere continuar con el registro?'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          CupertinoButton(
-            child: Text('Atrás'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          Expanded(child: Container(),),
-          CupertinoButton(
-            child: Text('Continuar'),
-            onPressed: () {
-              var route = new MaterialPageRoute(
-                  builder: (context) => SignInPage());
-                  Navigator.pop(context);
-              Navigator.push(context, route);
-            },
-          ),
-        ],
-      );
-    },
   );
 }
 

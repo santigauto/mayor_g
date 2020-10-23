@@ -5,7 +5,7 @@
 
 //PETICIÓN DE UAT
 class Config { 
-  static const ApiURL = "https://cps-ea.mil.ar:612/api";
+  static const ApiURL = "https://somosea.ejercito.mil.ar/api";
   static const ApiURLCGE = "www.cge.mil.ar:81";
 
   static const HttpHeaders = {

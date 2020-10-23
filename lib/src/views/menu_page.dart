@@ -1,9 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/boton_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
+import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
 class MenuPage extends StatelessWidget{
   
@@ -61,6 +63,7 @@ class MenuPage extends StatelessWidget{
                       height: size.height * 0.1,
                     ),
                     Container(
+                      padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -69,19 +72,25 @@ class MenuPage extends StatelessWidget{
                             spreadRadius: 0.0, //extend the shadow
                             offset: Offset(0,10.0, // Move to bottom 10 Vertically
                           ),)
-                        ]
+                        ],
+                        
                       ),
-                      child: BotonWidget(
-                        text: Container(
-                          height: size.height * 0.1,
-                          child: Center(child: Text("Comenzar Juego", style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: ListTile(
+                            title: PulseAnimatorWidget(
+                              begin:0.5,
+                              child: AutoSizeText("Comenzar Juego", style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
+                            onTap: () {
+                            Navigator.pushNamed(context, 'new_match');
+                          },
+                          ),
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, 'new_match');
-                        },
-                        colorPrimario: Theme.of(context).primaryColor,
                       ),
-                    ),
+                      ),
+                    
                     SizedBox(
                       height: 30,
                     )

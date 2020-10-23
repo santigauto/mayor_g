@@ -27,6 +27,7 @@ class AuthService {
 
   login(BuildContext context, { @required String username, @required String password}) async {
     try{
+      
       final http.Response response = await http.post(
         '${Config.ApiURL}/musuario/login',
         headers: Config.HttpHeaders,
@@ -37,6 +38,7 @@ class AuthService {
             'device_id' : ''
           })
         );
+        print('object');
         if(!response.headers['content-type'].contains('application/json; charset=utf-8')) {
           return Alert.alert(context, body: Text('Ups! Algo salió mal. Por favor vuelva a intentar.'));
         }
@@ -62,7 +64,7 @@ class AuthService {
         print('${[_user.token.generatedAt,_user.toString()]}');
     }catch(e){
       return Alert.alert(context, body: Text("${e.toString()}\nPor favor vuelva a intentarlo, en caso de que persista el error intente recuperar su contraseña."));
-    }
+    } /* on SocketException { print('SocketException');} on FormatException{print('FormatException');} on HttpException{print('HttpException');} */
 
 
   }
