@@ -171,7 +171,7 @@ class MyDrawer extends StatelessWidget {
             colorPrimario: Theme.of(context).primaryColor,
               text: Container(
                 height:height*0.1,
-                child: Center(child: Text('Cerrar sesión', style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)))),
+                child: Center(child: Text('Cerrar sesión', style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white, fontWeight: FontWeight.bold)))),
               onTap: (){AuthService().logout(context: context);},
             ),
         ],

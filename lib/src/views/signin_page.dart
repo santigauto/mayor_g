@@ -2,11 +2,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/widgets/custom_header_widget.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 //DEPENDENCIAS
 //import 'package:flutter_svg/flutter_svg.dart';
 //import 'package:mayor_g/src/widgets/boton_widget.dart';
 //WIDGETS
+//import 'package:mayor_g/src/widgets/custom_header_widget.dart';
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 //SERVICIOS
@@ -27,39 +29,17 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   var _username;
   var _password;
   bool _isLoading = false;
-  bool _recuperandoContrasenia = false;
-  //bool _isMilitar = false;
-  //bool _isCivil = false;
-/*   AnimationController _animationController;
-  Animation fadeOutChoice;
-  Animation fadeInCivilForm;
-  Animation fadeInMilitarForm;
-  Animation translateMilitarFormPosition; */
   Size size;
   TextStyle style;
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
 
-  @override
-  void initState() { 
-    super.initState();
-/*     _animationController = new AnimationController(vsync: this,duration: Duration(milliseconds: 1000));
-    fadeOutChoice = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.0, 0.5)));
-    fadeInMilitarForm = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0))); */
-    
-  }
 
   @override
   void didChangeDependencies() {
-    //translateMilitarFormPosition = Tween(begin:MediaQuery.of(context).size.height, end: 0.0).animate(CurvedAnimation(parent:_animationController,curve:Interval(0.5, 1.0)));
     size = MediaQuery.of(context).size;
     style = Theme.of(context).textTheme.headline4.copyWith(fontSize:25,color: Colors.white,fontWeight: FontWeight.bold);
     super.didChangeDependencies();
   }
-
-  /* @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  } */
 
   _submit() async {
     if (!_isLoading) {
@@ -73,22 +53,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
 
         setState(() {
           _isLoading = false;
-        });
-      }
-    }
-  }
-
-  _recuperarContrasenia() async{
-    if(!_recuperandoContrasenia) { 
-      if(_formKey.currentState.validate()) {
-        setState(() {
-          _recuperandoContrasenia = true;
-        });
-
-        await AuthService().recuperarContrasenia(context,dni: _username);
-
-        setState(() {
-          _recuperandoContrasenia = false;
         });
       }
     }
@@ -213,7 +177,7 @@ Widget _militarForm(Size size){
               title: Center(
                 child: AutoSizeText("Registrarme",
                     style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
-              onTap: () => _submit(),
+              onTap: () => GetFriendsService().enviarSolicitud(dni: prefs.dni, dniAmigo: 31669679),
             ),
           ),
         ),
@@ -231,4 +195,5 @@ Widget _mayorG(Size size){
     ),
   );
 }
+
 }

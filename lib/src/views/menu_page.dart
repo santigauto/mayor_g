@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/boton_widget.dart';
+//import 'package:mayor_g/src/widgets/boton_widget.dart';
 import 'package:mayor_g/src/widgets/custom_header_widget.dart';
 import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
@@ -38,21 +38,10 @@ class MenuPage extends StatelessWidget{
     return WillPopScope(
       onWillPop: _back,
       child: Scaffold(
-        /* drawer: Container(width: 300, child: SideMenuWidget()), */
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
             HeaderCurvo(),
-            /* SafeArea(
-              child: Builder(
-                builder: (context) => IconButton(
-                  color: Colors.white,
-                  icon: new Icon(Icons.menu),
-                  onPressed: ()
-                    => Scaffold.of(context).openDrawer()
-                ),
-              ),
-            ), */
             Center(
               child: SingleChildScrollView(
                 child: Column(

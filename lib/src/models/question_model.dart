@@ -19,6 +19,8 @@ import 'dart:convert';
       preguntas: jsonDecoded.cast<PreguntaNueva>()
     );
   }
+
+
 } 
 
 
@@ -124,7 +126,5 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
   }
   return choices;
   }
-
-
 
 }

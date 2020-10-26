@@ -21,6 +21,20 @@ class GetFriendsService{
     final Amigos amigos = Amigos.fromJson(_decodedJson);
     print(amigos.amigos[0].nombre);
   }
+
+  enviarSolicitud({@required int dni, @required int dniAmigo}) async{
+    final http.Response response = await http.post(
+       'https://cps-ea.mil.ar:5261/api/Amigos/Enviar_Solicitud',
+       headers: MayorGApis.HttpHeaders,
+       body: jsonEncode({
+          'dni' : dni,
+          'dniAmigo': dniAmigo
+        })
+       );
+    final dynamic _decodedJson = jsonDecode(response.body);
+    print(_decodedJson);
+  }
+
 }
 
 
