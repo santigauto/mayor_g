@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/routes/routes.dart';
@@ -15,6 +16,10 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Mayor G Flutter',
