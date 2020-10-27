@@ -19,9 +19,7 @@ class QuestionServicePrueba{
     });
     final resp = await http.get(url);
     final decodedData = json.decode(resp.body);
-    print(decodedData);
     ListaPreguntasNuevas preguntas = ListaPreguntasNuevas.fromJson(decodedData);
-    print(decodedData.toString());
     if(preguntas == null || preguntas.preguntas.isEmpty) {
       return Alert.alert(context, body: Text("ERROR! No se encontraron preguntas, intente nuevamente"));
     }

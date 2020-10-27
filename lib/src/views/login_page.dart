@@ -29,39 +29,16 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   var _password;
   bool _isLoading = false;
   bool _recuperandoContrasenia = false;
-  //bool _isMilitar = false;
-  //bool _isCivil = false;
-/*   AnimationController _animationController;
-  Animation fadeOutChoice;
-  Animation fadeInCivilForm;
-  Animation fadeInMilitarForm;
-  Animation translateMilitarFormPosition; */
   Size size;
   TextStyle style;
 
   @override
-  void initState() { 
-    super.initState();
-/*     _animationController = new AnimationController(vsync: this,duration: Duration(milliseconds: 1000));
-    fadeOutChoice = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.0, 0.5)));
-    fadeInMilitarForm = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0))); */
-    
-  }
-
-  @override
   void didChangeDependencies() {
-    //translateMilitarFormPosition = Tween(begin:MediaQuery.of(context).size.height, end: 0.0).animate(CurvedAnimation(parent:_animationController,curve:Interval(0.5, 1.0)));
     size = MediaQuery.of(context).size;
     style = Theme.of(context).textTheme.headline4.copyWith(fontSize:25,color: Colors.white,fontWeight: FontWeight.bold);
     super.didChangeDependencies();
   }
-
-  /* @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  } */
-
+  
   _submit() async {
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
@@ -127,7 +104,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             body: Stack(
               children: [
                 BackgroundWidget(),
-                //HeaderCurvo(),
                 SafeArea(
                   child: Align(
                     alignment: Alignment.center,
@@ -149,7 +125,7 @@ Widget _militarForm(Size size){
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Text('Bienvenido a',style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.white),),
-        _mayorG(size),
+        Hero(tag:1,child: _mayorG(size)),
         SizedBox(height: size.height*0.1,),
         Form(
           key: _formKey,
@@ -263,7 +239,6 @@ Future<void> _showMyDialog() async {
               Navigator.of(context).pop();
             },
           ),
-          Expanded(child: Container(),),
           CupertinoButton(
             child: Text('Continuar'),
             onPressed: () {

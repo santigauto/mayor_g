@@ -1,3 +1,4 @@
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
@@ -27,13 +28,18 @@ class _NewMatchPageState extends State<NewMatchPage> {
   bool _canPlay = false;
   ListaPreguntasNuevas preguntas;
   
+AudioCache audioController = AudioCache(prefix: 'assets/audios/');
 
   @override
   void initState() {
 
     super.initState();
   }
-
+@override
+void dispose() { 
+  audioController.disableLog();
+  super.dispose();
+}
   Modal modal = new Modal();
 
   void _playAction() async {
@@ -178,6 +184,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 ),
                 color: (_modoDuelo) ? colorSelec : colorNoSelec,
                 onPressed: () {
+                  audioController.play("Boxing_Bell_Sound_FX.mp3");
                   setState(() {
                     _canPlay = false;
                     _modoDuelo = true;

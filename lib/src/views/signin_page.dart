@@ -86,87 +86,88 @@ Widget _militarForm(Size size){
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Text('Bienvenido a',style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.white),),
-        _mayorG(size),
-        SizedBox(height: size.height*0.1,),
-        Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextInput(
-                label: 'Nickname',
+        Hero(tag:1,child: _mayorG(size)),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical:20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextInput(
+                  label: 'Nickname',
+                  color: Colors.white,
+                  inputType: TextInputType.text,
+                  inputIcon: Icon(
+                Icons.person,
                 color: Colors.white,
-                inputType: TextInputType.text,
-                inputIcon: Icon(
-              Icons.person,
-              color: Colors.white,
+                  ),
+                  validator: (String text) {
+                if (text.isEmpty) {
+                  return 'Por favor completar el campo';
+                }
+                this._username = text;
+                return null;
+                  },
                 ),
-                validator: (String text) {
-              if (text.isEmpty) {
-                return 'Por favor completar el campo';
-              }
-              this._username = text;
-              return null;
-                },
-              ),
-        TextInput(
-          label: 'DNI',
+          TextInput(
+            label: 'DNI',
+            color: Colors.white,
+            inputType: TextInputType.number,
+            inputIcon: Icon(
+          Icons.person,
           color: Colors.white,
-          inputType: TextInputType.number,
-          inputIcon: Icon(
-        Icons.person,
-        color: Colors.white,
+            ),
+            validator: (String text) {
+          if (text.isEmpty) {
+            return 'Por favor completar el campo';
+          }
+          this._username = text;
+          return null;
+            },
           ),
-          validator: (String text) {
-        if (text.isEmpty) {
-          return 'Por favor completar el campo';
-        }
-        this._username = text;
-        return null;
-          },
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        TextInput(
-          label: 'Contraseña',
-          password: true,
+          SizedBox(
+            height: 30,
+          ),
+          TextInput(
+            label: 'Contraseña',
+            password: true,
+            color: Colors.white,
+            inputIcon: Icon(
+          Icons.lock,
           color: Colors.white,
-          inputIcon: Icon(
-        Icons.lock,
-        color: Colors.white,
+            ),
+            validator: (String text) {
+          if (text.isEmpty) {
+            return 'Por favor completar el campo';
+          }
+          this._password = text;
+          return null;
+            },
           ),
-          validator: (String text) {
-        if (text.isEmpty) {
-          return 'Por favor completar el campo';
-        }
-        this._password = text;
-        return null;
-          },
-        ),
-        //------------------------------------------------
-        TextInput(
-          label: 'Confirmar contraseña',
-          password: true,
+          //------------------------------------------------
+          TextInput(
+            label: 'Confirmar contraseña',
+            password: true,
+            color: Colors.white,
+            inputIcon: Icon(
+          Icons.lock,
           color: Colors.white,
-          inputIcon: Icon(
-        Icons.lock,
-        color: Colors.white,
+            ),
+            validator: (String text) {
+          if (text.isEmpty) {
+            return 'Por favor completar el campo';
+          }
+          this._password = text;
+          return null;
+            },
           ),
-          validator: (String text) {
-        if (text.isEmpty) {
-          return 'Por favor completar el campo';
-        }
-        this._password = text;
-        return null;
-          },
-        ),
-        SizedBox(height: 20,),
-        CheckboxListTile(
-          value: false,
-          onChanged: (bool){},
-            title: AutoSizeText('Acepto terminos y condiciones',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
-        ),
-            ],
+          CheckboxListTile(
+            value: false,
+            onChanged: (bool){},
+              title: AutoSizeText('Acepto terminos y condiciones',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
+          ),
+              ],
+            ),
           ),
         ),
         ClipRRect(
@@ -177,7 +178,7 @@ Widget _militarForm(Size size){
               title: Center(
                 child: AutoSizeText("Registrarme",
                     style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
-              onTap: () => GetFriendsService().enviarSolicitud(dni: prefs.dni, dniAmigo: 31669679),
+              onTap: () => GetFriendsService().solicitudesPendientes(dni: 41215183),
             ),
           ),
         ),

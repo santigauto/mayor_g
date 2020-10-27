@@ -42,8 +42,6 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
     rotation = Tween( begin: 0.0, end: math.pi/2).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
     fade = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
-
-    GetFriendsService().solicitudesPendientes(dni: prefs.dni);
   }
 
   @override
