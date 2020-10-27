@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
 import 'package:mayor_g/src/services/commons/drawer_service.dart';
+import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/utils/icon_string_util.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/boton_widget.dart';
@@ -30,7 +31,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
   Animation rotation;
   Animation fade;
-
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
   @override
   void initState() {
     super.initState();
@@ -41,6 +42,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
     rotation = Tween( begin: 0.0, end: math.pi/2).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
     fade = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
+
+    GetFriendsService().solicitudesPendientes(dni: prefs.dni);
   }
 
   @override

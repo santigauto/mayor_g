@@ -35,6 +35,18 @@ class GetFriendsService{
     print(_decodedJson);
   }
 
+  solicitudesPendientes({@required int dni}) async{
+    final http.Response response = await http.post(
+       'https://cps-ea.mil.ar:5261/api/Amigos/Solicitudes_Pendientes',
+       headers: MayorGApis.HttpHeaders,
+       body: jsonEncode({
+          'dni' : dni,
+        })
+       );
+    final dynamic _decodedJson = jsonDecode(response.body);
+    print("holahola hola"+_decodedJson.toString());
+  }
+
 }
 
 
