@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+//import 'package:audioplayers/audio_cache.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +18,7 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //AudioCache audioCache = new AudioCache(prefix: 'assets/audios/');
+    //AudioCache audioCacheBackground = new AudioCache(prefix: 'assets/audios/');
     //audioCache.loop('No_Copyright_Music_Life_-_Royalty_Free_Cinematic_Music.mp3');
     
     SystemChrome.setPreferredOrientations([

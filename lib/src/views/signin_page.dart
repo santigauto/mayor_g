@@ -12,9 +12,9 @@ import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 //SERVICIOS
-import 'package:mayor_g/src/services/auth_service.dart';
+//import 'package:mayor_g/src/services/auth_service.dart';
 //import 'package:mayor_g/src/widgets/loading_widget.dart';
-import '../services/auth_service.dart';
+//import '../services/auth_service.dart';
 
 
 class SignInPage extends StatefulWidget {
@@ -32,7 +32,8 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   Size size;
   TextStyle style;
   PreferenciasUsuario prefs = new PreferenciasUsuario();
-
+  bool booleanAccept = false;
+  bool checkflag = false;
 
   @override
   void didChangeDependencies() {
@@ -44,22 +45,23 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   _submit() async {
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
-        setState(() {
-          _isLoading = true;
-        });
-
-        await AuthService()
-            .login(context, username: _username, password: _password);
-
-        setState(() {
-          _isLoading = false;
-        });
+        if(booleanAccept){
+          setState(() {
+            _isLoading = true;
+          });
+          checkflag = false;
+          print('llegue');
+          setState(() {
+            _isLoading = false;
+          });
+        } else{ setState(()=>checkflag = true);}
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (notification) {
         notification.disallowGlow();
@@ -98,78 +100,96 @@ Widget _militarForm(Size size){
                   color: Colors.white,
                   inputType: TextInputType.text,
                   inputIcon: Icon(
-                Icons.person,
-                color: Colors.white,
+                    Icons.person,
+                      color: Colors.white,
                   ),
                   validator: (String text) {
-                if (text.isEmpty) {
-                  return 'Por favor completar el campo';
-                }
-                this._username = text;
-                return null;
+                    String x;
+                    if (text.isEmpty) {
+                      x='Por favor completar el campo';
+                    }
+                    this._username = text;
+                    return x;
                   },
                 ),
-          TextInput(
-            label: 'DNI',
-            color: Colors.white,
-            inputType: TextInputType.number,
-            inputIcon: Icon(
-          Icons.person,
-          color: Colors.white,
-            ),
-            validator: (String text) {
-          if (text.isEmpty) {
-            return 'Por favor completar el campo';
-          }
-          this._username = text;
-          return null;
-            },
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          TextInput(
-            label: 'Contraseña',
-            password: true,
-            color: Colors.white,
-            inputIcon: Icon(
-          Icons.lock,
-          color: Colors.white,
-            ),
-            validator: (String text) {
-          if (text.isEmpty) {
-            return 'Por favor completar el campo';
-          }
-          this._password = text;
-          return null;
-            },
-          ),
-          //------------------------------------------------
-          TextInput(
-            label: 'Confirmar contraseña',
-            password: true,
-            color: Colors.white,
-            inputIcon: Icon(
-          Icons.lock,
-          color: Colors.white,
-            ),
-            validator: (String text) {
-          if (text.isEmpty) {
-            return 'Por favor completar el campo';
-          }
-          this._password = text;
-          return null;
-            },
-          ),
-          CheckboxListTile(
-            value: false,
-            onChanged: (bool){},
-              title: AutoSizeText('Acepto terminos y condiciones',maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
-          ),
+                TextInput(
+                  label: 'DNI',
+                  color: Colors.white,
+                  inputType: TextInputType.number,
+                  inputIcon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  validator: (String text) {
+                    if (text.isEmpty) {
+                      return 'Por favor completar el campo';
+                    }
+                    this._username = text;
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                TextInput(
+                  label: 'Contraseña',
+                  password: true,
+                  color: Colors.white,
+                  inputIcon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  validator: (String text) {
+                    if (text.isEmpty) {
+                      return 'Por favor completar el campo';
+                    }
+                    this._password = text;
+                    return null;
+                  },
+                ),
+                //------------------------------------------------
+                TextInput(
+                  label: 'Confirmar contraseña',
+                  password: true,
+                  color: Colors.white,
+                  inputIcon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  validator: (String text) {
+                    String x;
+                    if (text.isEmpty) {
+                      x = 'Por favor completar el campo';
+                    } else if (text != this._password){
+                      x = 'Las claves no coinciden';
+                    }
+                    return x;
+                  },
+                ),
+                CheckboxListTile(
+                  value: booleanAccept,
+                  onChanged: (boolean){
+                    setState(() {
+                      booleanAccept = boolean;
+                      print(booleanAccept);
+                    });
+                  },
+                    title: AutoSizeText('Acepto terminos y condiciones',
+                              maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
+                ),
+                (checkflag)?Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left:15.0),
+                      child: Text('Debe aceptar los terminos y condiciones.', style: TextStyle(color: Colors.red),textAlign: TextAlign.left,),
+                    ),
+                  ],
+                ):Container(),
               ],
             ),
           ),
         ),
+        
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Container(
@@ -178,7 +198,10 @@ Widget _militarForm(Size size){
               title: Center(
                 child: AutoSizeText("Registrarme",
                     style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
-              onTap: () => GetFriendsService().solicitudesPendientes(dni: 41215183),
+              onTap: () {
+                //GetFriendsService().solicitudesPendientes(dni: 41215183);
+                _submit();
+              },
             ),
           ),
         ),
