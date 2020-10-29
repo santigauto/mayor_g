@@ -18,8 +18,8 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AudioCache audioCache = new AudioCache(prefix: 'assets/audios/');
-    audioCache.loop('No_Copyright_Music_Life_-_Royalty_Free_Cinematic_Music.mp3');
+    //AudioCache audioCache = new AudioCache(prefix: 'assets/audios/');
+    //audioCache.loop('No_Copyright_Music_Life_-_Royalty_Free_Cinematic_Music.mp3');
     
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

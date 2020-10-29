@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:mayor_g/src/models/question_model.dart';
+import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/search_delegate.dart';
 import 'package:mayor_g/src/views/question_page.dart';
@@ -59,7 +60,14 @@ class FriendsPage extends StatelessWidget {
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(Icons.search), 
-                    onPressed: (){
+                    onPressed: ()async{
+                      //await GetFriendsService().enviarSolicitud(dni: 34495248, dniAmigo: 41215183);
+                      //await GetFriendsService().solicitudesPendientes(dni: 41215183);
+                      //await GetFriendsService().rechazarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
+                      //await GetFriendsService().aprobarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
+                      //await GetFriendsService().obtenerAmigos(dni: 41215183);
+                      await GetFriendsService().eliminarAmistad(dni: 41215183, dniAmigo: 34495248);
+                      //await GetFriendsService().cambiarDni(dni: 41215183, deviceId: 'f14e204a6ee07d70', nickname: 'Santigol');
                       showSearch(context: context, delegate: DataSearch(gente));
                     }),
                 ),
