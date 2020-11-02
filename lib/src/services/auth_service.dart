@@ -38,7 +38,6 @@ class AuthService {
             'device_id' : ''
           })
         );
-        print('object');
         if(!response.headers['content-type'].contains('application/json; charset=utf-8')) {
           return Alert.alert(context, body: Text('Ups! Algo salió mal. Por favor vuelva a intentar.'));
         }
@@ -58,7 +57,7 @@ class AuthService {
         prefs.nombre=_profile.nombre;
         prefs.dni=_profile.dni;
         prefs.foto=_profile.foto;
-        
+        prefs.email=_profile.email;
 
         Navigator.pushReplacementNamed(context, 'menu');
         print('${[_user.token.generatedAt,_user.toString()]}');
@@ -96,7 +95,6 @@ class AuthService {
       headers: Config.HttpHeaders,);
     
     final dynamic _decodedJson = jsonDecode(response.body);
-
     if(_decodedJson['usu_DNI'].toString().isEmpty){
       _profile = null;
       return User(apellido: '',dni: 0,deviceId: '',email: '',grado: '',nombre: '',pushId: '');
@@ -104,7 +102,6 @@ class AuthService {
     else{
       _profile = User.fromJsonProfile(_decodedJson);
       _profile.deviceId = await getDeviceDetails();
-      print('${_decodedJson.toString()}');
       return _profile;
     }
 

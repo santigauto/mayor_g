@@ -15,11 +15,13 @@ class PreferenciasUsuario{
   initPrefs() async{
     this._prefs = await SharedPreferences.getInstance();
   }
+  
   //APELLIDO
   get apellido{return _prefs.getString('apellido') ?? 'apellidoO';}
 
   set apellido(String value)=> _prefs.setString('apellido', value);
-//NOMBRE
+  
+  //NOMBRE
   get nombre{return _prefs.getString('nombre') ?? 'nombreO';}
 
   set nombre(String value){
@@ -34,12 +36,18 @@ class PreferenciasUsuario{
     }
     _prefs.setString('nombre', value);
   }
-//DNI
+  //DNI
   get dni{return _prefs.getInt('dni') ?? 0;}
 
   set dni(int value)=>_prefs.setInt('dni', value);
-  
-//FOTO
+
+
+  //MAIL
+  get email{return _prefs.getString('email');}
+
+  set email(String value)=>_prefs.setString('email', value);
+
+  //FOTO
   get foto{
     return _prefs.getString('foto') ?? null;
   }
@@ -55,17 +63,17 @@ class PreferenciasUsuario{
 
   set deviceId(String value)=>_prefs.setString('deviceId', value);
 
-    //DEVICE NAME
+  //DEVICE NAME
   get deviceName{return _prefs.getString('deviceName');}
 
   set deviceName(String value)=>_prefs.setString('deviceName', value);
 
-    //DEVICE VERSION
+  //DEVICE VERSION
   get deviceVersion{return _prefs.getString('deviceVersion');}
 
   set deviceVersion(String value)=>_prefs.setString('deviceVersion', value);
 
-   //score
+  //score
   get score{return _prefs.getInt('score') ?? 0;}
 
   set score(value)=>_prefs.setInt('score', value);
@@ -89,6 +97,7 @@ class PreferenciasUsuario{
   get materia{return _prefs.getString('materia') ?? '';}
 
   set materia(String value)=>_prefs.setString('materia', value);
+
 
 
 }

@@ -57,6 +57,7 @@ class User {
   factory User.fromJsonProfile(Map<String, dynamic> parsedJson)
     {
       return User (
+        email: parsedJson['usu_Mail'].toString().trim(),
         dni: parsedJson['usu_DNI'],
         nombre: parsedJson['usu_Nombre'].toString().trim(),
         apellido: parsedJson['usu_Apellido'].toString().trim(),

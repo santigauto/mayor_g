@@ -6,19 +6,44 @@ import 'package:http/http.dart' as http;
 
 //import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/models/friends_model.dart';
+import 'package:mayor_g/src/widgets/alert_widget.dart';
+
+
+
 
 class GetFriendsService{
 
   String _url = 'cps-ea.mil.ar:5261';
 
-  Future getFriends(BuildContext context,{ @required int dni }) async{
-    //'https://www.maderosolutions.com.ar/MayorG1/modelo/getAmigos.php'
-    final url = Uri.https(_url, 'api/Amigos/Solicitudes_Pendientes',{
-      'dni' : dni.toString()
-    });
-    final resp = await http.get(url);
-    final dynamic _decodedJson = jsonDecode(resp.body);
+  Future getGet(context,{String apiRoute, Map<String, String> queryParameters}) async{
+    final __url = Uri.https(_url, apiRoute, queryParameters);
+    final resp = await http.get(__url);
+    dynamic result;
+
+    if(resp.body.isEmpty) {
+      Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
+    }else{
+      final _decodedData = json.decode(resp.body);
+      result = _decodedData;
+    }
+    print(result);
+    return result;
     
+  }
+
+  Future getPost(context,{String apiRoute, String jsonEncode, Map<String, String> queryParameters}) async{
+    final __url = Uri.https(_url, apiRoute, queryParameters);
+    final resp = await http.post(__url,body: (jsonEncode));
+    dynamic result;
+
+    if(resp.body.isEmpty) {
+      Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
+    }else{
+      final _decodedData = json.decode(resp.body);
+      result = _decodedData;
+    }
+    print(result);
+    return result;
     
   }
 
@@ -51,192 +76,126 @@ class GetFriendsService{
     print('es true?:' + _decodedJson.toString());
   }
 
-  Future solicitudesPendientes({@required int dni}) async{ // devuelve una lista, es un get
+  Future solicitudesPendientes(BuildContext context,{@required int dni}) async{ // devuelve una lista, es un get
     print('solicitudesPedientes');
-    final url = Uri.https(_url, 'api/Amigos/Solicitudes_Pendientes',{
+    getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
       'dni' : dni.toString()
     });
-    final resp = await http.get(url);
-    final dynamic _decodedJson = jsonDecode(resp.body);
-    print("holahola hola"+_decodedJson.toString());
   }
 
-  Future obtenerUsuarioDni({@required int dni}) async{//devuelve true
+  Future obtenerUsuarioDni(BuildContext context,{@required int dni}) async{//devuelve true
     print('usuario');
-    final url = Uri.https(_url, 'api/Usuarios/Obtener_Usuario_DNI',{
+    getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
       'dni' : dni.toString()
     });
-    final response = await http.get(url);
-    dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('obtuvo?:' + _decodedJson.toString());
   }
 
-  Future obtenerUsuarioDatos({@required String datos}) async{//devuelve true
-    print('usuario');
-    final url = Uri.https(_url, 'api/Usuarios/Obtener_Usuario_DNI',{
+  Future obtenerUsuarioDatos(BuildContext context,{@required String datos}) async{//devuelve datosUsuario
+    getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_Dato',queryParameters: {
       'datos' : datos
     });
-    final response = await http.get(url);
-    dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('obtuvo?:' + _decodedJson.toString());
   }
 
   //POST Aprobar_Solicitud(string idSolicitud)
-  Future aprobarSolicitud({@required String idSolicitud}) async{//devuelve true, es un post
+  Future aprobarSolicitud(BuildContext context,{@required String idSolicitud}) async{//devuelve true, es un post
   print('AproBar Solicitud');
-    final url = Uri.https(_url, 'api/Amigos/Aprobar_Solicitud',{
-      'idSolicitud' : idSolicitud
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + _decodedJson.toString());
+  getPost(context,apiRoute: 'api/Amigos/Aprobar_Solicitud',queryParameters: {
+    'idSolicitud' : idSolicitud
+  });
   }
 
-  Future rechazarSolicitud({@required String idSolicitud}) async{//devuelve true, es un post
+  Future rechazarSolicitud(BuildContext context,{@required String idSolicitud}) async{//devuelve true, es un post
   print('Rechazar Solicitud');
-    final url = Uri.https(_url, 'api/Amigos/Rechazar_Solicitud',{
-      'idSolicitud' : idSolicitud
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + _decodedJson.toString());
+  getPost(context,apiRoute: 'api/Amigos/Rechazar_Solicitud',queryParameters: {
+    'idSolicitud' : idSolicitud
+  });
   }
 
-  Future obtenerAmigos({@required int dni})async{
+  Future obtenerAmigos(BuildContext context,{@required int dni})async{
     print('obtener Amigos');
-    final url = Uri.https(_url, 'api/Amigos/Listado_Amigos',{
+    getGet(context,apiRoute: 'api/Amigos/Listado_Amigos',queryParameters: {
       'dni' : dni.toString()
     });
-    final resp = await http.get(url);
-    final dynamic _decodedJson = jsonDecode(resp.body);
-    final Amigos amigos = Amigos.fromJson(_decodedJson);
-    print(amigos.amigos[0].nombre);
-    print(_decodedJson.toString());
   }
 
-  Future eliminarAmistad({@required int dni, @required int dniAmigo})async{
+  Future eliminarAmistad(BuildContext context,{@required int dni, @required int dniAmigo})async{
     print('Eliminar amigo');
-    final url = Uri.https(_url, 'api/Amigos/Eliminar_Amigo',{
+    getPost(context,apiRoute: 'api/Amigos/Eliminar_Amigo',queryParameters: {
       'dni': dni.toString(),
       'dniAmigo' : dniAmigo.toString()
     });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('elimino?:' + _decodedJson.toString());
   }
 
-  Future generarUserDevice({@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
+  Future generarUserDevice(BuildContext context,{@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
   print('Generar Device');
-    final url = Uri.https(_url, 'api/Usuarios/Generate_User_Device',{
-      'dni': dni.toString(),
-      'deviceId': deviceId,
-      'deviceName': deviceName,
-      'deviceVersion': deviceVersion
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + _decodedJson.toString());
-  }
+  getPost(context,apiRoute: 'api/Usuarios/Generate_User_Device',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId,
+    'deviceName': deviceName,
+    'deviceVersion': deviceVersion
+  });}
 
-  Future iniciarJuego({@required int dni,@required String deviceId}) async{//devuelve true, es un post
-  print('Generar Device');
-    final url = Uri.https(_url, 'api/Usuarios/Iniciar_Juego',{
-      'dni': dni.toString(),
-      'deviceId': deviceId
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + response.body);
+  Future iniciarJuego(BuildContext context,{@required int dni,@required String deviceId}) async{//devuelve true, es un post
+  print('Iniciar Juego');
+  getPost(context,apiRoute: 'api/Usuarios/Iniciar_Juego',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId
+  });
   }
 
 
-  Future enviarAporte({@required int dni,@required String deviceId, @required String texto}) async{//devuelve true, es un post
+  Future enviarAporte(BuildContext context,{@required int dni,@required String deviceId, @required String texto}) async{//devuelve true, es un post
   print('Generar Device');
-    final url = Uri.https(_url, 'api/Usuarios/Enviar_Aporte',{
-      'dni': dni.toString(),
-      'deviceId': deviceId,
-      'texto': texto
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + response.body);
+  getPost(context,apiRoute: 'api/Usuarios/Enviar_Aporte',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId,
+    'texto': texto
+  });
   }
 
-Future reportarFalla({@required int dni,@required String deviceId,@required String descripcion,@required String preguntaId}) async{//devuelve true, es un post
-  print('Generar Device');
-    final url = Uri.https(_url, 'api/Usuarios/Reportar_Falla',{
-      'dni': dni.toString(),
-      'deviceId': deviceId,
-      'descripcion': descripcion,
-      'PreguntaId' : preguntaId
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + _decodedJson.toString());
+Future reportarFalla(BuildContext context,{@required int dni,@required String deviceId,@required String descripcion,@required String preguntaId}) async{//devuelve true, es un post
+  print('Reportar Falla');
+  getPost(context, apiRoute: 'api/Usuarios/Reportar_Falla',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId,
+    'descripcion': descripcion,
+    'PreguntaId' : preguntaId
+  });
 }
 
-Future registrarMilitar({@required int dni,@required String password,@required String deviceId, @required String deviceName, @required deviceVersion,@required bool esMilitar}) async{//devuelve true, es un post
-  print('Registrar Militar');
-    final url = Uri.https(_url, 'api/Usuarios/Registrar_Militar',{
-      'dni': dni.toString(),
-      'password': password,
-      'esMilitar': esMilitar.toString(),
-      'deviceId': deviceId,
-      'deviceName': deviceName,
-      'deviceVersion': deviceVersion
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + _decodedJson.toString());
-}
 
-Future registrarCivil({int dni, String password, String nickname, String deviceId, String deviceName, String deviceVersion, String mail}) async{//devuelve true, es un post
+Future registrarCivil(BuildContext context,{int dni, String password, String nickname, String deviceId, String deviceName, String deviceVersion, String mail}) async{//devuelve true, es un post
   print('Registrar Civil');
-    final url = Uri.https(_url, 'api/Usuarios/Registrar_Civil',{
-      'dni': dni.toString(),
+  getPost(context,apiRoute: 'api/Usuarios/Registrar_Civil',queryParameters: {
+    'dni': dni.toString(),
+    'password': password,
+    'nickname': nickname,
+    'deviceId': deviceId,
+    'deviceName': deviceName,
+    'deviceVersion': deviceVersion,
+    'mail': mail
+  });
+}
+
+Future registrarMilitar(BuildContext context, {@required int dni,@required String password,@required String deviceId, @required String deviceName, @required deviceVersion,@required bool esMilitar}) async{
+  getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar',
+  queryParameters: {
+    'dni': dni.toString(),
       'password': password,
-      'nickname': nickname,
+      'esMilitar': 'true',
       'deviceId': deviceId,
       'deviceName': deviceName,
-      'deviceVersion': deviceVersion,
-      'mail': mail
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('que llega?:' + _decodedJson.toString());
+      'deviceVersion': deviceVersion
+  }, jsonEncode: jsonEncode({
+	    "Apellido":"Gauto",
+	    "Nombre":"Santiago",
+	    "Email":"sgauto@gmail.com",
+	    "DNI":41215183,
+	    "Password": "12345678",
+	    "DeviceId":"f14e204a6ee07d70",
+	    "DeviceName":"SM-J710MN",
+	    "DeviceVersion":"Instance of 'AndroidBuildVersion'"
+	}));
 }
 
 
