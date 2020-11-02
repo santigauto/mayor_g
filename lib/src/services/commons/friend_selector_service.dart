@@ -3,9 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mayor_g/src/models/filters/organismo_model.dart';
 
 //import 'package:mayor_g/config.dart';
-import 'package:mayor_g/src/models/friends_model.dart';
+//import 'package:mayor_g/src/models/friends_model.dart';
 import 'package:mayor_g/src/widgets/alert_widget.dart';
 
 
@@ -15,7 +16,7 @@ class GetFriendsService{
 
   String _url = 'cps-ea.mil.ar:5261';
 
-  Future getGet(context,{String apiRoute, Map<String, String> queryParameters}) async{
+  Future getGet(context,{@required String apiRoute, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);
     final resp = await http.get(__url);
     dynamic result;
@@ -31,7 +32,7 @@ class GetFriendsService{
     
   }
 
-  Future getPost(context,{String apiRoute, String jsonEncode, Map<String, String> queryParameters}) async{
+  Future getPost(context,{@required String apiRoute, String jsonEncode, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);
     final resp = await http.post(__url,body: (jsonEncode));
     dynamic result;
@@ -47,33 +48,21 @@ class GetFriendsService{
     
   }
 
-  enviarSolicitud({@required int dni, @required int dniAmigo}) async{//devuelve true, es un post
+  enviarSolicitud(BuildContext context,{@required int dni, @required int dniAmigo}) async{//devuelve true, es un post
   print('Enviar Solicitud');
-    final url = Uri.https(_url, 'api/Amigos/Enviar_Solicitud_Test',{
-      'dni' : dni.toString(),
-      'dniAmigo' : dniAmigo.toString()
-    });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('es true?:' + _decodedJson.toString());
+  getPost(context,apiRoute: 'api/Amigos/Enviar_Solicitud_Test',queryParameters: {
+    'dni' : dni.toString(),
+    'dniAmigo' : dniAmigo.toString()
+  });
   }
 
-  Future cambiarNick({@required int dni, @required String deviceId, @required nickname}) async{//devuelve true, es un post
+  Future cambiarNick(BuildContext context,{@required int dni, @required String deviceId, @required nickname}) async{//devuelve true, es un post
     print('Cambiar Nickname');
-    final url = Uri.https(_url, 'api/Usuarios/Cambiar_Nickname',{
+    getPost(context, apiRoute: 'api/Usuarios/Cambiar_Nickname',queryParameters: {
       'dni': dni.toString(),
       'deviceId': deviceId,
       'nickname': nickname
     });
-    final response = await http.post(url);
-      dynamic _decodedJson;
-      if(response.body.isNotEmpty) {
-        _decodedJson = json.decode(response.body);
-      }
-    print('es true?:' + _decodedJson.toString());
   }
 
   Future solicitudesPendientes(BuildContext context,{@required int dni}) async{ // devuelve una lista, es un get
@@ -198,5 +187,27 @@ Future registrarMilitar(BuildContext context, {@required int dni,@required Strin
 	}));
 }
 
-
+Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pregunta,List<String> respuestas,
+                          int respuestaCorrecta, bool unirConFlechas, bool verdaderoFalso, String arma,String organismo,String curso,
+                          String materia, bool imagenPregunta, bool imagenRespuesta, String nombreArchivoImagen, String imagen}){
+  getPost(context, apiRoute: 'api/Usuarios/Enviar_Sugerencia_Pregunta',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId
+  },jsonEncode: jsonEncode({
+    'pregunta': pregunta,
+    'respuestas' : respuestas,
+    'respuestaCorrecta': respuestaCorrecta,
+    'unirConFlechas': unirConFlechas,
+    'verdaderoFalso': verdaderoFalso,
+    'arma': arma,
+    'organismo': organismo,
+    'curso': curso,
+    'materia': materia,
+    'imagenPregunta': imagenPregunta,
+    'imagenRespuesta': imagenRespuesta,
+    'nombreArchivoImagen': nombreArchivoImagen,
+    'Imagen': imagen
+  }));
+}
+//"pregunta":"¿que es esto?", "respuestas":["una lata","una botella","un vaso","una copa"], "respuestaCorrecta":1, "unirConFlechas":false,"verdaderoFalso":false, "arma":"General", "organismo":"General", "curso":null, "materia":null ,"imagenPregunta":true ,"imagenRespuesta":false ,"nombreArchivoImagen":"prueba.jpg", "Imagen":"/9j/
 }

@@ -62,6 +62,9 @@ class FriendsPage extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(Icons.search), 
                     onPressed: ()async{
+                      await GetFriendsService().sugerirPregunta(context,arma: 'General', organismo: 'General', verdaderoFalso: false,deviceId: prefs.deviceId,dni: prefs.dni,imagenPregunta: false,imagenRespuesta: false,nombreArchivoImagen: null,materia: null,curso: null,pregunta: '¿Que es esto?',
+                       respuestas: ["una lata","una botella","un vaso","una copa"],respuestaCorrecta: 1,unirConFlechas: false,
+                       imagen: null);
                       //await GetFriendsService().registrarMilitar(context, dni: 41215183, password: 'asdasd', deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion, esMilitar: true);
                       //await GetFriendsService().registrarCivil(context,dni: 21796938, password: 'asdasd123123', deviceId: prefs.deviceId.toString(), deviceName: prefs.deviceName.toString(), deviceVersion: prefs.deviceVersion.toString(), nickname: 'Dieguito',mail: 'asd@gmail.com');
                       //await GetFriendsService().reportarFalla(context,dni: prefs.dni, deviceId: prefs.deviceId, descripcion: 'reporte', preguntaId: '05C7818D-617F-43C0-8A9F-AC20562EDCC1');
@@ -73,7 +76,7 @@ class FriendsPage extends StatelessWidget {
                       //await GetFriendsService().solicitudesPendientes(dni: 41215183);
                       //await GetFriendsService().rechazarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
                       //await GetFriendsService().aprobarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
-                      await GetFriendsService().obtenerAmigos(context,dni: 41215183);
+                      //await GetFriendsService().obtenerAmigos(context,dni: 41215183);
                       //await GetFriendsService().eliminarAmistad(dni: 41215183, dniAmigo: 34495248);
                       //await GetFriendsService().cambiarNick(dni: 41215183, deviceId: 'f14e204a6ee07d70', nickname: 'Santigol');
                       //showSearch(context: context, delegate: DataSearch(gente));
