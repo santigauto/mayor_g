@@ -58,7 +58,7 @@ class AuthService {
         prefs.nombre=_profile.nombre;
         prefs.dni=_profile.dni;
         prefs.foto=_profile.foto;
-        prefs.deviceId =_profile.deviceId;
+        
 
         Navigator.pushReplacementNamed(context, 'menu');
         print('${[_user.token.generatedAt,_user.toString()]}');
@@ -139,28 +139,29 @@ recuperarContrasenia(BuildContext context, {@required String dni}) async {
 
   //----------------------------- OBTENER DEVICE INFO -------------------------------
 
-   Future<String> getDeviceDetails() async {
-    //String deviceName;
-    //String deviceVersion;
+   Future getDeviceDetails() async {
+    String deviceName;
+    String deviceVersion;
     String identifier;
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
     try {
       if (Platform.isAndroid) {
         var build = await deviceInfoPlugin.androidInfo;
-        //deviceName = build.model;
-        //deviceVersion = build.version.toString();
+        deviceName = build.model;
+        deviceVersion = build.version.toString();
         identifier = build.androidId;  //UUID for Android
-        print('ID:'+identifier);
       } else if (Platform.isIOS) {
         var data = await deviceInfoPlugin.iosInfo;
-        //deviceName = data.name;
-        //deviceVersion = data.systemVersion;
+        deviceName = data.name;
+        deviceVersion = data.systemVersion;
         identifier = data.identifierForVendor;  //UUID for iOS
       }
     } on PlatformException {
-      print('Hubo un error al obtener la versión del dispositivo');
+      print('Failed to get platform version');
     }
-
+    prefs.deviceId =  identifier;
+    prefs.deviceVersion = deviceVersion.toString();
+    prefs.deviceName  = deviceName;
 //if (!mounted) return;
 return identifier/* [deviceName, deviceVersion, identifier] */;
 }

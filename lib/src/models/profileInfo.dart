@@ -55,6 +55,16 @@ class PreferenciasUsuario{
 
   set deviceId(String value)=>_prefs.setString('deviceId', value);
 
+    //DEVICE NAME
+  get deviceName{return _prefs.getString('deviceName');}
+
+  set deviceName(String value)=>_prefs.setString('deviceName', value);
+
+    //DEVICE VERSION
+  get deviceVersion{return _prefs.getString('deviceVersion');}
+
+  set deviceVersion(String value)=>_prefs.setString('deviceVersion', value);
+
    //score
   get score{return _prefs.getInt('score') ?? 0;}
 

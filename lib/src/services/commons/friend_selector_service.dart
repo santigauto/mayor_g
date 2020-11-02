@@ -24,7 +24,7 @@ class GetFriendsService{
 
   enviarSolicitud({@required int dni, @required int dniAmigo}) async{//devuelve true, es un post
   print('Enviar Solicitud');
-    final url = Uri.https(_url, 'api/Amigos/Enviar_Solicitud',{
+    final url = Uri.https(_url, 'api/Amigos/Enviar_Solicitud_Test',{
       'dni' : dni.toString(),
       'dniAmigo' : dniAmigo.toString()
     });
@@ -61,11 +61,26 @@ class GetFriendsService{
     print("holahola hola"+_decodedJson.toString());
   }
 
-  Future obtenerUsuario() async{//devuelve true
-    final http.Response response = await http.get(
-       'https://cps-ea.mil.ar:5261/api/Usuarios/Obtener_Usuario',
-       );
-      dynamic _decodedJson;
+  Future obtenerUsuarioDni({@required int dni}) async{//devuelve true
+    print('usuario');
+    final url = Uri.https(_url, 'api/Usuarios/Obtener_Usuario_DNI',{
+      'dni' : dni.toString()
+    });
+    final response = await http.get(url);
+    dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('obtuvo?:' + _decodedJson.toString());
+  }
+
+  Future obtenerUsuarioDatos({@required String datos}) async{//devuelve true
+    print('usuario');
+    final url = Uri.https(_url, 'api/Usuarios/Obtener_Usuario_DNI',{
+      'datos' : datos
+    });
+    final response = await http.get(url);
+    dynamic _decodedJson;
       if(response.body.isNotEmpty) {
         _decodedJson = json.decode(response.body);
       }
@@ -124,4 +139,105 @@ class GetFriendsService{
       }
     print('elimino?:' + _decodedJson.toString());
   }
+
+  Future generarUserDevice({@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
+  print('Generar Device');
+    final url = Uri.https(_url, 'api/Usuarios/Generate_User_Device',{
+      'dni': dni.toString(),
+      'deviceId': deviceId,
+      'deviceName': deviceName,
+      'deviceVersion': deviceVersion
+    });
+    final response = await http.post(url);
+      dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('que llega?:' + _decodedJson.toString());
+  }
+
+  Future iniciarJuego({@required int dni,@required String deviceId}) async{//devuelve true, es un post
+  print('Generar Device');
+    final url = Uri.https(_url, 'api/Usuarios/Iniciar_Juego',{
+      'dni': dni.toString(),
+      'deviceId': deviceId
+    });
+    final response = await http.post(url);
+      dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('que llega?:' + response.body);
+  }
+
+
+  Future enviarAporte({@required int dni,@required String deviceId, @required String texto}) async{//devuelve true, es un post
+  print('Generar Device');
+    final url = Uri.https(_url, 'api/Usuarios/Enviar_Aporte',{
+      'dni': dni.toString(),
+      'deviceId': deviceId,
+      'texto': texto
+    });
+    final response = await http.post(url);
+      dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('que llega?:' + response.body);
+  }
+
+Future reportarFalla({@required int dni,@required String deviceId,@required String descripcion,@required String preguntaId}) async{//devuelve true, es un post
+  print('Generar Device');
+    final url = Uri.https(_url, 'api/Usuarios/Reportar_Falla',{
+      'dni': dni.toString(),
+      'deviceId': deviceId,
+      'descripcion': descripcion,
+      'PreguntaId' : preguntaId
+    });
+    final response = await http.post(url);
+      dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('que llega?:' + _decodedJson.toString());
+}
+
+Future registrarMilitar({@required int dni,@required String password,@required String deviceId, @required String deviceName, @required deviceVersion,@required bool esMilitar}) async{//devuelve true, es un post
+  print('Registrar Militar');
+    final url = Uri.https(_url, 'api/Usuarios/Registrar_Militar',{
+      'dni': dni.toString(),
+      'password': password,
+      'esMilitar': esMilitar.toString(),
+      'deviceId': deviceId,
+      'deviceName': deviceName,
+      'deviceVersion': deviceVersion
+    });
+    final response = await http.post(url);
+      dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('que llega?:' + _decodedJson.toString());
+}
+
+Future registrarCivil({int dni, String password, String nickname, String deviceId, String deviceName, String deviceVersion, String mail}) async{//devuelve true, es un post
+  print('Registrar Civil');
+    final url = Uri.https(_url, 'api/Usuarios/Registrar_Civil',{
+      'dni': dni.toString(),
+      'password': password,
+      'nickname': nickname,
+      'deviceId': deviceId,
+      'deviceName': deviceName,
+      'deviceVersion': deviceVersion,
+      'mail': mail
+    });
+    final response = await http.post(url);
+      dynamic _decodedJson;
+      if(response.body.isNotEmpty) {
+        _decodedJson = json.decode(response.body);
+      }
+    print('que llega?:' + _decodedJson.toString());
+}
+
+
 }

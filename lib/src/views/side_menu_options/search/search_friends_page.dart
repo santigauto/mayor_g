@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
@@ -29,7 +30,7 @@ class FriendsPage extends StatelessWidget {
     {'nombre':'Jose','grado':'TT'}
   ];
   final BlocFriends bloc = new BlocFriends();
-
+  final PreferenciasUsuario prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
 
@@ -61,14 +62,21 @@ class FriendsPage extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(Icons.search), 
                     onPressed: ()async{
+                      await GetFriendsService().registrarCivil(dni: 21796938, password: 'asdasd123123', deviceId: prefs.deviceId.toString(), deviceName: prefs.deviceName.toString(), deviceVersion: prefs.deviceVersion.toString(), nickname: 'Dieguito',mail: 'asd@gmail.com');
+                      //await GetFriendsService().reportarFalla(dni: prefs.dni, deviceId: prefs.deviceId, descripcion: 'reporte', preguntaId: '05C7818D-617F-43C0-8A9F-AC20562EDCC1');
+                      //await GetFriendsService().enviarAporte(dni: prefs.dni, deviceId: prefs.deviceId, texto: 'hola');
+                      //await GetFriendsService().obtenerUsuarioDatos(datos: 'Viola');**
+                      //print('ID ${prefs.deviceId} Name ${prefs.deviceName} Version${prefs.deviceVersion}');
+                      //await GetFriendsService().generarUserDevice(dni: 41215183, deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion);
                       //await GetFriendsService().enviarSolicitud(dni: 34495248, dniAmigo: 41215183);
                       //await GetFriendsService().solicitudesPendientes(dni: 41215183);
                       //await GetFriendsService().rechazarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
                       //await GetFriendsService().aprobarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
                       //await GetFriendsService().obtenerAmigos(dni: 41215183);
-                      await GetFriendsService().eliminarAmistad(dni: 41215183, dniAmigo: 34495248);
-                      //await GetFriendsService().cambiarDni(dni: 41215183, deviceId: 'f14e204a6ee07d70', nickname: 'Santigol');
-                      showSearch(context: context, delegate: DataSearch(gente));
+                      //await GetFriendsService().eliminarAmistad(dni: 41215183, dniAmigo: 34495248);
+                      //await GetFriendsService().cambiarNick(dni: 41215183, deviceId: 'f14e204a6ee07d70', nickname: 'Santigol');
+                      //showSearch(context: context, delegate: DataSearch(gente));
+                      //await GetFriendsService().iniciarJuego(dni: prefs.dni, deviceId: prefs.deviceId);*
                     }),
                 ),
               ],
