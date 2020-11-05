@@ -15,7 +15,7 @@ abstract class ServiceFiltros<T>{
   List<T> getLista(_decodedData);
 
   Future<List<T>> getAll(context,String filtro) async{
-    final _url = Uri.https('cps-ea.mil.ar:5261', apiRoute);
+    final _url = Uri.https('mayorg.ejercito.mil.ar', apiRoute);
     final resp = await http.get(_url);
     List lista;
 

@@ -14,7 +14,7 @@ import 'package:mayor_g/src/widgets/alert_widget.dart';
 
 class GetFriendsService{
 
-  String _url = 'cps-ea.mil.ar:5261';
+  String _url = 'mayorg.ejercito.mil.ar';
 
   Future getGet(context,{@required String apiRoute, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);

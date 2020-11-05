@@ -13,7 +13,7 @@ import 'package:mayor_g/src/widgets/alert_widget.dart';
 class QuestionServicePrueba{
 
   getNewQuestions(BuildContext context,{@required cantidad}) async{
-    String _url = 'cps-ea.mil.ar:5261';
+    String _url = 'mayorg.ejercito.mil.ar';
     final url = Uri.https(_url, 'api/Json/Obtener_Preguntas',{
       'cantidad' : cantidad.toString()
     });
