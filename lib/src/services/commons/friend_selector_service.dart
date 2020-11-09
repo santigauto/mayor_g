@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/models/filters/organismo_model.dart';
 
 //import 'package:mayor_g/config.dart';
@@ -34,7 +35,7 @@ class GetFriendsService{
 
   Future getPost(context,{@required String apiRoute, String jsonEncode, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);
-    final resp = await http.post(__url,body: (jsonEncode));
+    final resp = await http.post(__url,body: jsonEncode);
     dynamic result;
 
     if(resp.body.isEmpty) {
@@ -166,20 +167,16 @@ Future registrarCivil(BuildContext context,{int dni, String password, String nic
   });
 }
 
-Future registrarMilitar(BuildContext context, {@required int dni,@required String password,@required String deviceId, @required String deviceName, @required deviceVersion,@required bool esMilitar}) async{
-  getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar',
-  queryParameters: {
-    'dni': dni.toString(),
-      'password': password,
-      'esMilitar': 'true',
-      'deviceId': deviceId,
-      'deviceName': deviceName,
-      'deviceVersion': deviceVersion
-  }, jsonEncode: jsonEncode({
+Future registrarMilitar(BuildContext context, {@required int dni,@required String password,@required String deviceId, @required String deviceName, 
+                          @required deviceVersion,@required bool esMilitar}) async{
+
+  getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar', 
+    
+    jsonEncode: jsonEncode({
 	    "Apellido":"Gauto",
 	    "Nombre":"Santiago",
 	    "Email":"sgauto@gmail.com",
-	    "DNI":41215183,
+	    "DNI":44000111,
 	    "Password": "12345678",
 	    "DeviceId":"f14e204a6ee07d70",
 	    "DeviceName":"SM-J710MN",
@@ -189,7 +186,7 @@ Future registrarMilitar(BuildContext context, {@required int dni,@required Strin
 
 Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pregunta,List<String> respuestas,
                           int respuestaCorrecta, bool unirConFlechas, bool verdaderoFalso, String arma,String organismo,String curso,
-                          String materia, bool imagenPregunta, bool imagenRespuesta, String nombreArchivoImagen, String imagen}){
+                          String materia, bool imagenPregunta, bool imagenRespuesta, String nombreArchivoImagen, String imagen}) async{
   getPost(context, apiRoute: 'api/Usuarios/Enviar_Sugerencia_Pregunta',queryParameters: {
     'dni': dni.toString(),
     'deviceId': deviceId
@@ -209,5 +206,5 @@ Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pre
     'Imagen': imagen
   }));
 }
-//"pregunta":"¿que es esto?", "respuestas":["una lata","una botella","un vaso","una copa"], "respuestaCorrecta":1, "unirConFlechas":false,"verdaderoFalso":false, "arma":"General", "organismo":"General", "curso":null, "materia":null ,"imagenPregunta":true ,"imagenRespuesta":false ,"nombreArchivoImagen":"prueba.jpg", "Imagen":"/9j/
+
 }
