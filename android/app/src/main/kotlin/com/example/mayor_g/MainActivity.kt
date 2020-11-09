@@ -1,4 +1,4 @@
-package com.example.mayor_g
+package ar.mil.mayor_g
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
