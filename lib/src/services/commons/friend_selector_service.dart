@@ -169,15 +169,10 @@ Future registrarCivil(BuildContext context,{int dni, String password, String nic
 
 Future registrarMilitar(BuildContext context, {@required int dni,@required String password,@required String deviceId, @required String deviceName, 
                           @required deviceVersion,@required bool esMilitar}) async{
-  getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar',
-  /* queryParameters: {
-    'dni': dni.toString(),
-      'password': password,
-      'esMilitar': 'true',
-      'deviceId': deviceId,
-      'deviceName': deviceName,
-      'deviceVersion': deviceVersion
-  }, */ jsonEncode: jsonEncode({
+
+  getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar', 
+    
+    jsonEncode: jsonEncode({
 	    "Apellido":"Gauto",
 	    "Nombre":"Santiago",
 	    "Email":"sgauto@gmail.com",
