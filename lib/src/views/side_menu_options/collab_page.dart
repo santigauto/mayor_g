@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
@@ -104,30 +105,32 @@ class _CollabPageState extends State<CollabPage> {
                 ),
               ),
               SizedBox(height: 25),
-              RaisedButton(
-                child: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Enviar  ", style: TextStyle(fontSize: 20)),
-                      Icon(Icons.mail_outline)
-                    ],
-                  ),
-                ),
-                onPressed: () {
-                  _submit();
-                  print(_collab);
-                },
-                color: Colors.green[900],
-                textColor: Colors.white,
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                splashColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.black),
-                ),
-              ),
+              Container(
+                      padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20.0, // soften the shadow
+                            spreadRadius: 0.0, //extend the shadow
+                            offset: Offset(0,10.0, // Move to bottom 10 Vertically
+                          ),)
+                        ],
+                        
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: ListTile(
+                            title: AutoSizeText("Enviar", style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            onTap: () {
+                              _submit();
+                              print(_collab);
+                            },
+                          ),
+                      ),
+                      ),)
             ],
           ),
         ),
