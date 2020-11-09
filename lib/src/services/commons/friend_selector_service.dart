@@ -35,7 +35,7 @@ class GetFriendsService{
 
   Future getPost(context,{@required String apiRoute, String jsonEncode, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);
-    final resp = await http.post(__url,body: jsonEncode);
+    final resp = await http.post(__url,body: jsonEncode,headers: Config.HttpHeaders,);
     dynamic result;
 
     if(resp.body.isEmpty) {
@@ -73,10 +73,12 @@ class GetFriendsService{
     });
   }
 
-  Future obtenerUsuarioDni(BuildContext context,{@required int dni}) async{//devuelve true
-    print('usuario');
+  Future obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
+    print('usuario ' + deviceId);
     getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
-      'dni' : dni.toString()
+      'dni' : dni.toString(),
+      'deviceId' : deviceId,
+      'dniBusqueda' : dniBusqueda.toString()
     });
   }
 

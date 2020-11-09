@@ -62,14 +62,14 @@ class FriendsPage extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(Icons.search), 
                     onPressed: ()async{
-                      await GetFriendsService().sugerirPregunta(context,arma: 'General', organismo: 'General', verdaderoFalso: false,deviceId: prefs.deviceId,dni: prefs.dni,imagenPregunta: false,imagenRespuesta: false,nombreArchivoImagen: null,materia: null,curso: null,pregunta: '¿Que es esto?',
+                      /* await GetFriendsService().sugerirPregunta(context,arma: 'General', organismo: 'General', verdaderoFalso: false,deviceId: prefs.deviceId,dni: prefs.dni,imagenPregunta: false,imagenRespuesta: false,nombreArchivoImagen: null,materia: null,curso: null,pregunta: '¿Que es esto?',
                        respuestas: ["una lata","una botella","un vaso","una copa"],respuestaCorrecta: 1,unirConFlechas: false,
-                       imagen: null);
+                       imagen: null); */
                       //await GetFriendsService().registrarMilitar(context, dni: 41215183, password: 'asdasd', deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion, esMilitar: true);
                       //await GetFriendsService().registrarCivil(context,dni: 21796938, password: 'asdasd123123', deviceId: prefs.deviceId.toString(), deviceName: prefs.deviceName.toString(), deviceVersion: prefs.deviceVersion.toString(), nickname: 'Dieguito',mail: 'asd@gmail.com');
                       //await GetFriendsService().reportarFalla(context,dni: prefs.dni, deviceId: prefs.deviceId, descripcion: 'reporte', preguntaId: '05C7818D-617F-43C0-8A9F-AC20562EDCC1');
                       //await GetFriendsService().enviarAporte(dni: prefs.dni, deviceId: prefs.deviceId, texto: 'hola');
-                      //await GetFriendsService().obtenerUsuarioDatos(datos: 'Gauto');
+                      await GetFriendsService().obtenerUsuarioDni(context, dni: 41215183, deviceId: 'f14e204a6ee07d70',dniBusqueda: 41215183);
                       //print('ID ${prefs.deviceId} Name ${prefs.deviceName} Version${prefs.deviceVersion}');
                       //await GetFriendsService().generarUserDevice(context,dni: 41215183, deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion);
                       //await GetFriendsService().enviarSolicitud(dni: 34495248, dniAmigo: 41215183);
