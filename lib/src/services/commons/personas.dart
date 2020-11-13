@@ -1,6 +1,6 @@
 //TODO eliminar esto
 
-import 'dart:convert';
+/* import 'dart:convert';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
@@ -50,3 +50,4 @@ class PersonaServices {
     return _personas;
   }
 }
+ */

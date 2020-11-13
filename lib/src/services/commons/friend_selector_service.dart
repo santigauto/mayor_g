@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mayor_g/config.dart';
-import 'package:mayor_g/src/models/filters/organismo_model.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 
 //import 'package:mayor_g/config.dart';
@@ -17,6 +16,8 @@ import 'package:mayor_g/src/widgets/alert_widget.dart';
 class GetFriendsService{
 
   String _url = 'mayorg.ejercito.mil.ar';
+
+  bool _cargando = false;
 
   Future getGet(context,{@required String apiRoute, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);
@@ -68,13 +69,16 @@ class GetFriendsService{
   }
 
   Future solicitudesPendientes(BuildContext context,{@required int dni}) async{ // devuelve una lista, es un get
+    if(_cargando) return;
+    _cargando = true;
     print('solicitudesPedientes');
     getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
       'dni' : dni.toString()
     });
+    _cargando = false;
   }
 
-  Future obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
+  Future<List<Persona>> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
     print('usuario ' + deviceId);
     var _decodedJson = await getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
       'dni'         : dni.toString(),

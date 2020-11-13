@@ -2,7 +2,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+
 import 'package:mayor_g/src/services/auth_service.dart';
 import 'package:mayor_g/src/services/commons/drawer_service.dart';
 import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
@@ -28,6 +30,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   bool _canBeDragged = false;
+  List<Persona> personas;
 
   Animation rotation;
   Animation fade;
@@ -49,14 +52,12 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     animationController.dispose();
     super.dispose();
   }
-
   void toggle() => animationController.isDismissed
       ? animationController.forward()
       : animationController.reverse();
 
   @override
   Widget build(BuildContext context) {
-
     final size = MediaQuery.of(context).size;
     final maxSlide = size.width*0.75;
     
@@ -103,7 +104,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(width:maxSlide, height: size.height,),
+                    child: MyDrawer(width:maxSlide, height: size.height, solicitudes: personas.length,),
                   ),
                 ),
                 Positioned(
@@ -155,7 +156,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 class MyDrawer extends StatelessWidget {
   final double width;
   final double height;
-  MyDrawer({@required this.width, this.height});
+  final int solicitudes;
+  MyDrawer({@required this.width, this.height, @required this.solicitudes});
 
   final prefs = new PreferenciasUsuario();
 
@@ -181,7 +183,7 @@ class MyDrawer extends StatelessWidget {
   }
 
   Widget _drawerProfile(BuildContext context, prefs) {
-
+     
     return Container(
       height: 152,
       color: Colors.white,
@@ -223,7 +225,17 @@ class MyDrawer extends StatelessWidget {
                     ],
                   ),
                 )),
-                IconButton(icon: Icon(Icons.edit), onPressed: (){})
+                //IconButton(icon: Icon(Icons.edit), onPressed: (){})
+                FutureBuilder<List<Persona>>(
+                  future: GetFriendsService().solicitudesPendientes(context, dni: 41215183),
+                  initialData: [],
+                  builder: (BuildContext context, AsyncSnapshot<List<Persona>> snapshot) {
+                    return CircleAvatar(
+                      child: Text(snapshot.data.length.toString()),
+                    );
+                  },
+                ),
+                
               ],
             ), 
           ],

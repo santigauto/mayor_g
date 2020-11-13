@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
-import 'package:mayor_g/src/services/auth_service.dart';
 import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
-import 'package:mayor_g/src/services/commons/personas.dart';
 import 'package:mayor_g/src/widgets/MyTextInput.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
@@ -169,9 +167,8 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         apellido: _apellido
       ); */
       List gente;
-      if(_apellido != null)gente = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
-      else if(_dni != null)gente = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
-
+      if(_dni != null)gente = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
+      else if(_apellido != null)gente = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
       setState(() {
         _gente = gente;
         _loading = false;
