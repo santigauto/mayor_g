@@ -104,7 +104,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(width:maxSlide, height: size.height, solicitudes: personas.length,),
+                    child: MyDrawer(width:maxSlide, height: size.height),
                   ),
                 ),
                 Positioned(
@@ -156,8 +156,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 class MyDrawer extends StatelessWidget {
   final double width;
   final double height;
-  final int solicitudes;
-  MyDrawer({@required this.width, this.height, @required this.solicitudes});
+  MyDrawer({@required this.width, this.height});
 
   final prefs = new PreferenciasUsuario();
 
@@ -226,13 +225,13 @@ class MyDrawer extends StatelessWidget {
                   ),
                 )),
                 //IconButton(icon: Icon(Icons.edit), onPressed: (){})
-                FutureBuilder<List<Persona>>(
+                FutureBuilder(
                   future: GetFriendsService().solicitudesPendientes(context, dni: 41215183),
                   initialData: [],
-                  builder: (BuildContext context, AsyncSnapshot<List<Persona>> snapshot) {
-                    return CircleAvatar(
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return (snapshot.hasData)?CircleAvatar(
                       child: Text(snapshot.data.length.toString()),
-                    );
+                    ): Container();
                   },
                 ),
                 

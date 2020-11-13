@@ -78,6 +78,11 @@ class GetFriendsService{
     _cargando = false;
   }
 
+  Future numeroDeSolicitudesPendientes(BuildContext context, {@required int dni})async{
+    List lista = await solicitudesPendientes(context, dni: dni);
+    return lista.length;
+  }
+
   Future<List<Persona>> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
     print('usuario ' + deviceId);
     var _decodedJson = await getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
