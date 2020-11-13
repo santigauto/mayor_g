@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/models/filters/organismo_model.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 
 //import 'package:mayor_g/config.dart';
 //import 'package:mayor_g/src/models/friends_model.dart';
@@ -51,7 +52,7 @@ class GetFriendsService{
 
   enviarSolicitud(BuildContext context,{@required int dni, @required int dniAmigo}) async{//devuelve true, es un post
   print('Enviar Solicitud');
-  getPost(context,apiRoute: 'api/Amigos/Enviar_Solicitud_Test',queryParameters: {
+  getPost(context,apiRoute: 'api/Amigos/Enviar_Solicitud',queryParameters: {
     'dni' : dni.toString(),
     'dniAmigo' : dniAmigo.toString()
   });
@@ -75,17 +76,33 @@ class GetFriendsService{
 
   Future obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
     print('usuario ' + deviceId);
-    getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
-      'dni' : dni.toString(),
-      'deviceId' : deviceId,
+    var _decodedJson = await getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
+      'dni'         : dni.toString(),
+      'deviceId'    : deviceId,
       'dniBusqueda' : dniBusqueda.toString()
     });
+    List<Persona> _personas = [];
+
+    _decodedJson.forEach((per){
+      _personas.add(Persona.fromJsonMap(per));
+    });
+
+    return _personas;
   }
 
-  Future obtenerUsuarioDatos(BuildContext context,{@required String datos}) async{//devuelve datosUsuario
-    getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_Dato',queryParameters: {
-      'datos' : datos
+  Future obtenerUsuario(BuildContext context,{@required int dni, @required String deviceId, @required String datos}) async{//devuelve datosUsuario
+    var _decodedJson = await getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario',queryParameters: {
+      'dni'       : dni.toString(),
+      'deviceId'  : deviceId,
+      'datos'     : datos
     });
+    List<Persona> _personas = [];
+
+    _decodedJson.forEach((per){
+      _personas.add(Persona.fromJsonMap(per));
+    });
+
+    return _personas;
   }
 
   //POST Aprobar_Solicitud(string idSolicitud)

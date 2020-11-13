@@ -1,9 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
+import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/services/commons/personas.dart';
 import 'package:mayor_g/src/widgets/MyTextInput.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+
+
+class BlocSearch{
+  final StreamController _streamController = new StreamController.broadcast();
+
+  Function get searchSink => _streamController.sink.add;
+
+  Stream get searchStream => _streamController.stream;
+
+  void disposeStream() { 
+    _streamController?.close();
+  }
+}
 
 
 class SearchPeoplePage extends StatefulWidget {
@@ -24,6 +41,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
   String _apellido = '';
   int _dni;
   bool _loading = false;
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
 
   List<Persona> _gente;
 
@@ -59,12 +77,6 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         child: Text('Realice una busqueda.',
           style: TextStyle(color:Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
-      );
-    else if(_gente[0].dni == 0 || _gente[0].dni == null)
-      return Center(
-        child: Text(_gente[0].mensaje,
-          style: TextStyle(color:Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-        )
       );
     else
       return ListView.builder(
@@ -126,7 +138,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
       child: ListTile(
         onTap: () {},
-        title: Text("${_gente[x].grado} ${_gente[x].apellido} ${_gente[x].nombres}"),
+        title: Text("${_gente[x].apellido} ${_gente[x].nombre}"),
         leading: Icon(Icons.face),
         trailing: FlatButton(
           color: Theme.of(context).primaryColor,
@@ -135,6 +147,8 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
           disabledTextColor: Colors.black,
           onPressed: () {
             /*...*/
+            print(_gente[x].dni);
+            GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni);
           },
           child: Text("Invitar",),
         ),
@@ -148,12 +162,15 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         _loading = true;
       });
 
-      PersonaServices personaServices = new PersonaServices();
+      /* PersonaServices personaServices = new PersonaServices();
       List<Persona> gente = await personaServices.getPersona(context,
         uat: await AuthService().getAccessToken(),
         dni: _dni,
         apellido: _apellido
-      );
+      ); */
+      List gente;
+      if(_apellido != null)gente = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
+      else if(_dni != null)gente = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
 
       setState(() {
         _gente = gente;

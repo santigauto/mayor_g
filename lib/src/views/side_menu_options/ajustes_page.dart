@@ -48,7 +48,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
           BackgroundWidget(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
+            child: ListView(
               children: <Widget>[
                 SafeArea(child: Container()),
                 Row(
