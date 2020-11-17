@@ -30,21 +30,25 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   bool _canBeDragged = false;
-  List<Persona> personas;
+  List solicitudesPendientes = [];
 
   Animation rotation;
   Animation fade;
   PreferenciasUsuario prefs = new PreferenciasUsuario();
   @override
-  void initState() {
+  void initState(){
     super.initState();
     animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 350),
     );
-
+    buscarSolicitudes();
     rotation = Tween( begin: 0.0, end: math.pi/2).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
     fade = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
+  }
+  void buscarSolicitudes() async{
+    solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni);
+    setState(() {});
   }
 
   @override
@@ -104,7 +108,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(width:maxSlide, height: size.height),
+                    child: MyDrawer(width:maxSlide, height: size.height, solicitudes: solicitudesPendientes,),
                   ),
                 ),
                 Positioned(
@@ -156,7 +160,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 class MyDrawer extends StatelessWidget {
   final double width;
   final double height;
-  MyDrawer({@required this.width, this.height});
+  final List solicitudes;
+  MyDrawer({@required this.width, this.height, this.solicitudes});
 
   final prefs = new PreferenciasUsuario();
 
@@ -225,16 +230,8 @@ class MyDrawer extends StatelessWidget {
                   ),
                 )),
                 //IconButton(icon: Icon(Icons.edit), onPressed: (){})
-                FutureBuilder(
-                  future: GetFriendsService().solicitudesPendientes(context, dni: 41215183),
-                  initialData: [],
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    return (snapshot.hasData)?CircleAvatar(
-                      child: Text(snapshot.data.length.toString()),
-                    ): Container();
-                  },
-                ),
-                
+                //Text(solicitudes.length.toString())
+                solicitudesNuevas()
               ],
             ), 
           ],
@@ -242,7 +239,24 @@ class MyDrawer extends StatelessWidget {
       ),
     );
   }
-
+Widget solicitudesNuevas(){
+  return Stack(
+    children: [
+      Container(child: Icon(Icons.group_add,size: 35,color: Colors.white,)),
+      (solicitudes.length > 0)?Positioned(
+      right: 0,
+      top: 0,
+      child: Container(
+        height: 15,
+        width: 15,
+        child: CircleAvatar(
+          backgroundColor: Colors.red,
+          child: AutoSizeText(solicitudes.length.toString()),
+        ),
+      )):Container()
+    ],
+  );
+}
   Widget _lista() {
     return FutureBuilder(
       future: menuProvider.cargarData(),

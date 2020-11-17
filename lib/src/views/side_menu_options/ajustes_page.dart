@@ -5,8 +5,11 @@ import 'package:mayor_g/src/services/filterServices/arma_service.dart';
 import 'package:mayor_g/src/services/filterServices/curso_service.dart';
 import 'package:mayor_g/src/services/filterServices/materia_service.dart';
 import 'package:mayor_g/src/services/filterServices/organismo_service.dart';
+import 'package:mayor_g/src/widgets/MyTextInput.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
+import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
 class AjustesPartidaPage extends StatefulWidget {
   @override
@@ -38,10 +41,11 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(prefs.nickname);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajustes de Partida'),
+        title: Text('Ajustes'),
       ),
       body: Stack(
         children: <Widget>[
@@ -51,6 +55,39 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             child: ListView(
               children: <Widget>[
                 SafeArea(child: Container()),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      'Usuario',
+                      style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline4.fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    Icon(
+                      Icons.face,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
+                Text(
+                  'Aquí puede modificar su Nickname',
+                  style: TextStyle(color: Colors.white),
+                ),
+                TextInput(
+                  label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido:prefs.nickname,
+                  inputIcon: Icon(Icons.edit,color: Colors.white,),
+                  color: Colors.white,
+                  validator: (String text) {
+                    if (text.isEmpty) {
+                      return 'Por favor completar el campo';
+                    }
+                    return null;
+                  },
+                ),
+                Divider(color: Colors.white.withOpacity(0.2)),
                 Row(
                   children: <Widget>[
                     Text(
@@ -80,32 +117,47 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: Container()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: RaisedButton(
-                      onPressed: () {
-                        prefs.arma = auxArma;
-                        prefs.materia = auxMateria;
-                        prefs.colegio = auxColegio;
-                        prefs.curso = auxCurso;
-                        Navigator.pop(context);
-                      },
-                      child: Text('Reestablecer'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical:8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: size.width*0.4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: ListTile(
+                            title: AutoSizeText("Restablecer",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            onTap: () {
+                              prefs.arma = auxArma;
+                              prefs.materia = auxMateria;
+                              prefs.colegio = auxColegio;
+                              prefs.curso = auxCurso;
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Guardar'),
+                    Container(
+                      width: size.width*0.4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: ListTile(
+                            title: AutoSizeText("Guardar",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
           ),
@@ -126,7 +178,6 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
   Widget _opciones(Size size) {
     return Column(
       children: <Widget>[
-        Divider(color: Colors.white.withOpacity(0.2)),
         _getDropdown(
           size: size,
           title: 'Organismo',

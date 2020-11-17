@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
+import 'package:mayor_g/src/models/solicitudes_model.dart';
 
 //import 'package:mayor_g/config.dart';
 //import 'package:mayor_g/src/models/friends_model.dart';
@@ -30,7 +31,6 @@ class GetFriendsService{
       final _decodedData = json.decode(resp.body);
       result = _decodedData;
     }
-    print(result);
     return result;
     
   }
@@ -46,7 +46,7 @@ class GetFriendsService{
       final _decodedData = json.decode(resp.body);
       result = _decodedData;
     }
-    print(result);
+    print('hola'+result);
     return result;
     
   }
@@ -68,20 +68,19 @@ class GetFriendsService{
     });
   }
 
-  Future solicitudesPendientes(BuildContext context,{@required int dni}) async{ // devuelve una lista, es un get
-    if(_cargando) return;
-    _cargando = true;
+  Future<List<Solicitud>> solicitudesPendientes(BuildContext context,{@required int dni}) async{ // devuelve una lista, es un get
     print('solicitudesPedientes');
-    getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
+    var _decodedJson = await getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
       'dni' : dni.toString()
     });
-    _cargando = false;
+    List<Solicitud> solicitudes = [];
+
+    _decodedJson.forEach((solicitud){
+      solicitudes.add(Solicitud.fromJson(solicitud));
+    });
+    return solicitudes;
   }
 
-  Future numeroDeSolicitudesPendientes(BuildContext context, {@required int dni})async{
-    List lista = await solicitudesPendientes(context, dni: dni);
-    return lista.length;
-  }
 
   Future<List<Persona>> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
     print('usuario ' + deviceId);

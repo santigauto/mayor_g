@@ -36,6 +36,23 @@ class PreferenciasUsuario{
     }
     _prefs.setString('nombre', value);
   }
+
+  //NICKNAME
+  get nickname{return _prefs.getString('nickname');}
+
+  set nickname(String value){
+    
+    value = value.toLowerCase();
+    value = value.replaceFirst(RegExp(value[0]), value[0].toUpperCase());
+
+    for(var i = 0; i < value.length ; i ++){
+      if (value[i] == ' '){
+        value = value.replaceFirst(value[i+1], value[i+1].toUpperCase(), i);
+      }
+    }
+    _prefs.setString('nickname', value);
+  }
+  
   //DNI
   get dni{return _prefs.getInt('dni') ?? 0;}
 

@@ -62,7 +62,6 @@ class MenuPage extends StatelessWidget{
                             offset: Offset(0,10.0, // Move to bottom 10 Vertically
                           ),)
                         ],
-                        
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
