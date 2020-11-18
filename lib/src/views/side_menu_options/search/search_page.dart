@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/views/side_menu_options/search/search_friends_page.dart';
 import 'package:mayor_g/src/views/side_menu_options/search/search_people_page.dart';
+import 'package:mayor_g/src/views/side_menu_options/search/solicitudes_pendientes_page.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _tabController = new TabController(length: 2, vsync: this);
+    _tabController = new TabController(length: 3, vsync: this);
     super.initState();
   }
 
@@ -26,7 +27,8 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
         bottom: TabBar(
           labelPadding: EdgeInsets.all(0),
           tabs: [
-            Tab(icon: Icon(Icons.person_add),text: 'Buscar',),
+            Tab(icon: Icon(Icons.search),text: 'Buscar',),
+            Tab(icon: Icon(Icons.group_add),text: 'Solicitudes',),
             Tab(icon: Icon(Icons.tag_faces),text: 'Amigos',),
           ],
           controller: _tabController,
@@ -38,6 +40,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
       body: TabBarView(
         children: [
           SearchPeoplePage(),
+          SolicitudesPendientesPage(),
           FriendsPage(),
         ],
         controller: _tabController,

@@ -1,10 +1,6 @@
 {
     "nombreApp": "Componentes",
-    "rutas": [{
-            "ruta": "search",
-            "icon": "search",
-            "texto": "Busqueda"
-        },
+    "rutas": [
         {
             "ruta": "ranking",
             "icon": "star",

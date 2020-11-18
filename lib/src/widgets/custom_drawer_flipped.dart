@@ -108,13 +108,18 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(width:maxSlide, height: size.height, solicitudes: solicitudesPendientes,),
+                    child: MyDrawer(width:maxSlide, height: size.height),
                   ),
                 ),
                 Positioned(
                   top: 4.0 + MediaQuery.of(context).padding.top,
                   left: 4.0 + animationController.value * maxSlide,
                   child: IconButton(icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: fade), onPressed: toggle, color: Colors.white,),
+                ),
+                Positioned(
+                  top: 4.0 + MediaQuery.of(context).padding.top,
+                  right: 4.0 - animationController.value * maxSlide,
+                  child: solicitudesNuevas()
                 ),
               ],
             ),
@@ -123,6 +128,27 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
       ),
     );
   }
+
+  Widget solicitudesNuevas(){
+  return Stack(
+    children: [
+      IconButton(icon: Icon(Icons.group,color: Colors.white,), onPressed: (){
+        Navigator.pushNamed(context, 'search');
+      }),
+      (solicitudesPendientes.length > 0)?Positioned(
+      right: 0,
+      top: 0,
+      child: Container(
+        height: 15,
+        width: 15,
+        child: CircleAvatar(
+          backgroundColor: Colors.red,
+          child: AutoSizeText(solicitudesPendientes.length.toString()),
+        ),
+      )):Container()
+    ],
+  );
+}
 
   void _onDragStart(DragStartDetails details) {
     bool isDragOpenFromLeft = animationController.isDismissed;
@@ -160,8 +186,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 class MyDrawer extends StatelessWidget {
   final double width;
   final double height;
-  final List solicitudes;
-  MyDrawer({@required this.width, this.height, this.solicitudes});
+  MyDrawer({@required this.width, this.height});
 
   final prefs = new PreferenciasUsuario();
 
@@ -231,7 +256,6 @@ class MyDrawer extends StatelessWidget {
                 )),
                 //IconButton(icon: Icon(Icons.edit), onPressed: (){})
                 //Text(solicitudes.length.toString())
-                solicitudesNuevas()
               ],
             ), 
           ],
@@ -239,24 +263,7 @@ class MyDrawer extends StatelessWidget {
       ),
     );
   }
-Widget solicitudesNuevas(){
-  return Stack(
-    children: [
-      Container(child: Icon(Icons.group_add,size: 35,color: Colors.white,)),
-      (solicitudes.length > 0)?Positioned(
-      right: 0,
-      top: 0,
-      child: Container(
-        height: 15,
-        width: 15,
-        child: CircleAvatar(
-          backgroundColor: Colors.red,
-          child: AutoSizeText(solicitudes.length.toString()),
-        ),
-      )):Container()
-    ],
-  );
-}
+
   Widget _lista() {
     return FutureBuilder(
       future: menuProvider.cargarData(),

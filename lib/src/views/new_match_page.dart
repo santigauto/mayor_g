@@ -1,4 +1,5 @@
 import 'package:audioplayers/audio_cache.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
@@ -8,6 +9,7 @@ import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
 import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/boton_widget.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
 import 'package:mayor_g/src/widgets/pulse_animator.dart';
 /* import 'package:mayor_g/src/widgets/scrollable_exhibition_bottom_sheet.dart'; */
@@ -60,6 +62,7 @@ void dispose() {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     Color _noSeleccionado = Theme.of(context).primaryColor.withOpacity(0.2);
     Color _seleccionado = Theme.of(context).primaryColor;
     return Container(
@@ -75,7 +78,7 @@ void dispose() {
                   SizedBox(
                     height: 20,
                   ),
-                  _modoDeJuego(_seleccionado, _noSeleccionado),
+                  _modoDeJuego(_seleccionado, _noSeleccionado, size),
                   SizedBox(
                     height: 20,
                   ),
@@ -138,7 +141,7 @@ void dispose() {
     }
   }
 
-  Widget _modoDeJuego(Color colorSelec, Color colorNoSelec) {
+  Widget _modoDeJuego(Color colorSelec, Color colorNoSelec, Size size) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -158,45 +161,43 @@ void dispose() {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              RaisedButton(
-                child: Container(
-                  child: Text("CLÁSICO", style: TextStyle(fontSize: 20)),
-                ),
-                color: (_modoClasico) ? colorSelec : colorNoSelec,
-                onPressed: () {
-                  setState(() {
-                    _canPlay = true;
-                    _modoClasico = true;
-                    _modoDuelo = false;
-                  });
-                },
-                textColor: Colors.white,
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                splashColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(8.0),
-                  side: BorderSide(color: Colors.black),
+              Container(
+                width: size.width*0.3,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    color: (_modoClasico) ? colorSelec : colorNoSelec,
+                    child: ListTile(
+                      title: AutoSizeText("CLASICO",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                      onTap: () {
+                      setState(() {
+                        _canPlay = true;
+                        _modoClasico = true;
+                        _modoDuelo = false;
+                      });
+                    },
+                    ),
+                  ),
                 ),
               ),
-              RaisedButton(
-                child: Container(
-                  child: Text(" DUELO ", style: TextStyle(fontSize: 20)),
-                ),
-                color: (_modoDuelo) ? colorSelec : colorNoSelec,
-                onPressed: () {
-                  audioController.play("Boxing_Bell_Sound_FX.mp3");
-                  setState(() {
-                    _canPlay = false;
-                    _modoDuelo = true;
-                    _modoClasico = false;
-                  });
-                },
-                textColor: Colors.white,
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                splashColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(8.0),
-                  side: BorderSide(color: Colors.black),
+              Container(
+                width: size.width*0.3,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    color: (_modoDuelo) ? colorSelec : colorNoSelec,
+                    child: ListTile(
+                      title: AutoSizeText("DUELO",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                      onTap: () {
+                      audioController.play("Boxing_Bell_Sound_FX.mp3");
+                      setState(() {
+                        _canPlay = false;
+                        _modoDuelo = true;
+                        _modoClasico = false;
+                      });
+                    },
+                    ),
+                  ),
                 ),
               ),
             ],

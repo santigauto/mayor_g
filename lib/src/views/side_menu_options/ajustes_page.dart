@@ -50,33 +50,29 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
       body: Stack(
         children: <Widget>[
           BackgroundWidget(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: <Widget>[
-                SafeArea(child: Container()),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      'Usuario',
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline4.fontSize,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    Icon(
-                      Icons.face,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-                Text(
-                  'Aquí puede modificar su Nickname',
-                  style: TextStyle(color: Colors.white),
-                ),
-                TextInput(
+          ListView(
+            children: <Widget>[
+              SafeArea(child: Container()),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Usuario',
+                    style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.headline4.fontSize,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              Text(
+                'Aquí puede modificar su Nickname',
+                style: TextStyle(color: Colors.white),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextInput(
                   label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido:prefs.nickname,
                   inputIcon: Icon(Icons.edit,color: Colors.white,),
                   color: Colors.white,
@@ -87,31 +83,30 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                     return null;
                   },
                 ),
-                Divider(color: Colors.white.withOpacity(0.2)),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      'Filtros',
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline4.fontSize,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    Icon(
-                      Icons.tune,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-                Text(
-                  'Aquí podrá filtrar a su criterio las características de las preguntas',
-                  style: TextStyle(color: Colors.white),
-                ),
-                _opciones(size),
-              ],
-            ),
+              ),
+              Divider(color: Colors.white.withOpacity(0.2)),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Filtros',
+                    style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.headline4.fontSize,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              Text(
+                'Aquí podrá filtrar a su criterio las características de las preguntas',
+                style: TextStyle(color: Colors.white),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _opciones(size),
+              ),
+            ],
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
