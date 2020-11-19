@@ -31,7 +31,7 @@ class _NewMatchPageState extends State<NewMatchPage> with SingleTickerProviderSt
   ListaPreguntasNuevas preguntas;
   AnimationController _animationController;
   Animation tamanio;
-  static BackgroundMusicBloc bloc;
+  //static BackgroundMusicBloc bloc;
   
 AudioCache audioController = AudioCache(prefix: 'assets/audios/');
 
@@ -61,7 +61,7 @@ void dispose() {
         var route = new MaterialPageRoute(
             builder: (context) => QuestionPage(questions: preguntas, n: 0));
         Navigator.pushReplacement(context, route);
-        bloc.backgroundMusicSink("Art_of_Silence.mp3");
+        //bloc.backgroundMusicSink("Art_of_Silence.mp3");
       }
     }
   }
