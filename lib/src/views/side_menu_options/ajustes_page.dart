@@ -5,11 +5,9 @@ import 'package:mayor_g/src/services/filterServices/arma_service.dart';
 import 'package:mayor_g/src/services/filterServices/curso_service.dart';
 import 'package:mayor_g/src/services/filterServices/materia_service.dart';
 import 'package:mayor_g/src/services/filterServices/organismo_service.dart';
-import 'package:mayor_g/src/widgets/MyTextInput.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
-import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
 class AjustesPartidaPage extends StatefulWidget {
   @override

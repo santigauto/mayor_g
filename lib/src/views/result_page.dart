@@ -28,8 +28,6 @@ class _Bloc{
 
 class ResultPage extends StatelessWidget {
 
-    
-
   @override
   Widget build(BuildContext context) {
 

@@ -166,9 +166,9 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         dni: _dni,
         apellido: _apellido
       ); */
-      List gente;
-      if(_dni != null)gente = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
-      else if(_apellido != null)gente = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
+      List<Persona> gente = [];
+      if(_dni != null)gente.add(await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', dniBusqueda: _dni)) ;
+      else if(_apellido != null)gente = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', datos: _apellido);
       setState(() {
         _gente = gente;
         _loading = false;

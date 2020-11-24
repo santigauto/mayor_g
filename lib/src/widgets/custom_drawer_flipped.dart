@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 
 import 'package:mayor_g/src/services/auth_service.dart';
@@ -42,9 +41,13 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
       vsync: this,
       duration: Duration(milliseconds: 350),
     );
-    buscarSolicitudes();
     rotation = Tween( begin: 0.0, end: math.pi/2).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
     fade = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
+  }
+  @override
+  void didChangeDependencies() {
+    buscarSolicitudes();
+    super.didChangeDependencies();
   }
   void buscarSolicitudes() async{
     solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni);

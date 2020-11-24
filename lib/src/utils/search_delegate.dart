@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
+import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
 
 
 class DataSearch extends SearchDelegate{
 
-List<Map<String,dynamic>> gente;
+List<Solicitud> gente;
 
 DataSearch(this.gente);
 
@@ -46,7 +48,7 @@ DataSearch(this.gente);
     final _dataSuggested = (query.isEmpty) 
       ? gente 
       : gente.where( (data) => 
-              data['nombre'].toLowerCase().startsWith(query.toLowerCase()) ).toList();
+              data.jugador.toLowerCase().startsWith(query.toLowerCase()) ).toList();
     return Stack(
       children: <Widget>[
         BackgroundWidget(),
@@ -59,7 +61,7 @@ DataSearch(this.gente);
               border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
               child: ListTile(
                 leading: Icon(Icons.person),
-                title: Text('${_dataSuggested[index]['grado']} ${_dataSuggested[index]['nombre']}'),
+                title: Text('${_dataSuggested[index].jugador}'),
                 onTap: (){},
               ),
             );

@@ -1,14 +1,11 @@
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/routes/routes.dart';
-import 'package:mayor_g/src/services/commons/backgroundmusic_bloc.dart';
 
 void main() async{
 

@@ -75,21 +75,21 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
             SafeArea(
               child: Align(
                 alignment: Alignment.center,
-                child: SingleChildScrollView(child: _militarForm(size))),
+                child: SingleChildScrollView(child: _militarForm())),
             ),
           ],
         ),
       ),
     );
   }
-Widget _militarForm(Size size){
+Widget _militarForm(){
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Text('Bienvenido a',style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.white),),
-        Hero(tag:1,child: _mayorG(size)),
+        Hero(tag:1,child: _mayorG()),
         Padding(
           padding: const EdgeInsets.symmetric(vertical:20.0),
           child: Form(
@@ -212,7 +212,7 @@ Widget _militarForm(Size size){
   );
 }
 
-Widget _mayorG(Size size){
+Widget _mayorG(){
   return Container(
     height: size.height * 0.1,
     decoration: BoxDecoration(

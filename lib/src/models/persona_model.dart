@@ -7,6 +7,7 @@ class Persona {
   String email;
   String nickname;
   bool esMilitar;
+  bool esSeleccionado;
 
   Persona({
     this.id,
@@ -15,7 +16,8 @@ class Persona {
     this.dni,
     this.email,
     this.nickname,
-    this.esMilitar
+    this.esMilitar,
+    this.esSeleccionado
   });
 
   Persona.fromJsonMap(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Persona {
     dni       = json['DNI'];
     nickname  = json['Nickname']?.trim();
     esMilitar = json['EsMilitar'];
+    esSeleccionado = false;
   }
 
 }

@@ -5,7 +5,6 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:mayor_g/src/models/question_model.dart';
-import 'package:mayor_g/src/services/commons/backgroundmusic_bloc.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
 import 'package:mayor_g/src/views/question_page.dart';
@@ -130,8 +129,8 @@ void dispose() {
               child: Center(
                   child: PulseAnimatorWidget(
                 begin: 0.5,
-                child: Text(
-                  '¡JUGAR!',
+                child: AutoSizeText(
+                  '¡JUGAR!', maxLines: 1,
                   style: TextStyle(fontSize: 35, color: Colors.white),
                 ),
               )),
