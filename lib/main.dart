@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -35,16 +37,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+    HttpOverrides.global = new MyHttpOverrides ();
     
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    //return StreamBuilder<String>(
-      //stream: bloc.backgroudMusicStream,
-      //builder: (context, snapshot) {
-        //bloc.backgroundMusicSink("No_Copyright_Music_Life_-_Royalty_Free_Cinematic_Music.mp3");
-        //if(snapshot.hasData)audioCacheBackground.play(snapshot.data);
         return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Mayor G Flutter',
@@ -62,4 +61,12 @@ class _MyAppState extends State<MyApp> {
     //);
         
   //}
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
 }

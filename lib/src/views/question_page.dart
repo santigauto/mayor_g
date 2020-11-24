@@ -212,7 +212,8 @@ class _QuestionPageState extends State<QuestionPage>
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Quieres realmente salir de Mayor G'),
+        title: Text('¿Quieres salir de la partida?',textAlign: TextAlign.center,),
+        content: Text('¡Perderas los puntos de esta pregunta!',textAlign: TextAlign.left,),
         actions: <Widget>[
           FlatButton(
               onPressed: () {
