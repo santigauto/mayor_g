@@ -15,13 +15,15 @@ class HttpService{
     final resp = await http.get(__url);
     dynamic result;
 
+    print("getGet  " + resp.body);
+    if(resp.body== "") return "";
     if(resp.body.isEmpty) {
       Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
     }else{
       final _decodedData = json.decode(resp.body);
       result = _decodedData;
     }
-    print("hola" + result.toString());
+    
     return result;
   }
 
@@ -36,7 +38,7 @@ class HttpService{
       final _decodedData = json.decode(resp.body);
       result = _decodedData;
     }
-    print('hola'+result.toString());
+    
     return result;
     
   }

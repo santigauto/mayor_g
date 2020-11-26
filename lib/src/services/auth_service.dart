@@ -16,6 +16,8 @@ import 'package:http/http.dart' as http;
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/widgets/alert_widget.dart';
 
+import 'commons/friend_selector_service.dart';
+
 
 class AuthService {
 
@@ -59,6 +61,24 @@ class AuthService {
         prefs.foto=_profile.foto;
         prefs.email=_profile.email;
 
+        if(_profile.dni != null){
+          await GetFriendsService().registrarMilitar(context, 
+            dni: prefs.dni, 
+            password: password, 
+            deviceId: prefs.deviceId, 
+            deviceName: prefs.deviceName, 
+            deviceVersion: prefs.deviceVersion, 
+            apellido: prefs.apellido,
+            nombre: prefs.nombre, 
+            email:prefs.email
+          );
+          await GetFriendsService().generarUserDevice(context, 
+            dni: prefs.dni, 
+            deviceId: prefs.deviceId, 
+            deviceName: prefs.deviceName, 
+            deviceVersion: prefs.deviceVersion
+          );
+        }
         Navigator.pushReplacementNamed(context, 'menu');
         print('${[_user.token.generatedAt,_user.toString()]}');
     }catch(e){

@@ -46,11 +46,11 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   }
   @override
   void didChangeDependencies() {
-    buscarSolicitudes();
+    if (mounted) buscarSolicitudes();
     super.didChangeDependencies();
   }
   void buscarSolicitudes() async{
-    solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni);
+    solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70');
     setState(() {});
   }
 

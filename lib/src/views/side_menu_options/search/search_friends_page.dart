@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 
 import 'package:mayor_g/src/models/question_model.dart';
@@ -37,7 +36,7 @@ class FriendsPage extends StatelessWidget {
             children: <Widget>[
               BackgroundWidget(),
               FutureBuilder(
-                future: GetFriendsService().obtenerAmigos(context, dni: prefs.dni),
+                future: GetFriendsService().obtenerAmigos(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70'),
                 builder: (context, futureSnapshot) {
                   if(futureSnapshot.hasData) personas = futureSnapshot.data;
                   return (futureSnapshot.hasData)
@@ -98,11 +97,11 @@ class FriendsPage extends StatelessWidget {
 
   }
   Widget _listItem(BuildContext context,List<Solicitud> data, BlocFriends bloc,streamSnapshot){
-    return ListView.builder(
+    return(data.length != 0)? ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, x){
         return _item(x, data, bloc,streamSnapshot);
-      });
+      }): ListTile(title: Center(child: Text("Aún no tienes amigos en MayorG", style: TextStyle(color: Colors.white),)),);
   }
   Widget _item(int x,List<Solicitud> data, bloc, streamSnapshot){
     return Container(

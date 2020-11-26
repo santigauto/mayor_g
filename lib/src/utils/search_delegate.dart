@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 

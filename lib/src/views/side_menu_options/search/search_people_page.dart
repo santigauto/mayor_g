@@ -68,6 +68,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
   }
 
   Widget createList(){
+    print(_gente.toString());
     if(_loading)
       return Center(child: CircularProgressIndicator(),);
     else if(_gente == null)
@@ -76,6 +77,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
           style: TextStyle(color:Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
       );
+    else if(_gente.length == 0) return Center(child: Text("No se han encontrado coincidencias",style: TextStyle(color:Colors.white, fontWeight: FontWeight.bold, fontSize: 20),));
     else
       return ListView.builder(
         shrinkWrap: true,
@@ -130,7 +132,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
     );
   }
   Widget _listItem(int x){
-    return Container(
+    return(_gente[0].apellido != null)? Container(
       decoration: BoxDecoration(
       color: Colors.white.withOpacity(0.5),
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
@@ -146,11 +148,14 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
           onPressed: () {
             /*...*/
             print(_gente[x].dni);
-            GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni);
+            GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni, deviceId: 'f14e204a6ee07d70');
           },
           child: Text("Invitar",),
         ),
       ),
+    )
+    : ListTile(
+      title: Text("No se encontraron coincidencias"),
     );
   }
 
@@ -167,9 +172,17 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         apellido: _apellido
       ); */
       List<Persona> gente = [];
-      if(_dni != null)gente.add(await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', dniBusqueda: _dni)) ;
-      else if(_apellido != null)gente = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', datos: _apellido);
+      if(_dni != null){
+        Persona p = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', dniBusqueda: _dni);
+        print(p.toString());
+        if(p!=null)gente.add(p);
+      }
+      else if(_apellido != null){
+        List<Persona> lp = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', datos: _apellido);
+        if(lp!=[])gente.addAll(lp);
+      }
       setState(() {
+        print(gente);
         _gente = gente;
         _loading = false;
       });

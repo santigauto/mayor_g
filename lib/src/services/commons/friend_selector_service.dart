@@ -13,10 +13,11 @@ import 'package:mayor_g/src/services/http_request_service.dart';
 
 class GetFriendsService{
 
-  enviarSolicitud(BuildContext context,{@required int dni, @required int dniAmigo}) async{//devuelve true, es un post
+  enviarSolicitud(BuildContext context,{@required int dni,@required String deviceId, @required int dniAmigo}) async{//devuelve true, es un post
   print('Enviar Solicitud');
   HttpService().getPost(context,apiRoute: 'api/Amigos/Enviar_Solicitud',queryParameters: {
     'dni' : dni.toString(),
+    'deviceId': deviceId,
     'dniAmigo' : dniAmigo.toString()
   });
   }
@@ -30,10 +31,11 @@ class GetFriendsService{
     });
   }
 
-  Future<List<Solicitud>> solicitudesPendientes(BuildContext context,{@required int dni}) async{ // devuelve una lista, es un get
+  Future<List<Solicitud>> solicitudesPendientes(BuildContext context,{@required int dni, @required String deviceId}) async{ // devuelve una lista, es un get
     print('solicitudesPedientes');
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
-      'dni' : dni.toString()
+      'dni' : dni.toString(),
+      'deviceId' : deviceId
     });
     List<Solicitud> solicitudes = [];
 
@@ -45,27 +47,27 @@ class GetFriendsService{
 
 
   Future<Persona> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
-    print('usuario ' + deviceId);
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
       'dni'         : dni.toString(),
       'deviceId'    : deviceId,
       'dniBusqueda' : dniBusqueda.toString()
     });
-
-    Persona persona = Persona.fromJsonMap(_decodedJson);
-
+    print("hola carola" + _decodedJson.toString());
+    Persona persona ;
+    if(_decodedJson != false) persona = Persona.fromJsonMap(_decodedJson);
     return persona;
   }
 
   Future obtenerUsuario(BuildContext context,{@required int dni, @required String deviceId, @required String datos}) async{//devuelve datosUsuario
+    
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario',queryParameters: {
       'dni'       : dni.toString(),
       'deviceId'  : deviceId,
       'datos'     : datos
     });
-    
+    print("hola carola   --->   " + _decodedJson.toString());
     List<Persona> _personas = [];
-
+    if(_decodedJson == null) return _personas;
     _decodedJson.forEach((per){
       _personas.add(Persona.fromJsonMap(per));
     });
@@ -74,23 +76,28 @@ class GetFriendsService{
   }
 
   //POST Aprobar_Solicitud(string idSolicitud)
-  Future aprobarSolicitud(BuildContext context,{@required String idSolicitud}) async{//devuelve true, es un post
-  print('AproBar Solicitud');
+  Future aprobarSolicitud(BuildContext context,{ @required int dni, @required String deviceId, @required String idSolicitud}) async{//devuelve true, es un post
+  print('Aprobar Solicitud');
   HttpService().getPost(context,apiRoute: 'api/Amigos/Aprobar_Solicitud',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId,
     'idSolicitud' : idSolicitud
   });
   }
 
-  Future rechazarSolicitud(BuildContext context,{@required String idSolicitud}) async{//devuelve true, es un post
+  Future rechazarSolicitud(BuildContext context,{@required int dni, @required String deviceId,@required String idSolicitud}) async{//devuelve true, es un post
   print('Rechazar Solicitud');
   HttpService().getPost(context,apiRoute: 'api/Amigos/Rechazar_Solicitud',queryParameters: {
+    'dni': dni.toString(),
+    'deviceId': deviceId,
     'idSolicitud' : idSolicitud
   });
   }
 
-  Future obtenerAmigos(BuildContext context,{@required int dni})async{
+  Future obtenerAmigos(BuildContext context,{@required int dni, @required String deviceId})async{
     print('obtener Amigos');
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Amigos/Listado_Amigos',queryParameters: {
+      'deviceId': deviceId,
       'dni' : dni.toString()
     });
     List<Solicitud> _amigo = [];
@@ -103,10 +110,11 @@ class GetFriendsService{
     return _amigo;
   }
 
-  Future eliminarAmistad(BuildContext context,{@required int dni, @required int dniAmigo})async{
+  Future eliminarAmistad(BuildContext context,{@required int dni, @required int dniAmigo, @required String deviceId})async{
     print('Eliminar amigo');
     HttpService().getPost(context,apiRoute: 'api/Amigos/Eliminar_Amigo',queryParameters: {
       'dni': dni.toString(),
+      'deviceId': deviceId,
       'dniAmigo' : dniAmigo.toString()
     });
   }
@@ -130,8 +138,6 @@ class GetFriendsService{
 
 
 
-
-
 Future registrarCivil(BuildContext context,{int dni, String password, String nickname, String deviceId, String deviceName, String deviceVersion, String mail}) async{//devuelve true, es un post
   print('Registrar Civil');
   HttpService().getPost(context,apiRoute: 'api/Usuarios/Registrar_Civil',queryParameters: {
@@ -145,20 +151,20 @@ Future registrarCivil(BuildContext context,{int dni, String password, String nic
   });
 }
 
-Future registrarMilitar(BuildContext context, {@required int dni,@required String password,@required String deviceId, @required String deviceName, 
-                          @required deviceVersion,@required bool esMilitar}) async{
+Future registrarMilitar(BuildContext context, {@required int dni,@required String password, @required String nombre, @required String apellido,
+                          @required String email,@required String deviceId, @required String deviceName, @required deviceVersion,}) async{
 
   HttpService().getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar', 
     
     jsonEncode: jsonEncode({
-	    "Apellido":"Gauto",
-	    "Nombre":"Santiago",
-	    "Email":"sgauto@gmail.com",
-	    "DNI":44000111,
-	    "Password": "12345678",
-	    "DeviceId":"f14e204a6ee07d70",
-	    "DeviceName":"SM-J710MN",
-	    "DeviceVersion":"Instance of 'AndroidBuildVersion'"
+	    "Apellido":apellido,
+	    "Nombre":nombre,
+	    "Email":email,
+	    "DNI":dni,
+	    "Password": password,
+	    "DeviceId":deviceId,
+	    "DeviceName":deviceName,
+	    "DeviceVersion":deviceVersion
 	}));
 }
 

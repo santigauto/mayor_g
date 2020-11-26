@@ -37,7 +37,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
                       BackgroundWidget(),
                       FutureBuilder(
                           future: GetFriendsService()
-                              .solicitudesPendientes(context, dni: prefs.dni),
+                              .solicitudesPendientes(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70'),
                           builder: (context, futureSnapshot) {
                             if(futureSnapshot.hasData) personas = futureSnapshot.data;
                             return (futureSnapshot.hasData)
@@ -88,12 +88,12 @@ class SolicitudesPendientesPage extends StatelessWidget {
       ),
     );
   }
-  Widget _listItem(BuildContext context, data, bloc, Color color){
-    return ListView.builder(
+  Widget _listItem(BuildContext context,List data, bloc, Color color){
+    return (data.length != 0)? ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, x){
         return _item(context,x, data, bloc, color);
-      }); 
+      }): ListTile(title: Center(child: Text("No hay solicitudes pendientes en este momento", style: TextStyle(color:Colors.white),)),);
   }
   Widget _item(BuildContext context, int posicion, data, bloc, Color color){
     return Container(
@@ -109,7 +109,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
               disabledColor: Colors.grey,
               disabledTextColor: Colors.black,
               onPressed: () {
-                GetFriendsService().aprobarSolicitud(context, idSolicitud: data[posicion].id);
+                GetFriendsService().aprobarSolicitud(context, idSolicitud: data[posicion].id, deviceId: 'f14e204a6ee07d70',dni: prefs.dni);
               },
               child: Text("Aceptar",),
             ),
@@ -120,7 +120,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
               disabledColor: Colors.grey,
               disabledTextColor: Colors.black,
               onPressed: () {
-                GetFriendsService().rechazarSolicitud(context, idSolicitud: data[posicion].id);
+                GetFriendsService().rechazarSolicitud(context, idSolicitud: data[posicion].id, dni: prefs.dni,deviceId: 'f14e204a6ee07d70');
                 bloc.streamSink(data[posicion].id);
               },
               child: Text("Rechazar",),

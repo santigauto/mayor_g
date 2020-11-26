@@ -27,7 +27,6 @@ class Persona {
     email     = json['Email']?.trim();
     dni       = json['DNI'];
     nickname  = json['Nickname']?.trim();
-    esMilitar = json['EsMilitar'];
     esSeleccionado = false;
   }
 
