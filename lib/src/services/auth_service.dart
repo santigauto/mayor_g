@@ -62,6 +62,7 @@ class AuthService {
         prefs.email=_profile.email;
 
         if(_profile.dni != null){
+          print("registrar militar arranca acá");
           await GetFriendsService().registrarMilitar(context, 
             dni: prefs.dni, 
             password: password, 
@@ -71,15 +72,14 @@ class AuthService {
             apellido: prefs.apellido,
             nombre: prefs.nombre, 
             email:prefs.email
-          );
-          await GetFriendsService().generarUserDevice(context, 
+          ).then((value) async => await GetFriendsService().generarUserDevice(context, 
             dni: prefs.dni, 
             deviceId: prefs.deviceId, 
             deviceName: prefs.deviceName, 
             deviceVersion: prefs.deviceVersion
-          );
-        }
-        Navigator.pushReplacementNamed(context, 'menu');
+          ).then((value) => Navigator.pushReplacementNamed(context, 'menu')));
+        } 
+        
         print('${[_user.token.generatedAt,_user.toString()]}');
     }catch(e){
       return Alert.alert(context, body: Text("${e.toString()}\nPor favor vuelva a intentarlo, en caso de que persista el error intente recuperar su contraseña."));

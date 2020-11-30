@@ -114,6 +114,23 @@ Widget _militarForm(){
                   },
                 ),
                 TextInput(
+                  label: 'Email',
+                  color: Colors.white,
+                  inputType: TextInputType.emailAddress,
+                  inputIcon: Icon(
+                    Icons.email,
+                      color: Colors.white,
+                  ),
+                  validator: (String text) {
+                    String x;
+                    if (text.isEmpty) {
+                      x='Por favor completar el campo';
+                    }
+                    this._username = text;
+                    return x;
+                  },
+                ),
+                TextInput(
                   label: 'DNI',
                   color: Colors.white,
                   inputType: TextInputType.number,

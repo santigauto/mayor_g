@@ -29,6 +29,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   bool _canBeDragged = false;
+  bool flag = false;
   List solicitudesPendientes = [];
 
   Animation rotation;
@@ -46,7 +47,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   }
   @override
   void didChangeDependencies() {
-    if (mounted) buscarSolicitudes();
+    if (mounted && !flag) buscarSolicitudes();
     super.didChangeDependencies();
   }
   void buscarSolicitudes() async{
@@ -56,6 +57,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
   @override
   void dispose() {
+    flag = true;
     animationController.dispose();
     super.dispose();
   }
@@ -207,7 +209,8 @@ class MyDrawer extends StatelessWidget {
               text: Container(
                 height:height*0.1,
                 child: Center(child: Text('Cerrar sesión', style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white, fontWeight: FontWeight.bold)))),
-              onTap: (){AuthService().logout(context: context);},
+              onTap: (){
+                AuthService().logout(context: context);},
             ),
         ],
       ),

@@ -46,15 +46,15 @@ class GetFriendsService{
   }
 
 
-  Future<Persona> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve true
+  Future<Persona> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve usuario con dni coincidente
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
       'dni'         : dni.toString(),
       'deviceId'    : deviceId,
       'dniBusqueda' : dniBusqueda.toString()
     });
-    print("hola carola" + _decodedJson.toString());
+    print("obtengo esto de obtenerUsuarioDni: " + _decodedJson.toString());
     Persona persona ;
-    if(_decodedJson != false) persona = Persona.fromJsonMap(_decodedJson);
+    if(_decodedJson != {}) persona = Persona.fromJsonMap(_decodedJson);
     return persona;
   }
 
@@ -65,7 +65,7 @@ class GetFriendsService{
       'deviceId'  : deviceId,
       'datos'     : datos
     });
-    print("hola carola   --->   " + _decodedJson.toString());
+    print("obtengo esto de obtenerUsuario  --->   " + _decodedJson.toString());
     List<Persona> _personas = [];
     if(_decodedJson == null) return _personas;
     _decodedJson.forEach((per){
@@ -121,7 +121,7 @@ class GetFriendsService{
 
   Future generarUserDevice(BuildContext context,{@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
   print('Generar Device');
-  HttpService().getPost(context,apiRoute: 'api/Usuarios/Generate_User_Device',queryParameters: {
+  HttpService().getPost(context,apiRoute: 'api/Usuarios/Generar_Device',queryParameters: {
     'dni': dni.toString(),
     'deviceId': deviceId,
     'deviceName': deviceName,
@@ -134,6 +134,13 @@ class GetFriendsService{
     'dni': dni.toString(),
     'deviceId': deviceId
   });
+  }
+
+  Future obtenerNotificaciones (BuildContext context,{@required int dni,@required String deviceId})async{
+    HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Notificaciones',queryParameters: {
+      'dni': dni.toString(),
+      'deviceId': deviceId
+    });
   }
 
 

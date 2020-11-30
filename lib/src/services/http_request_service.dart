@@ -15,7 +15,7 @@ class HttpService{
     final resp = await http.get(__url);
     dynamic result;
 
-    print("getGet  " + resp.body);
+    //print("getGet  " + resp.body);
     if(resp.body== "") return "";
     if(resp.body.isEmpty) {
       Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
@@ -31,7 +31,7 @@ class HttpService{
     final __url = Uri.https(_url, apiRoute, queryParameters);
     final resp = await http.post(__url,body: jsonEncode,headers: Config.HttpHeaders,);
     dynamic result;
-
+    print("getPost " + resp.body);
     if(resp.body.isEmpty) {
       Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
     }else{

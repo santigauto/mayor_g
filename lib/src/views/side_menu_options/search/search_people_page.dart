@@ -131,6 +131,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       ),
     );
   }
+  
   Widget _listItem(int x){
     return(_gente[0].apellido != null)? Container(
       decoration: BoxDecoration(
@@ -165,12 +166,6 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         _loading = true;
       });
 
-      /* PersonaServices personaServices = new PersonaServices();
-      List<Persona> gente = await personaServices.getPersona(context,
-        uat: await AuthService().getAccessToken(),
-        dni: _dni,
-        apellido: _apellido
-      ); */
       List<Persona> gente = [];
       if(_dni != null){
         Persona p = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', dniBusqueda: _dni);

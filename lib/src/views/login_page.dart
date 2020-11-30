@@ -118,6 +118,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ),
     );
   }
+  
 Widget _militarForm(Size size){
   return Padding(
     padding: const EdgeInsets.all(20.0),
@@ -183,7 +184,6 @@ Widget _militarForm(Size size){
                           style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
                     onTap: (){
                       _submit();
-                      print('hola');
                     }
                   ),
                 ),
