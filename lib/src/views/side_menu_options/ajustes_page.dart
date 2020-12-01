@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/filterServices/arma_service.dart';
 import 'package:mayor_g/src/services/filterServices/curso_service.dart';
@@ -15,6 +16,8 @@ class AjustesPartidaPage extends StatefulWidget {
 }
 
 class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
+
+  final player = BackgroundMusic.backgroundAudioPlayer;
   final prefs = new PreferenciasUsuario();
   String selectedArma;
   String selectedMateria;
@@ -25,6 +28,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
   String auxMateria;
   String auxColegio;
   String auxCurso;
+  double aux = 0.0;
 
   bool _isLoading = false;
 
@@ -52,7 +56,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             children: <Widget>[
               SafeArea(child: Container()),
               Row(
-                children: <Widget>[
+                children: [
                   Text(
                     'Usuario',
                     style: TextStyle(
@@ -104,6 +108,60 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: _opciones(size),
               ),
+              Row(
+                children: [
+                  Text(
+                    'Musica',
+                    style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.headline4.fontSize,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              StreamBuilder<double>(
+                stream: player.volumeStream,
+                builder: (context, snapshot) {
+                  return Container(
+                    padding: EdgeInsets.all(10.0),
+                  height: 100.0,
+                  child: Row(
+                    children: [
+                      IconButton(icon: (snapshot.data != 0)?Icon((snapshot.data <=0.5)?Icons.volume_down:Icons.volume_up,color:Colors.white):Icon(Icons.volume_off),
+                        onPressed:(){
+                          if(snapshot.data != 0.0){
+                            aux = snapshot.data;
+                            print(aux.toString());
+                            player.setVolume(0.0);
+                          }else{
+                            print(aux.toString());
+                            player.setVolume(aux);
+                          }
+                        }  
+                      ),
+                      Expanded(
+                        child: Slider(
+                          divisions: 100,
+                          min: 0.0,
+                          max: 1.0,
+                          value: snapshot.data ?? 1.0,
+                          onChanged: player.setVolume,
+                        ),
+                      ),
+                      Text('${(snapshot.data*100).toStringAsFixed(0)}',
+                      style: TextStyle(
+                        color: Colors.white,
+                          fontFamily: 'Fixed',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0)),
+                    ],
+                  ),
+                );
+                }
+              ),
+              Container(height: 300,)
             ],
           ),
           Column(

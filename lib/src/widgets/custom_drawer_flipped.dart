@@ -1,17 +1,17 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-
-import 'package:auto_size_text/auto_size_text.dart';
+//MODELS
 import 'package:mayor_g/src/models/profileInfo.dart';
-
+//WIDGETS
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:mayor_g/src/widgets/boton_widget.dart';
+import 'package:mayor_g/src/utils/icon_string_util.dart';
+import 'package:mayor_g/src/widgets/background_widget.dart';
+//SERVICES
+import 'imagen_perfil.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
 import 'package:mayor_g/src/services/commons/drawer_service.dart';
 import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
-import 'package:mayor_g/src/utils/icon_string_util.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/boton_widget.dart';
-
-import 'imagen_perfil.dart';
 
 class CustomFlippedDrawer extends StatefulWidget {
   final Widget child;
@@ -95,14 +95,13 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                 ),
                 Positioned(
                   top: MediaQuery.of(context).size.height*0.25,
-                  left: (-250) + animationController.value * (maxSlide + 100)  ,
+                  left: (-200) + animationController.value * (maxSlide + 100)  ,
                   child: Transform.rotate(
                     angle:rotation.value,
                     child: Container(
-                      height: 310,
-                      width: 250,
+                      height: 250,
                       child: Image.asset(
-                        'assets/MayorGAnimaciones/MayorG-Fumando.gif',
+                        'assets/MayorGAnimaciones/MayorG-Menu.gif',
                       ),),
                     ),
                 ),

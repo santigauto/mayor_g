@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mayor_g/src/models/background_music.dart';
 
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/routes/routes.dart';
@@ -23,13 +25,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  //static BackgroundMusicBloc bloc;
-  //static AudioCache audioCacheBackground;
+  final player = BackgroundMusic.backgroundAudioPlayer;
   @override
   void initState(){
-    //bloc = new BackgroundMusicBloc();
-    //audioCacheBackground = new AudioCache();
+    playMusic();
     super.initState();
+  }
+
+  playMusic() async{
+    await player.setAsset('assets/audios/Background_Music.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+  }
+
+  @override
+  void dispose() { 
+    player.dispose();
+    super.dispose();
   }
 
   @override

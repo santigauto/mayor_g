@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
-import 'package:mayor_g/src/models/solicitudes_model.dart';
-import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/utils/search_delegate.dart';
+import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 
 class BlocSolicitudes{
   StreamController<Solicitud> _controller = StreamController.broadcast();

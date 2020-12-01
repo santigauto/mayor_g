@@ -41,14 +41,14 @@ class _HeaderCurvoPainter extends CustomPainter {
     final path2 = new Path();
 
     // Dibujar con el path y el lapiz
-    path2.lineTo( 0, size.height * 0.15 );
-    path2.quadraticBezierTo(size.width * 0.5, -size.height * 0.14 + 50, size.width, size.height * 0.15 );
+    path2.lineTo( 0, size.height * 0.18 );
+    path2.quadraticBezierTo(size.width * 0.5, -size.height * 0.17 + 50, size.width, size.height * 0.18 );
     path2.lineTo( size.width, 0 );
 
     canvas.drawPath(path2, lapiz2 );
 
-    path1.lineTo( 0, size.height * 0.14 );
-    path1.quadraticBezierTo(size.width * 0.5, -size.height * 0.14 + 50, size.width, size.height * 0.14 );
+    path1.lineTo( 0, size.height * 0.17 );
+    path1.quadraticBezierTo(size.width * 0.5, -size.height * 0.17 + 50, size.width, size.height * 0.17 );
     path1.lineTo( size.width, 0 );
 
     canvas.drawPath(path1, lapiz1 );

@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -31,8 +31,6 @@ class _NewMatchPageState extends State<NewMatchPage> with SingleTickerProviderSt
   AnimationController _animationController;
   Animation tamanio;
   //static BackgroundMusicBloc bloc;
-  
-AudioCache audioController = AudioCache(prefix: 'assets/audios/');
 
   @override
   void initState() {
@@ -43,7 +41,6 @@ AudioCache audioController = AudioCache(prefix: 'assets/audios/');
 @override
 void dispose() { 
   _animationController.dispose();
-  audioController.disableLog();
   super.dispose();
 }
   Modal modal = new Modal();
@@ -180,7 +177,6 @@ void dispose() {
                 });
               }),
               _boton(size, _modoDuelo, "DUELO", () {
-                audioController.play("Boxing_Bell_Sound_FX.mp3");
                 setState(() {
                   if(_canPlay)_animationController.reset();
                   _canPlay = false;
