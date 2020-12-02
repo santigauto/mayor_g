@@ -17,7 +17,7 @@ class HttpService{
 
     //print("getGet  " + resp.body);
     if(resp.body== "") return "";
-    if(resp.body.isEmpty) {
+    if(resp.body.isEmpty || resp.body.contains('DOCTYPE html')) {
       Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
     }else{
       final _decodedData = json.decode(resp.body);
@@ -32,7 +32,7 @@ class HttpService{
     final resp = await http.post(__url,body: jsonEncode,headers: Config.HttpHeaders,);
     dynamic result;
     print("getPost " + resp.body);
-    if(resp.body.isEmpty) {
+    if(resp.body.isEmpty || resp.body.contains('DOCTYPE html')) {
       Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));
     }else{
       final _decodedData = json.decode(resp.body);

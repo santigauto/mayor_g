@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/views/side_menu_options/ranking/friends_rank_page.dart';
@@ -15,10 +17,15 @@ class RankingOptionsPage extends StatefulWidget {
 class _RankingOptionsPageState extends State<RankingOptionsPage> with SingleTickerProviderStateMixin{
 
   TabController _tabController;
+  ImageProvider profilePic;
   PreferenciasUsuario _prefs = PreferenciasUsuario();  
 
   @override
   void initState() {
+    profilePic =(_prefs.foto == null || _prefs.foto == '')
+      ?AssetImage('assets/soldier.png')
+      :MemoryImage(base64Decode(_prefs.foto));
+    
     _tabController = new TabController(length: 4, vsync: this);
     super.initState();
   }
@@ -29,7 +36,7 @@ class _RankingOptionsPageState extends State<RankingOptionsPage> with SingleTick
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ImagenPerfil(photoData: _prefs.foto)
+          child: Hero(tag:1,child: ImagenPerfil(photoData: _prefs.foto))
         ),
         title: Text('${_prefs.apellido}, ${_prefs.nombre}'),
         automaticallyImplyLeading: false,

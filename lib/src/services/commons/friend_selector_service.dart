@@ -39,7 +39,7 @@ class GetFriendsService{
     });
     List<Solicitud> solicitudes = [];
 
-    _decodedJson.forEach((solicitud){
+    if(_decodedJson != null)_decodedJson.forEach((solicitud){
       solicitudes.add(Solicitud.fromJson(solicitud));
     });
     return solicitudes;

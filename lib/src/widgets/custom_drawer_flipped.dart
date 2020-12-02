@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 //MODELS
@@ -31,13 +32,16 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   bool _canBeDragged = false;
   bool flag = false;
   List solicitudesPendientes = [];
-
+  ImagenPerfil profilePic;
   Animation rotation;
   Animation fade;
   PreferenciasUsuario prefs = new PreferenciasUsuario();
   @override
   void initState(){
     super.initState();
+
+      profilePic = ImagenPerfil(photoData: prefs.foto,radius: 30,);
+
     animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 350),
@@ -47,7 +51,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   }
   @override
   void didChangeDependencies() {
-    if (mounted && !flag) buscarSolicitudes();
+    flag = !flag;
+    if (flag) buscarSolicitudes();
     super.didChangeDependencies();
   }
   void buscarSolicitudes() async{
@@ -57,7 +62,6 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 
   @override
   void dispose() {
-    flag = true;
     animationController.dispose();
     super.dispose();
   }
@@ -112,7 +116,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(width:maxSlide, height: size.height),
+                    child: MyDrawer(width:maxSlide, height: size.height,profilePic: profilePic,),
                   ),
                 ),
                 Positioned(
@@ -190,7 +194,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
 class MyDrawer extends StatelessWidget {
   final double width;
   final double height;
-  MyDrawer({@required this.width, this.height});
+  final Widget profilePic;
+  MyDrawer({@required this.width,@required this.height,@required this.profilePic});
 
   final prefs = new PreferenciasUsuario();
 
@@ -236,7 +241,7 @@ class MyDrawer extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
-                ImagenPerfil(photoData: prefs.foto,radius: 25,),
+                Hero(tag:1,child: profilePic),
                 SizedBox(width: 7,),
                 Expanded(child: Container(
                   child: Column(
@@ -259,8 +264,6 @@ class MyDrawer extends StatelessWidget {
                     ],
                   ),
                 )),
-                //IconButton(icon: Icon(Icons.edit), onPressed: (){})
-                //Text(solicitudes.length.toString())
               ],
             ), 
           ],

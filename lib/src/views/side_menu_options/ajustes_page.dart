@@ -52,117 +52,120 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
       body: Stack(
         children: <Widget>[
           BackgroundWidget(),
-          ListView(
-            children: <Widget>[
-              SafeArea(child: Container()),
-              Row(
-                children: [
-                  Text(
-                    'Usuario',
-                    style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.headline4.fontSize,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              Text(
-                'Aquí puede modificar su Nickname',
-                style: TextStyle(color: Colors.white),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextInput(
-                  label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido:prefs.nickname,
-                  inputIcon: Icon(Icons.edit,color: Colors.white,),
-                  color: Colors.white,
-                  validator: (String text) {
-                    if (text.isEmpty) {
-                      return 'Por favor completar el campo';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Divider(color: Colors.white.withOpacity(0.2)),
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Filtros',
-                    style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.headline4.fontSize,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              Text(
-                'Aquí podrá filtrar a su criterio las características de las preguntas',
-                style: TextStyle(color: Colors.white),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _opciones(size),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Musica',
-                    style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.headline4.fontSize,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              StreamBuilder<double>(
-                stream: player.volumeStream,
-                builder: (context, snapshot) {
-                  return Container(
-                    padding: EdgeInsets.all(10.0),
-                  height: 100.0,
-                  child: Row(
-                    children: [
-                      IconButton(icon: (snapshot.data != 0)?Icon((snapshot.data <=0.5)?Icons.volume_down:Icons.volume_up,color:Colors.white):Icon(Icons.volume_off),
-                        onPressed:(){
-                          if(snapshot.data != 0.0){
-                            aux = snapshot.data;
-                            print(aux.toString());
-                            player.setVolume(0.0);
-                          }else{
-                            print(aux.toString());
-                            player.setVolume(aux);
-                          }
-                        }  
-                      ),
-                      Expanded(
-                        child: Slider(
-                          divisions: 100,
-                          min: 0.0,
-                          max: 1.0,
-                          value: snapshot.data ?? 1.0,
-                          onChanged: player.setVolume,
-                        ),
-                      ),
-                      Text('${(snapshot.data*100).toStringAsFixed(0)}',
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+              children: <Widget>[
+                SafeArea(child: Container()),
+                Row(
+                  children: [
+                    Text(
+                      'Usuario',
                       style: TextStyle(
-                        color: Colors.white,
-                          fontFamily: 'Fixed',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0)),
-                    ],
+                          fontSize:
+                              Theme.of(context).textTheme.headline4.fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                Text(
+                  'Aquí puede modificar su Nickname',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextInput(
+                    label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido:prefs.nickname,
+                    inputIcon: Icon(Icons.edit,color: Colors.white,),
+                    color: Colors.white,
+                    validator: (String text) {
+                      if (text.isEmpty) {
+                        return 'Por favor completar el campo';
+                      }
+                      return null;
+                    },
                   ),
-                );
-                }
-              ),
-              Container(height: 300,)
-            ],
+                ),
+                Divider(color: Colors.white.withOpacity(0.2)),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      'Filtros',
+                      style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline4.fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                Text(
+                  'Aquí podrá filtrar a su criterio las características de las preguntas',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _opciones(size),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Musica',
+                      style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline4.fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                StreamBuilder<double>(
+                  stream: player.volumeStream,
+                  builder: (context, snapshot) {
+                    return Container(
+                      padding: EdgeInsets.all(10.0),
+                    height: 100.0,
+                    child: Row(
+                      children: [
+                        IconButton(icon: (snapshot.data != 0)?Icon((snapshot.data <=0.5)?Icons.volume_down:Icons.volume_up,color:Colors.white):Icon(Icons.volume_off),
+                          onPressed:(){
+                            if(snapshot.data != 0.0){
+                              aux = snapshot.data;
+                              print(aux.toString());
+                              player.setVolume(0.0);
+                            }else{
+                              print(aux.toString());
+                              player.setVolume(aux);
+                            }
+                          }  
+                        ),
+                        Expanded(
+                          child: Slider(
+                            divisions: 100,
+                            min: 0.0,
+                            max: 1.0,
+                            value: snapshot.data ?? 1.0,
+                            onChanged: player.setVolume,
+                          ),
+                        ),
+                        Text('${(snapshot.data*100).toStringAsFixed(0)}',
+                        style: TextStyle(
+                          color: Colors.white,
+                            fontFamily: 'Fixed',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0)),
+                      ],
+                    ),
+                  );
+                  }
+                ),
+                Container(height: 300,)
+              ],
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
