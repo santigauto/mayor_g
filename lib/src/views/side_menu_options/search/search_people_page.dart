@@ -149,7 +149,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
           onPressed: () {
             /*...*/
             print(_gente[x].dni);
-            GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni, deviceId: 'f14e204a6ee07d70');
+            GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni, deviceId: prefs.deviceId);
           },
           child: Text("Invitar",),
         ),
@@ -168,12 +168,12 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
 
       List<Persona> gente = [];
       if(_dni != null){
-        Persona p = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', dniBusqueda: _dni);
+        Persona p = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
         print(p.toString());
         if(p!=null)gente.add(p);
       }
       else if(_apellido != null){
-        List<Persona> lp = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70', datos: _apellido);
+        List<Persona> lp = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
         if(lp!=[])gente.addAll(lp);
       }
       setState(() {

@@ -52,11 +52,11 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   @override
   void didChangeDependencies() {
     flag = !flag;
-    if (flag) buscarSolicitudes();
+    if (flag && mounted) buscarSolicitudes();
     super.didChangeDependencies();
   }
   void buscarSolicitudes() async{
-    solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70');
+    solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni, deviceId: prefs.deviceId);
     setState(() {});
   }
 
@@ -244,7 +244,7 @@ class MyDrawer extends StatelessWidget {
                 Hero(tag:1,child: profilePic),
                 SizedBox(width: 7,),
                 Expanded(child: Container(
-                  child: Column(
+                  child: (prefs.nickname == null)?Column(
                     mainAxisSize: MainAxisSize.min,
                     //nombre de usuario
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -262,7 +262,12 @@ class MyDrawer extends StatelessWidget {
                         style: TextStyle(fontSize: 15, color: Colors.white),
                       )
                     ],
-                  ),
+                  )
+                  : AutoSizeText(
+                      '${prefs.nickname}',
+                      maxLines: 1,
+                      maxFontSize: 20,
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
                 )),
               ],
             ), 

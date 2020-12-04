@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/services/filterServices/arma_service.dart';
 import 'package:mayor_g/src/services/filterServices/curso_service.dart';
 import 'package:mayor_g/src/services/filterServices/materia_service.dart';
@@ -16,13 +17,14 @@ class AjustesPartidaPage extends StatefulWidget {
 }
 
 class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
-
+  final _formKey = GlobalKey<FormState>();
   final player = BackgroundMusic.backgroundAudioPlayer;
   final prefs = new PreferenciasUsuario();
   String selectedArma;
   String selectedMateria;
   String selectedColegio;
   String selectedCurso;
+  String nickNuevo;
 
   String auxArma;
   String auxMateria;
@@ -41,6 +43,24 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
     super.initState();
   }
 
+  _submit() async {
+    if (!_isLoading) {
+      if (_formKey.currentState.validate()) {
+        setState(() {
+          _isLoading = true;
+        });
+
+        await GetFriendsService().cambiarNick(context, dni: prefs.dni, deviceId: prefs.deviceId, nickname: nickNuevo).then((value) {
+          if(value)prefs.nickname = nickNuevo;
+        });
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print(prefs.nickname);
@@ -57,112 +77,139 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             child: ListView(
               children: <Widget>[
                 SafeArea(child: Container()),
-                Row(
-                  children: [
-                    Text(
-                      'Usuario',
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline4.fontSize,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                Text(
-                  'Aquí puede modificar su Nickname',
-                  style: TextStyle(color: Colors.white),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextInput(
-                    label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido:prefs.nickname,
-                    inputIcon: Icon(Icons.edit,color: Colors.white,),
-                    color: Colors.white,
-                    validator: (String text) {
-                      if (text.isEmpty) {
-                        return 'Por favor completar el campo';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Divider(color: Colors.white.withOpacity(0.2)),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      'Filtros',
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline4.fontSize,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                Text(
-                  'Aquí podrá filtrar a su criterio las características de las preguntas',
-                  style: TextStyle(color: Colors.white),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _opciones(size),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Musica',
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline4.fontSize,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                StreamBuilder<double>(
-                  stream: player.volumeStream,
-                  builder: (context, snapshot) {
-                    return Container(
-                      padding: EdgeInsets.all(10.0),
-                    height: 100.0,
-                    child: Row(
+                //NICKNAME
+                ExpansionTile(
+
+                  subtitle: Row(
                       children: [
-                        IconButton(icon: (snapshot.data != 0)?Icon((snapshot.data <=0.5)?Icons.volume_down:Icons.volume_up,color:Colors.white):Icon(Icons.volume_off),
-                          onPressed:(){
-                            if(snapshot.data != 0.0){
-                              aux = snapshot.data;
-                              print(aux.toString());
-                              player.setVolume(0.0);
-                            }else{
-                              print(aux.toString());
-                              player.setVolume(aux);
-                            }
-                          }  
+                        Text(
+                          'Aquí puede modificar su Nickname',
+                          style: TextStyle(color: Colors.white),
                         ),
-                        Expanded(
-                          child: Slider(
-                            divisions: 100,
-                            min: 0.0,
-                            max: 1.0,
-                            value: snapshot.data ?? 1.0,
-                            onChanged: player.setVolume,
-                          ),
-                        ),
-                        Text('${(snapshot.data*100).toStringAsFixed(0)}',
-                        style: TextStyle(
-                          color: Colors.white,
-                            fontFamily: 'Fixed',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0)),
                       ],
                     ),
-                  );
-                  }
+                  title: Row(
+                    children: [
+                      Text(
+                        'Usuario',
+                        style: TextStyle(
+                            fontSize:30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        key: _formKey,
+                        child: TextInput(
+                          label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido : prefs.nickname,
+                          inputIcon: Icon(Icons.edit,color: Colors.white,),
+                          color: Colors.white,
+                          validator: (String text) {
+                            if (text.isEmpty) {
+                              return 'Por favor completar el campo';
+                            }
+                            nickNuevo = text;
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                
+                Divider(color: Colors.white.withOpacity(0.2)),
+                //FILTROS
+                ExpansionTile(
+                  title: Row(
+                           children: <Widget>[
+                      Text(
+                        'Filtros',
+                        style: TextStyle(
+                            fontSize:
+                                30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  subtitle: Text(
+                  'Filtre a su criterio las características de las preguntas',
+                  style: TextStyle(color: Colors.white),
+                ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: _opciones(size),
+                    ),
+                  ],
+                ),
+                
+                Divider(color: Colors.white.withOpacity(0.2)),
+                //SONIDOS
+                ExpansionTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        'Sonido',
+                        style: TextStyle(
+                            fontSize:30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  children: [
+                    StreamBuilder<double>(
+                      stream: player.volumeStream,
+                      builder: (context, snapshot) {
+                        return Container(
+                          padding: EdgeInsets.all(10.0),
+                        height: 100.0,
+                        child: Row(
+                          children: [
+                            IconButton(icon: (snapshot.data != 0)?Icon((snapshot.data <=0.5)?Icons.volume_down:Icons.volume_up,color:Colors.white):Icon(Icons.volume_off),
+                              onPressed:(){
+                                if(snapshot.data != 0.0){
+                                  aux = snapshot.data;
+                                  print(aux.toString());
+                                  player.setVolume(0.0);
+                                }else{
+                                  print(aux.toString());
+                                  player.setVolume(aux);
+                                }
+                              }  
+                            ),
+                            Expanded(
+                              child: Slider(
+                                divisions: 100,
+                                min: 0.0,
+                                max: 1.0,
+                                value: snapshot.data ?? 1.0,
+                                onChanged: player.setVolume,
+                              ),
+                            ),
+                            Text('${(snapshot.data*100).toStringAsFixed(0)}',
+                            style: TextStyle(
+                              color: Colors.white,
+                                fontFamily: 'Fixed',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.0)),
+                          ],
+                        ),
+                      );
+                      }
+                    ),
+                  ],
+                ),
+                
+                Divider(color: Colors.white.withOpacity(0.2)),
+
                 Container(height: 300,)
               ],
             ),
@@ -204,6 +251,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                           child: ListTile(
                             title: AutoSizeText("Guardar",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                             onTap: () {
+                              _submit();
                               Navigator.pop(context);
                             },
                           ),

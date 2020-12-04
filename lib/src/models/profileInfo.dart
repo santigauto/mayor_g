@@ -13,8 +13,10 @@ class PreferenciasUsuario{
   SharedPreferences _prefs;
 
   initPrefs() async{
+    this._prefs = null;
     this._prefs = await SharedPreferences.getInstance();
   }
+
   
   //APELLIDO
   get apellido{return _prefs.getString('apellido') ?? 'apellidoO';}
@@ -40,18 +42,7 @@ class PreferenciasUsuario{
   //NICKNAME
   get nickname{return _prefs.getString('nickname');}
 
-  set nickname(String value){
-    
-    value = value.toLowerCase();
-    value = value.replaceFirst(RegExp(value[0]), value[0].toUpperCase());
-
-    for(var i = 0; i < value.length ; i ++){
-      if (value[i] == ' '){
-        value = value.replaceFirst(value[i+1], value[i+1].toUpperCase(), i);
-      }
-    }
-    _prefs.setString('nickname', value);
-  }
+  set nickname(String value)=> _prefs.setString('nickname', value);
   
   //DNI
   get dni{return _prefs.getInt('dni') ?? 0;}
@@ -116,5 +107,5 @@ class PreferenciasUsuario{
   set materia(String value)=>_prefs.setString('materia', value);
 
 
-
+ 
 }

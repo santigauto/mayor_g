@@ -101,6 +101,7 @@ class AuthService {
 //------------------------ LOGOUT -------------------------------
   logout({BuildContext context}){
     this.user.storage.deleteAll();
+    prefs.nickname = null;
     Navigator.pushReplacementNamed(context, 'splash');
   }
 

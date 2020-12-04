@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/utils/search_delegate.dart';
@@ -36,11 +37,11 @@ class SolicitudesPendientesPage extends StatelessWidget {
                       BackgroundWidget(),
                       FutureBuilder(
                           future: GetFriendsService()
-                              .solicitudesPendientes(context, dni: prefs.dni, deviceId: 'f14e204a6ee07d70'),
+                              .solicitudesPendientes(context, dni: prefs.dni, deviceId: prefs.deviceId),
                           builder: (context, futureSnapshot) {
                             if(futureSnapshot.hasData) personas = futureSnapshot.data;
                             return (futureSnapshot.hasData)
-                                ? _listItem(context, futureSnapshot.data, bloc, Theme.of(context).primaryColor)
+                                ? _listItem(context, futureSnapshot.data, bloc, Theme.of(context).primaryColor, size)
                                 : Center(child: CircularProgressIndicator());
                           }),
                     ]),
@@ -65,7 +66,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
                                   //await GetFriendsService().registrarCivil(context,dni: 21796938, password: 'asdasd123123', deviceId: prefs.deviceId.toString(), deviceName: prefs.deviceName.toString(), deviceVersion: prefs.deviceVersion.toString(), nickname: 'Dieguito',mail: 'asd@gmail.com');
                                   //await GetFriendsService().reportarFalla(context,dni: prefs.dni, deviceId: prefs.deviceId, descripcion: 'reporte', preguntaId: '05C7818D-617F-43C0-8A9F-AC20562EDCC1');
                                   //await GetFriendsService().enviarAporte(dni: prefs.dni, deviceId: prefs.deviceId, texto: 'hola');
-                                  //await GetFriendsService().obtenerUsuarioDni(context, dni: 41215183, deviceId: 'f14e204a6ee07d70',dniBusqueda: 41215183);
+                                  //await GetFriendsService().obtenerUsuarioDni(context, dni: 41215183, deviceId: prefs.deviceId,dniBusqueda: 41215183);
                                   //print('ID ${prefs.deviceId} Name ${prefs.deviceName} Version${prefs.deviceVersion}');
                                   //await GetFriendsService().generarUserDevice(context,dni: 41215183, deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion);
                                   //await GetFriendsService().enviarSolicitud(dni: 34495248, dniAmigo: 41215183);
@@ -74,7 +75,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
                                   //await GetFriendsService().aprobarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
                                   //await GetFriendsService().obtenerAmigos(context,dni: 41215183);
                                   //await GetFriendsService().eliminarAmistad(dni: 41215183, dniAmigo: 34495248);
-                                  //await GetFriendsService().cambiarNick(dni: 41215183, deviceId: 'f14e204a6ee07d70', nickname: 'Santigol');
+                                  //await GetFriendsService().cambiarNick(dni: 41215183, deviceId: prefs.deviceId, nickname: 'Santigol');
                                   showSearch(context: context, delegate: DataSearch(personas));
                                   //await GetFriendsService().iniciarJuego(dni: prefs.dni, deviceId: prefs.deviceId);*
                                 }),
@@ -87,42 +88,50 @@ class SolicitudesPendientesPage extends StatelessWidget {
       ),
     );
   }
-  Widget _listItem(BuildContext context,List data, bloc, Color color){
+  Widget _listItem(BuildContext context,List data, bloc, Color color, Size size){
     return (data.length != 0)? ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, x){
-        return _item(context,x, data, bloc, color);
-      }): ListTile(title: Center(child: Text("No hay solicitudes pendientes en este momento", style: TextStyle(color:Colors.white),)),);
+        return _item(context,x, data, bloc, color, size);
+      }): ListTile(title: Center(child: AutoSizeText("No hay solicitudes pendientes en este momento", maxLines: 1, style: TextStyle(color:Colors.white),)),);
   }
-  Widget _item(BuildContext context, int posicion, data, bloc, Color color){
+  Widget _item(BuildContext context, int posicion, data, bloc, Color color, Size size){
     return Container(
       color: Colors.white.withOpacity(0.5),
       child: ListTile(
         title: Row(
           children: [
-            Text(data[posicion].jugador),
+            Container(
+              width: size.width * 0.5,
+              child: AutoSizeText('${data[posicion].jugador}', maxLines: 1, minFontSize: 15, overflow: TextOverflow.ellipsis,)),
             Expanded(child: Container()),
-            FlatButton(
-              color: color,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              onPressed: () {
-                GetFriendsService().aprobarSolicitud(context, idSolicitud: data[posicion].id, deviceId: 'f14e204a6ee07d70',dni: prefs.dni);
-              },
-              child: Text("Aceptar",),
+            Container(
+              width: size.width * 0.15,
+              child: FlatButton(
+                color: color,
+                textColor: Colors.white,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+                onPressed: () {
+                  GetFriendsService().aprobarSolicitud(context, idSolicitud: data[posicion].id, deviceId: prefs.deviceId,dni: prefs.dni);
+                },
+                child: Icon(Icons.thumb_up),
+              ),
             ),
             SizedBox(width: 10,),
-            FlatButton(
-              color: color,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              onPressed: () {
-                GetFriendsService().rechazarSolicitud(context, idSolicitud: data[posicion].id, dni: prefs.dni,deviceId: 'f14e204a6ee07d70');
-                bloc.streamSink(data[posicion].id);
-              },
-              child: Text("Rechazar",),
+            Container(
+              width: size.width * 0.15,
+              child: FlatButton(
+                color: color,
+                textColor: Colors.white,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+                onPressed: () {
+                  GetFriendsService().rechazarSolicitud(context, idSolicitud: data[posicion].id, dni: prefs.dni,deviceId: prefs.deviceId);
+                  bloc.streamSink(data[posicion].id);
+                },
+                child: Icon(Icons.thumb_down),
+              ),
             ),
           ],
         ),

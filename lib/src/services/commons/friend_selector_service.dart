@@ -24,11 +24,12 @@ class GetFriendsService{
 
   Future cambiarNick(BuildContext context,{@required int dni, @required String deviceId, @required nickname}) async{//devuelve true, es un post
     print('Cambiar Nickname');
-    HttpService().getPost(context, apiRoute: 'api/Usuarios/Cambiar_Nickname',queryParameters: {
+    bool boolean = await HttpService().getPost(context, apiRoute: 'api/Usuarios/Cambiar_Nickname',queryParameters: {
       'dni': dni.toString(),
       'deviceId': deviceId,
       'nickname': nickname
     });
+    return boolean;
   }
 
   Future<List<Solicitud>> solicitudesPendientes(BuildContext context,{@required int dni, @required String deviceId}) async{ // devuelve una lista, es un get
@@ -136,7 +137,7 @@ class GetFriendsService{
   });
   }
 
-  Future obtenerNotificaciones (BuildContext context,{@required int dni,@required String deviceId})async{
+  Future obtenerNotificaciones(BuildContext context,{@required int dni,@required String deviceId})async{
     HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Notificaciones',queryParameters: {
       'dni': dni.toString(),
       'deviceId': deviceId
