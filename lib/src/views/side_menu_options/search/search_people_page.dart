@@ -92,10 +92,12 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          Card(
-            color: Theme.of(context).primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal:12, vertical: 12),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
+              color: Colors.white,
+            ),
+              padding: const EdgeInsets.only(left:12,right: 12, bottom: 12),
               child: Column(
                 children: <Widget>[
                   MyTextInput('Apellido', helper: 'Ingrese el apellido completo.',
@@ -107,7 +109,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                     }
                   ),
                   SizedBox(height: 8.0,),
-                  MyTextInput('Dni', helper: 'Sin puntos ni comas.',
+                  MyTextInput('DNI', helper: 'Sin puntos ni comas.',
                     textInputType: TextInputType.number,
                     validator: (String text) {
                       if(text.isNotEmpty)
@@ -119,7 +121,6 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                   ),
                 ],
               ),
-            ),
           ),
           SizedBox(height: 8.0,),
           RaisedButton(
@@ -139,7 +140,7 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
       child: ListTile(
         onTap: () {},
-        title: Text("${_gente[x].apellido} ${_gente[x].nombre}"),
+        title: Text('${_gente[x].nickname}'),
         leading: Icon(Icons.face),
         trailing: FlatButton(
           color: Theme.of(context).primaryColor,

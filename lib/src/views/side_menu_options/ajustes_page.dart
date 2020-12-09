@@ -50,8 +50,11 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
           _isLoading = true;
         });
 
-        await GetFriendsService().cambiarNick(context, dni: prefs.dni, deviceId: prefs.deviceId, nickname: nickNuevo).then((value) {
-          if(value)prefs.nickname = nickNuevo;
+        await GetFriendsService()
+            .cambiarNick(context,
+                dni: prefs.dni, deviceId: prefs.deviceId, nickname: nickNuevo)
+            .then((value) {
+          if (value) prefs.nickname = nickNuevo;
         });
 
         setState(() {
@@ -73,27 +76,26 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
         children: <Widget>[
           BackgroundWidget(),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(5.0),
             child: ListView(
               children: <Widget>[
                 SafeArea(child: Container()),
                 //NICKNAME
                 ExpansionTile(
-
                   subtitle: Row(
-                      children: [
-                        Text(
-                          'Aquí puede modificar su Nickname',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
+                    children: [
+                      Text(
+                        'Aquí puede modificar su Nickname',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
                   title: Row(
                     children: [
                       Text(
                         'Usuario',
                         style: TextStyle(
-                            fontSize:30,
+                            fontSize: 30,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
@@ -106,8 +108,13 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                       child: Form(
                         key: _formKey,
                         child: TextInput(
-                          label:(prefs.nickname == null)?"Actual: " + prefs.nombre + " "+prefs.apellido : prefs.nickname,
-                          inputIcon: Icon(Icons.edit,color: Colors.white,),
+                          label: (prefs.nickname == null)
+                              ? "Actual: " + prefs.nombre + " " + prefs.apellido
+                              : prefs.nickname,
+                          inputIcon: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
                           color: Colors.white,
                           validator: (String text) {
                             if (text.isEmpty) {
@@ -120,17 +127,16 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                     ),
                   ],
                 ),
-                
+
                 Divider(color: Colors.white.withOpacity(0.2)),
                 //FILTROS
                 ExpansionTile(
                   title: Row(
-                           children: <Widget>[
+                    children: <Widget>[
                       Text(
                         'Filtros',
                         style: TextStyle(
-                            fontSize:
-                                30,
+                            fontSize: 30,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
@@ -138,17 +144,14 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                     ],
                   ),
                   subtitle: Text(
-                  'Filtre a su criterio las características de las preguntas',
-                  style: TextStyle(color: Colors.white),
-                ),
+                    'Filtre a su criterio las características de las preguntas',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: _opciones(size),
-                    ),
+                    _opciones(size),
                   ],
                 ),
-                
+
                 Divider(color: Colors.white.withOpacity(0.2)),
                 //SONIDOS
                 ExpansionTile(
@@ -157,7 +160,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                       Text(
                         'Sonido',
                         style: TextStyle(
-                            fontSize:30,
+                            fontSize: 30,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
@@ -166,51 +169,59 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                   ),
                   children: [
                     StreamBuilder<double>(
-                      stream: player.volumeStream,
-                      builder: (context, snapshot) {
-                        return Container(
-                          padding: EdgeInsets.all(10.0),
-                        height: 100.0,
-                        child: Row(
-                          children: [
-                            IconButton(icon: (snapshot.data != 0)?Icon((snapshot.data <=0.5)?Icons.volume_down:Icons.volume_up,color:Colors.white):Icon(Icons.volume_off),
-                              onPressed:(){
-                                if(snapshot.data != 0.0){
-                                  aux = snapshot.data;
-                                  print(aux.toString());
-                                  player.setVolume(0.0);
-                                }else{
-                                  print(aux.toString());
-                                  player.setVolume(aux);
-                                }
-                              }  
+                        stream: player.volumeStream,
+                        builder: (context, snapshot) {
+                          return Container(
+                            padding: EdgeInsets.all(10.0),
+                            height: 100.0,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    icon: (snapshot.data != 0)
+                                        ? Icon(
+                                            (snapshot.data <= 0.5)
+                                                ? Icons.volume_down
+                                                : Icons.volume_up,
+                                            color: Colors.white)
+                                        : Icon(Icons.volume_off),
+                                    onPressed: () {
+                                      if (snapshot.data != 0.0) {
+                                        aux = snapshot.data;
+                                        print(aux.toString());
+                                        player.setVolume(0.0);
+                                      } else {
+                                        print(aux.toString());
+                                        player.setVolume(aux);
+                                      }
+                                    }),
+                                Expanded(
+                                  child: Slider(
+                                    divisions: 100,
+                                    min: 0.0,
+                                    max: 1.0,
+                                    value: snapshot.data ?? 1.0,
+                                    onChanged: player.setVolume,
+                                  ),
+                                ),
+                                Text(
+                                    '${(snapshot.data * 100).toStringAsFixed(0)}',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Fixed',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24.0)),
+                              ],
                             ),
-                            Expanded(
-                              child: Slider(
-                                divisions: 100,
-                                min: 0.0,
-                                max: 1.0,
-                                value: snapshot.data ?? 1.0,
-                                onChanged: player.setVolume,
-                              ),
-                            ),
-                            Text('${(snapshot.data*100).toStringAsFixed(0)}',
-                            style: TextStyle(
-                              color: Colors.white,
-                                fontFamily: 'Fixed',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24.0)),
-                          ],
-                        ),
-                      );
-                      }
-                    ),
+                          );
+                        }),
                   ],
                 ),
-                
+
                 Divider(color: Colors.white.withOpacity(0.2)),
 
-                Container(height: 300,)
+                Container(
+                  height: 300,
+                )
               ],
             ),
           ),
@@ -219,18 +230,28 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             children: [
               Expanded(child: Container()),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical:8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      width: size.width*0.4,
+                      width: size.width * 0.4,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                           color: Theme.of(context).primaryColor,
                           child: ListTile(
-                            title: AutoSizeText("Restablecer",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            title: AutoSizeText(
+                              "Restablecer",
+                              maxLines: 1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
                             onTap: () {
                               prefs.arma = auxArma;
                               prefs.materia = auxMateria;
@@ -243,13 +264,23 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                       ),
                     ),
                     Container(
-                      width: size.width*0.4,
+                      width: size.width * 0.4,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                           color: Theme.of(context).primaryColor,
                           child: ListTile(
-                            title: AutoSizeText("Guardar",maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            title: AutoSizeText(
+                              "Guardar",
+                              maxLines: 1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
                             onTap: () {
                               _submit();
                               Navigator.pop(context);
@@ -349,91 +380,102 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
       String selectedValues,
       String hint,
       Future future}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(25),
-        child: Container(
-          color: Theme.of(context).primaryColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  width: size.width * 0.3,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                          right: BorderSide(
-                              color: Colors.black.withOpacity(0.4)))),
-                  child: Center(
-                      child: AutoSizeText(title,
-                          maxLines: 1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .fontSize,
-                              fontWeight: FontWeight.bold)))),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: FutureBuilder(
-                    future: future,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                            style: TextStyle(color: Colors.white,),
-                            iconEnabledColor: Colors.white,
-                            hint: Container(
-                              width: size.width * 0.55,
-                              child: DropdownMenuItem(
-                                  child: Center(
-                                    child: AutoSizeText(
-                                hint,
-                                maxLines: 2,
-                                style: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .copyWith(color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
-                                  )),
-                            ),
-                            underline: Container(),
-                            dropdownColor: Theme.of(context).primaryColor,
-                            value: selectedValues,
-                            items: getItems(snapshot.data, hint),
-                            onChanged: onChanged);
-                      } else
-                        return CircularProgressIndicator();
-                    }),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: future,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Container(
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            width: size.width * 0.3,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    right: BorderSide(
+                                        color: Colors.black.withOpacity(0.4)))),
+                            child: Center(
+                                child: AutoSizeText(title,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            .fontSize,
+                                        fontWeight: FontWeight.bold)))),
+                        (snapshot.hasData)
+                            ? Expanded(
+                                child: Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: AutoSizeText(
+                                    hint,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .copyWith(color: Colors.white),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )),
+                              )
+                            : CircularProgressIndicator()
+                      ],
+                    ),
+                  ),
+                ),
+                ExpansionTile(
+                    title: Container(),
+                    childrenPadding: EdgeInsets.symmetric(vertical:7.0, horizontal: 25.0),
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(25),bottomLeft: Radius.circular(25)),
+                          color: Colors.white,
+                        ),
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        child: ListView(
+                          children: getItems(snapshot.data, hint),
+                        ),
+                      )
+                    ]),
+              ],
+            ),
+          );
+        });
   }
 
-  List<DropdownMenuItem<String>> getItems(List data, String hint) {
-    List<DropdownMenuItem<String>> lista = new List();
+  List<Widget> getItems(data, String hint) {
+    List<Widget> lista = new List();
 
     if (data.isNotEmpty) {
       data.forEach((item) {
-        lista.add(DropdownMenuItem(
-            value: item.nombre,
-            child: Center(
+        lista.add(ListTile(
+            title: Center(
                 child: Container(
-                    width: 200,
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.05,
                     child: AutoSizeText(
                       item.nombre,
                       maxLines: 2,
                       style: TextStyle(
+                          color: Theme.of(context).primaryColor,
                           fontSize:
                               Theme.of(context).textTheme.headline6.fontSize),
                       textAlign: TextAlign.center,
                     )))));
+        lista.add(Divider());
       });
     }
     return lista;

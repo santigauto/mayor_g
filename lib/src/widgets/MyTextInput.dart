@@ -20,16 +20,16 @@ class MyTextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: new ThemeData(
-        primaryColor: Colors.white70,
-        hintColor: Colors.white70,
+        primaryColor:Theme.of(context).primaryColor,
+        hintColor: Theme.of(context).primaryColor,
         textTheme: TextTheme(
-          subtitle1: TextStyle(color: Colors.white,),
+          subtitle1: TextStyle(color: Theme.of(context).primaryColor,),
         )
       ),
       child: TextFormField(
         keyboardType: textInputType,
         maxLength: maxLenght,
-        cursorColor: Colors.white,
+        cursorColor: Theme.of(context).primaryColor,
         decoration: InputDecoration(
           labelText: label,
           helperText: helper,

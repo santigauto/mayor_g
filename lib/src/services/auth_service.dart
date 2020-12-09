@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 
 import 'package:mayor_g/src/models/auth/obtain_password.dart';
 import 'package:mayor_g/src/models/auth/user.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 
 import 'package:meta/meta.dart' show required;
@@ -77,7 +78,10 @@ class AuthService {
             deviceId: prefs.deviceId, 
             deviceName: prefs.deviceName, 
             deviceVersion: prefs.deviceVersion
-          ).then((value) => Navigator.pushReplacementNamed(context, 'menu')));
+          ).then((value) async{
+            Persona _persona = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: prefs.dni);
+            prefs.nickname = _persona.nickname;
+          }).then((value) => Navigator.pushReplacementNamed(context, 'menu')));
         } 
         
         print('${[_user.token.generatedAt,_user.toString()]}');

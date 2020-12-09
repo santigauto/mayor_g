@@ -1,5 +1,6 @@
 //IMPORTS
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/views/notifications_page.dart';
 //PAGINAS
 import 'package:mayor_g/src/views/side_menu_options/suggestQuestion/suggestQuestion.dart';
 import 'package:mayor_g/src/views/side_menu_options/ranking/ranking_options_page.dart';
@@ -36,6 +37,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'result'          : (BuildContext context) => ResultPage(),
     'suggestQuestion' : (BuildContext context) => SuggestQuestionPage(),
     'ajustes'         : (BuildContext context) => AjustesPartidaPage(),
+    'notifications'   : (BuildContext context) => NotificationsPage(),
   };
 }
 

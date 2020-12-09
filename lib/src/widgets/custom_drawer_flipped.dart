@@ -140,8 +140,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
   Widget solicitudesNuevas(){
   return Stack(
     children: [
-      IconButton(icon: Icon(Icons.group,color: Colors.white,), onPressed: (){
-        Navigator.pushNamed(context, 'search');
+      IconButton(icon: Icon(Icons.notifications,color: Colors.white,), onPressed: (){
+        Navigator.pushNamed(context, 'notifications');
       }),
       (solicitudesPendientes.length > 0)?Positioned(
       right: 0,
@@ -248,18 +248,18 @@ class MyDrawer extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     //nombre de usuario
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AutoSizeText(
                         '${prefs.apellido}',
                         maxLines: 1,
                         maxFontSize: 20,
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                        style: TextStyle(fontSize: 20, color: Colors.white),textAlign: TextAlign.center,),
                       AutoSizeText(
                         '${prefs.nombre}',
                         maxLines: 1,
                         minFontSize: 12,
                         style: TextStyle(fontSize: 15, color: Colors.white),
+                        textAlign: TextAlign.center,
                       )
                     ],
                   )
@@ -267,7 +267,7 @@ class MyDrawer extends StatelessWidget {
                       '${prefs.nickname}',
                       maxLines: 1,
                       maxFontSize: 20,
-                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                      style: TextStyle(fontSize: 20, color: Colors.white),textAlign: TextAlign.center,),
                 )),
               ],
             ), 
