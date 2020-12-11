@@ -62,28 +62,18 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
               ), */
               SizedBox(height: 25),
               _createQuestion(),
+              _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() :
+                Image.memory(
+                  base64Decode(_pregunta.imagen), fit: BoxFit.cover,
+                ),
               SizedBox(height: 25),
               _createCorrects(),
               SizedBox(height: 25),
               _createIncorrects(),
               SizedBox(height: 25),
 
-              _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() :
-                Image.memory(
-                  base64Decode(_pregunta.imagen), fit: BoxFit.cover,
-                ),
-              RaisedButton.icon(
-                icon: Icon(Icons.camera),
-                label: Text("Cargar imagen", style: TextStyle(fontSize: 20)),
-                onPressed: uploadImage,
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                splashColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.black),
-                ),
-              ),
+              
+              
 
               SizedBox(height: 25),
 
@@ -117,22 +107,39 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white.withOpacity(0.6),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          maxLength: 250,
-          validator: (String text) {
-            if (text.isEmpty)
-              return 'Por favor completar el campo';
-            this._pregunta.pregunta = text;
-            return null;
-          },
-          style: TextStyle(fontSize: 18),
-          maxLines: 7,
-          decoration: InputDecoration(
-            labelText: 'Pregunta a sugerir',
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              maxLength: 250,
+              validator: (String text) {
+                if (text.isEmpty)
+                  return 'Por favor completar el campo';
+                this._pregunta.pregunta = text;
+                return null;
+              },
+              style: TextStyle(fontSize: 18),
+              maxLines: 7,
+              decoration: InputDecoration(
+                labelText: 'Pregunta a sugerir',
+              ),
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: IconButton(
+                    icon: Icon(Icons.camera_alt),
+                    onPressed: uploadImage,
+                    color: Colors.white,
+                    splashColor: Colors.grey,
+                  ),
+            ),
+          ),
+        ],
       ),
     );
   }

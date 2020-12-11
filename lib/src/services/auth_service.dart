@@ -10,6 +10,7 @@ import 'package:mayor_g/src/models/auth/obtain_password.dart';
 import 'package:mayor_g/src/models/auth/user.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/http_request_service.dart';
 
 import 'package:meta/meta.dart' show required;
 import 'package:http/http.dart' as http;
@@ -64,7 +65,7 @@ class AuthService {
 
         if(_profile.dni != null){
           print("registrar militar arranca acá");
-          await GetFriendsService().registrarMilitar(context, 
+          await registrarMilitar(context, 
             dni: prefs.dni, 
             password: password, 
             deviceId: prefs.deviceId, 
@@ -131,6 +132,59 @@ class AuthService {
     }
 
   }
+
+//------------------------ REGISTRO DE CIVILES -------------------------------
+
+Future registrarCivil(BuildContext context,{String name,String surname,String dni, String password, String nickname, String mail}) async{//devuelve true, es un post
+  print('Registrar Civil');
+  var result;
+  await getDeviceDetails().then((value) async  {
+    print(prefs.deviceId);
+   result = await HttpService().getPost(context,apiRoute: 'api/Usuarios/Registrar_Civil',jsonEncode: jsonEncode({
+    "Apellido":surname,
+	  "Nombre":name,
+	  "Email":mail,
+	  "DNI":dni,
+	  "Password": password,
+	  "Nickname": nickname,
+	  "DeviceId":prefs.deviceId,
+	  "DeviceName":prefs.deviceName,
+	  "DeviceVersion":prefs.deviceVersion
+  })).then((value) {
+      prefs.dni = int.parse(dni);
+      prefs.email = mail;
+      prefs.apellido = surname;
+      prefs.nombre = name;
+      prefs.nickname = nickname;
+    });}
+  );
+  print(result);
+  if(result == 'true'){
+    print('es true el result loco');
+  }
+
+}
+
+//------------------------- REGISTRO DE MILITARES -----------------------------
+
+Future registrarMilitar(BuildContext context, {@required int dni,@required String password, @required String nombre, @required String apellido,
+                          @required String email,@required String deviceId, @required String deviceName, @required deviceVersion,}) async{
+
+  bool result = await HttpService().getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar', 
+    
+    jsonEncode: jsonEncode({
+	    "Apellido":apellido,
+	    "Nombre":nombre,
+	    "Email":email,
+	    "DNI":dni,
+	    "Password": password,
+	    "DeviceId":deviceId,
+	    "DeviceName":deviceName,
+	    "DeviceVersion":deviceVersion
+	}));
+
+  return result;
+}
 
 
 //----------------------------- RECUPERAR CLAVE ------------------------------

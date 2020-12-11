@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/auth_service.dart';
 //import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 
 //DEPENDENCIAS
@@ -27,8 +28,14 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin{
   final _formKey = GlobalKey<FormState>();
+
   var _username;
   var _password;
+  String dni;
+  String email;
+  String nombre;
+  String apellido;
+
   bool _isLoading = false;
   Size size;
   TextStyle style;
@@ -47,11 +54,11 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
         if(booleanAccept){
+          await AuthService().registrarCivil(context,dni: dni,mail: email,surname: apellido,nickname: _username,password: _password,name: nombre);
           setState(() {
             _isLoading = true;
           });
           checkflag = false;
-          print('llegue');
           setState(() {
             _isLoading = false;
           });
@@ -101,7 +108,7 @@ Widget _militarForm(){
                   color: Colors.white,
                   inputType: TextInputType.text,
                   inputIcon: Icon(
-                    Icons.person,
+                    Icons.tag_faces,
                       color: Colors.white,
                   ),
                   validator: (String text) {
@@ -113,6 +120,69 @@ Widget _militarForm(){
                     return x;
                   },
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: size.width *0.4,
+                      child: TextInput(
+                        label: 'Nombre',
+                        color: Colors.white,
+                        inputType: TextInputType.text,
+                        inputIcon: Icon(
+                          Icons.person,
+                            color: Colors.white,
+                        ),
+                        validator: (String text) {
+                          String x;
+                          if (text.isEmpty) {
+                            x='Por favor completar el campo';
+                          }
+                          this.nombre = text;
+                          return x;
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: size.width *0.4,
+                      child: TextInput(
+                        label: 'Apellido',
+                        color: Colors.white,
+                        inputType: TextInputType.text,
+                        validator: (String text) {
+                          String x;
+                          if (text.isEmpty) {
+                            x='Por favor completar el campo';
+                          }
+                          this.apellido = text;
+                          return x;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 30,
+                ),
+
+                TextInput(
+                  label: 'DNI',
+                  color: Colors.white,
+                  inputType: TextInputType.number,
+                  inputIcon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  validator: (String text) {
+                    if (text.isEmpty) {
+                      return 'Por favor completar el campo';
+                    }
+                    this.dni = text;
+                    return null;
+                  },
+                ),
+
                 TextInput(
                   label: 'Email',
                   color: Colors.white,
@@ -126,64 +196,61 @@ Widget _militarForm(){
                     if (text.isEmpty) {
                       x='Por favor completar el campo';
                     }
-                    this._username = text;
+                    this.email = text;
                     return x;
                   },
                 ),
-                TextInput(
-                  label: 'DNI',
-                  color: Colors.white,
-                  inputType: TextInputType.number,
-                  inputIcon: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  validator: (String text) {
-                    if (text.isEmpty) {
-                      return 'Por favor completar el campo';
-                    }
-                    this._username = text;
-                    return null;
-                  },
-                ),
+                
                 SizedBox(
                   height: 30,
                 ),
-                TextInput(
-                  label: 'Contraseña',
-                  password: true,
-                  color: Colors.white,
-                  inputIcon: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                  ),
-                  validator: (String text) {
-                    if (text.isEmpty) {
-                      return 'Por favor completar el campo';
-                    }
-                    this._password = text;
-                    return null;
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: size.width *0.4,
+                      child: TextInput(
+                        label: 'Contraseña',
+                        password: true,
+                        color: Colors.white,
+                        inputIcon: Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        validator: (String text) {
+                          if (text.isEmpty) {
+                            return 'Por favor completar el campo';
+                          }
+                          this._password = text;
+                          return null;
+                        },
+                      ),
+                    ),
+                    //------------------------------------------------
+                    Container(
+                      width: size.width *0.4,
+                      child: TextInput(
+                        label: 'Confirmar contraseña',
+                        password: true,
+                        color: Colors.white,
+                        inputIcon: Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        validator: (String text) {
+                          String x;
+                          if (text.isEmpty) {
+                            x = 'Por favor completar el campo';
+                          } else if (text != this._password){
+                            x = 'Las claves no coinciden';
+                          }
+                          return x;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                //------------------------------------------------
-                TextInput(
-                  label: 'Confirmar contraseña',
-                  password: true,
-                  color: Colors.white,
-                  inputIcon: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                  ),
-                  validator: (String text) {
-                    String x;
-                    if (text.isEmpty) {
-                      x = 'Por favor completar el campo';
-                    } else if (text != this._password){
-                      x = 'Las claves no coinciden';
-                    }
-                    return x;
-                  },
-                ),
+                
                 CheckboxListTile(
                   value: booleanAccept,
                   onChanged: (boolean){

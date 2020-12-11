@@ -435,20 +435,21 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                   ),
                 ),
                 ExpansionTile(
-                    title: Container(),
-                    childrenPadding: EdgeInsets.symmetric(vertical:7.0, horizontal: 25.0),
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(25),bottomLeft: Radius.circular(25)),
-                          color: Colors.white,
-                        ),
-                        height: MediaQuery.of(context).size.height * 0.35,
-                        child: ListView(
-                          children: getItems(snapshot.data, hint),
-                        ),
-                      )
-                    ]),
+                  title: Container(),
+                  childrenPadding: EdgeInsets.symmetric(vertical:7.0, horizontal: 25.0),
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Theme.of(context).primaryColor,width: 3.0),
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(25),bottomLeft: Radius.circular(25)),
+                        color: Colors.white,
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: ListView(
+                        children: getItems(snapshot.data, hint),
+                      ),
+                    )
+                  ]),
               ],
             ),
           );

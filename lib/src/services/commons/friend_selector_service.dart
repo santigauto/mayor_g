@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/notificacion_model.dart';
 
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/solicitudes_model.dart';
@@ -138,43 +139,24 @@ class GetFriendsService{
   }
 
   Future obtenerNotificaciones(BuildContext context,{@required int dni,@required String deviceId})async{
-    HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Notificaciones',queryParameters: {
+    print('Empieza ObtenerNotificaciones');
+    var _decodedJson = await HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Notificaciones',queryParameters: {
       'dni': dni.toString(),
       'deviceId': deviceId
     });
+    List notificaciones = [];
+    print(_decodedJson.toString());
+    if(_decodedJson.isNotEmpty)_decodedJson.forEach((noti){
+      var notificacion = Notificacion.fromJson(noti);
+      if(notificacion.fechaDeCreacion != null)notificaciones.add(notificacion);
+    });
+
+    return notificaciones;
   }
 
 
 
-Future registrarCivil(BuildContext context,{int dni, String password, String nickname, String deviceId, String deviceName, String deviceVersion, String mail}) async{//devuelve true, es un post
-  print('Registrar Civil');
-  HttpService().getPost(context,apiRoute: 'api/Usuarios/Registrar_Civil',queryParameters: {
-    'dni': dni.toString(),
-    'password': password,
-    'nickname': nickname,
-    'deviceId': deviceId,
-    'deviceName': deviceName,
-    'deviceVersion': deviceVersion,
-    'mail': mail
-  });
-}
 
-Future registrarMilitar(BuildContext context, {@required int dni,@required String password, @required String nombre, @required String apellido,
-                          @required String email,@required String deviceId, @required String deviceName, @required deviceVersion,}) async{
-
-  HttpService().getPost(context, apiRoute: 'api/Usuarios/Registrar_Militar', 
-    
-    jsonEncode: jsonEncode({
-	    "Apellido":apellido,
-	    "Nombre":nombre,
-	    "Email":email,
-	    "DNI":dni,
-	    "Password": password,
-	    "DeviceId":deviceId,
-	    "DeviceName":deviceName,
-	    "DeviceVersion":deviceVersion
-	}));
-}
 
 Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pregunta,List<String> respuestas,
                           int respuestaCorrecta, bool unirConFlechas, bool verdaderoFalso, String arma,String organismo,String curso,
