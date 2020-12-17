@@ -13,6 +13,7 @@ import 'package:mayor_g/src/services/auth_service.dart';
 //import 'package:mayor_g/src/widgets/custom_header_widget.dart';
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/loading_widget.dart';
 //SERVICIOS
 //import 'package:mayor_g/src/services/auth_service.dart';
 //import 'package:mayor_g/src/widgets/loading_widget.dart';
@@ -62,6 +63,25 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
           setState(() {
             _isLoading = false;
           });
+          showDialog(context: context,
+          barrierDismissible: false,
+          builder: (context){
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('¡Su cuenta ha sido creada con éxito!', textAlign: TextAlign.center,),
+                ],
+              ),
+              content: Text('Ya eres usuario de MayorG, ahora solo debes iniciar sesión para comenzar nuevas partidas'),
+              actions: [
+                FlatButton(onPressed: (){
+                  Navigator.pop(context);
+                  Navigator.pushReplacementNamed(context, 'login');
+                }, child: Text('Aceptar'))
+              ],
+            );
+          });
         } else{ setState(()=>checkflag = true);}
       }
     }
@@ -84,6 +104,12 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                 alignment: Alignment.center,
                 child: SingleChildScrollView(child: _militarForm())),
             ),
+            (_isLoading)?Stack(
+              children: [
+                Container(color:Colors.black.withOpacity(0.5)),
+                LoadingWidget(caption: Text('Aguarde, estamos validando sus datos') ,),
+              ],
+            ): Container()
           ],
         ),
       ),

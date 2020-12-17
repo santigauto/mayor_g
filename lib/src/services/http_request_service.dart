@@ -15,7 +15,7 @@ class HttpService{
     final resp = await http.get(__url);
     dynamic result;
 
-    print("getGet  " + resp.body);
+    print("HttpService/getGet:  " + resp.body);
     if(resp.body== "") return "";
     if(resp.body.isEmpty || resp.body.contains('DOCTYPE html')) {
       Alert.alert(context, body: Text('Ups! Ha ocurrido un error.'));

@@ -1,6 +1,6 @@
 class Notificacion{
-  int id;
-  DateTime fechaDeCreacion;
+  String id;
+  String fechaDeCreacion;
   String titulo;
   String mensaje;
   String fechaDeLeido;
@@ -11,11 +11,11 @@ class Notificacion{
   factory Notificacion.fromJson(Map<String,dynamic>json){
     return Notificacion(
       id : json['Id'],
-      fechaDeCreacion : json['FechaDeCreacion'],
+      fechaDeCreacion : json['FechaCreacion'],
       titulo : json['Titulo'],
       mensaje : json['Mensaje'],
-      fechaDeLeido : json['FechaDeLeido'],
-      fechaDeBorrado : json['FechaDeBorrado'],
+      fechaDeLeido : json['FechaLeido'],
+      fechaDeBorrado : json['FechaBorrado'],
     );
   }
 }

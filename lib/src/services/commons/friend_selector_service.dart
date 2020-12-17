@@ -138,15 +138,16 @@ class GetFriendsService{
   });
   }
 
-  Future obtenerNotificaciones(BuildContext context,{@required int dni,@required String deviceId})async{
+  Future<List<Notificacion>> obtenerNotificaciones(BuildContext context,{@required int dni,@required String deviceId})async{
     print('Empieza ObtenerNotificaciones');
     var _decodedJson = await HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Notificaciones',queryParameters: {
       'dni': dni.toString(),
       'deviceId': deviceId
     });
-    List notificaciones = [];
-    print(_decodedJson.toString());
+    List<Notificacion> notificaciones = [];
+    print("FriendsService/obtenerNotificaciones():  " +_decodedJson.toString());
     if(_decodedJson.isNotEmpty)_decodedJson.forEach((noti){
+      print(noti.toString());
       var notificacion = Notificacion.fromJson(noti);
       if(notificacion.fechaDeCreacion != null)notificaciones.add(notificacion);
     });

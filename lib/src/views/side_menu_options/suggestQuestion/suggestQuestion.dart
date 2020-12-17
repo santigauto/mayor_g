@@ -25,11 +25,12 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   bool _isLoading = false;
   TextStyle titleStyle;
   Camara camaraController = new Camara();
+  int groupValue = 0;
 
   PreguntaNueva _pregunta = new PreguntaNueva();
   List<String> _correctas = ['','','','',''];
   List<String> _incorrectas = ['','','','',''];
-  bool aux = false;
+  bool aux = true;
   int currentStep = 0;
   List<int> currentError = [10,20,10];
   @override
@@ -55,11 +56,15 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
         child: Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
+            
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              
               Stepper(
                 physics: ClampingScrollPhysics(),
                 currentStep: currentStep,
+                controlsBuilder: (BuildContext context, { VoidCallback onStepContinue, VoidCallback onStepCancel }) {
+                  return Container();},
                 onStepTapped: (step){
                   setState(() {
                     currentStep = step;
@@ -68,9 +73,15 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 type: StepperType.vertical,
                 steps: [
                   Step(
-                    state: (currentStep == 0 || aux ) ? StepState.indexed  : ((0 == currentError[0])? StepState.error : StepState.complete ),
+                    state: (currentStep == 0 || aux ) ? StepState.indexed  : (0 == currentError[0])? StepState.error : StepState.complete ,
                     isActive: currentStep == 0,
-                    title: Text('Pregunta',style: titleStyle.copyWith(color: Colors.white),), 
+                    title: (currentStep == 0) ? _titulo('Seleccione tipo de pregunta'): Container(), 
+                    content: Column(children:_listaRadio(['Multiple Choice','Multiple Choice con Imagenes','Verdadero o Falso','Unir con Flechas']),),
+                  ),
+                  Step(
+                    state: (currentStep == 1 || aux ) ? StepState.indexed  : ((1 == currentError[1])? StepState.error : StepState.complete ),
+                    isActive: currentStep == 1,
+                    title: (currentStep == 1) ?  _titulo('Pregunta o Encabezado'):  Container(), 
                     content: Column( children:
                       [_createQuestion(),
                       _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() : Image.memory(
@@ -80,11 +91,11 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                       ]
                   )),
                   Step(
-                    state: (currentStep == 1 || aux ) ? StepState.indexed  : ((1 == currentError[1])? StepState.error : StepState.complete ),
-                    title: Text('Respuestas Correctas',style: titleStyle.copyWith(color: Colors.white),), content: _createCorrects(),isActive: currentStep == 1,),
-                  Step(
                     state: (currentStep == 2 || aux ) ? StepState.indexed  : ((2 == currentError[2])? StepState.error : StepState.complete ),
-                    title: Text('Respuestas Incorrectas',style: titleStyle.copyWith(color: Colors.white),), content: _createIncorrects(),isActive: currentStep == 2,)
+                    title: (currentStep == 2)?_titulo('Respuestas correctas'):Container(), content: _createCorrects(),isActive: currentStep == 2,),
+                  Step(
+                    state: (currentStep == 3 || aux ) ? StepState.indexed  : ((3 == currentError[3])? StepState.error : StepState.complete ),
+                    title: (currentStep == 3)?_titulo('Respuestas Incorrectas'):Container(), content: _createIncorrects(),isActive: currentStep == 3,)
               ]),
 
               Padding(
@@ -109,90 +120,105 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     );
   }
 
+_titulo(String text){
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: BorderedText(
+        strokeColor: Theme.of(context).primaryColor,
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+  );
+}
   uploadImage()async{
     _pregunta.imagen = await camaraController.getImage();
     setState((){});
   }
 
-  Container _createQuestion() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white.withOpacity(0.6),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              maxLength: 250,
-              validator: (String text) {
-                if (text.isEmpty){
-                  setState(() {
-                    currentError[0] = 0;
-                  });
-                  return 'Por favor completar el campo';
-                }
-                setState(() {
-                    currentError[0] = 3;
-                  });
-                this._pregunta.pregunta = text;
-                return null;
-              },
-              style: TextStyle(fontSize: 18),
-              maxLines: 7,
-              decoration: InputDecoration(
-                labelText: 'Pregunta a sugerir',
-              ),
-            ),
+ List<Widget> _listaRadio(List<String>listaOpciones){
+   List<Widget> lista = [];
+    int aux = 0;
+    listaOpciones.forEach((element) {
+      lista.add(RadioListTile(
+        title: Text(listaOpciones[aux], style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+        value: aux, 
+        groupValue: groupValue, 
+        onChanged: (value){
+          setState(() {
+            groupValue = value;
+          }); 
+        }
+      ));
+      aux = aux+1;
+    });
+    
+   return lista;
+ }
+  
+  Column _createQuestion() {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white.withOpacity(0.6),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:8.0),
-            child: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: IconButton(
-                    icon: Icon(Icons.camera_alt),
-                    onPressed: uploadImage,
-                    color: Colors.white,
-                    splashColor: Colors.grey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  maxLength: 250,
+                  validator: (String text) {
+                    if (text.isEmpty){
+                      setState(() {
+                        currentError[0] = 0;
+                      });
+                      return 'Por favor completar el campo';
+                    }
+                    setState(() {
+                        currentError[0] = 3;
+                      });
+                    this._pregunta.pregunta = text;
+                    return null;
+                  },
+                  style: TextStyle(fontSize: 18),
+                  maxLines: 7,
+                  decoration: InputDecoration(
+                    labelText: 'Pregunta a sugerir',
                   ),
-            ),
+                ),
+              ),
+              Text('¿Desea agregar imagen?',style: TextStyle(color:Theme.of(context).primaryColor),),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical:8.0),
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: IconButton(
+                        icon: Icon(Icons.camera_alt),
+                        onPressed: uploadImage,
+                        color: Colors.white,
+                        splashColor: Colors.grey,
+                      ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _createCorrects(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            /* SizedBox(width: 42), */
-            BorderedText(
-              strokeColor: Theme.of(context).primaryColor,
-              child: Text(
-                'Respuestas correctas',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-            ),
-            /* IconButton(
-              icon: Icon(Icons.help_outline),
-              onPressed: () => _alerta(
-                'Lorem ipsum\nejemplo'
-              )
-            ) */
-          ],
-        ),
-
-        BorderedText(
-          strokeColor: Theme.of(context).primaryColor,
-          child: Text(
-            'Debe ingresar al menos 1',
-            style: TextStyle(color: Colors.white),
-          ),
+        AutoSizeText(
+          'Debe ingresar al menos 1', maxLines: 2,
+          style: TextStyle(color: Colors.white),
         ),
         Column(children:lista(this._correctas, 'correcta',1, true))
         
@@ -228,34 +254,11 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
 
   Widget _createIncorrects(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            /* SizedBox(width: 42), */
-            BorderedText(
-              strokeColor: Theme.of(context).primaryColor,
-              child: Text(
-                'Respuestas incorrectas',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-            ),
-            /* IconButton(
-              icon: Icon(Icons.help_outline),
-              onPressed: () => _alerta(
-                'Lorem ipsum\nejemplo'
-              )
-            ) */
-          ],
-        ),
-
-        BorderedText(
-          strokeColor: Theme.of(context).primaryColor,
-          child: Text(
-            'Debe ingresar las 5\nEstas deben ser alusivas a la pregunta',
-            style: TextStyle(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
+        AutoSizeText(
+          'Debe ingresar las 5. Estas deben ser alusivas a la pregunta',maxLines: 2,
+          style: TextStyle(color: Colors.white),
         ),
         Column(children:lista(_incorrectas, 'incorrecta',2, false))
       ],
@@ -265,20 +268,22 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   _submit() async {
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
+        print('hola');
         setState(() {
-          aux = true;
+          aux = false;
           _isLoading = true;
         });
-
-        //await CollabService().sendCollab(context,dni: PreferenciasUsuario().dni,sugerencia: _collab,idPregunta: 0);
         await Future.delayed(Duration(seconds: 3));
 
         await _sended();
         setState(() {
           _isLoading = false;
         });
-      }
-    }
+      } 
+    }else{setState(() {
+      print('object');
+        
+      });}
   }
 
   Future<void> _sended() async {
