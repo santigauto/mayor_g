@@ -155,6 +155,32 @@ class GetFriendsService{
     return notificaciones;
   }
 
+  Future<int> obtenerCantidadNotificaciones(BuildContext context,{@required int dni,@required String deviceId})async{
+    print('Empieza ObtenerNotificaciones');
+    var _decodedJson = await HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Cantidad_Notificaciones',queryParameters: {
+      'dni': dni.toString(),
+      'deviceId': deviceId
+    });
+    int notificaciones = 0;
+    print("FriendsService/obtenerNotificaciones():  " +_decodedJson.toString());
+    if(_decodedJson != null) notificaciones = _decodedJson;
+
+    return notificaciones;
+  }
+  
+  Future cambiarFoto(BuildContext context, { @required int dni, @required String deviceId,@required String imagen})async{
+    var _decodedJson = await HttpService().getPost(context, apiRoute: 'api/Usuarios/Cambiar_Foto',queryParameters: {
+      'dni': dni.toString(),
+      'deviceId': deviceId
+    },jsonEncode: jsonEncode({
+        'nombreArhcivoImagen' : imagen,
+        'Imagen' : 'imagen-${dni.toString()}.png'
+    }));
+    print('cambiarFoto'+_decodedJson);
+    return _decodedJson;
+  }
+
+
 
 
 

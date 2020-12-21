@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 //MODELS
@@ -28,10 +27,11 @@ class CustomFlippedDrawer extends StatefulWidget {
 
 class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     with SingleTickerProviderStateMixin {
+
   AnimationController animationController;
   bool _canBeDragged = false;
   bool flag = false;
-  List solicitudesPendientes = [];
+  int solicitudesPendientes = 0;
   ImagenPerfil profilePic;
   Animation rotation;
   Animation fade;
@@ -56,7 +56,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
     super.didChangeDependencies();
   }
   void buscarSolicitudes() async{
-    solicitudesPendientes = await GetFriendsService().solicitudesPendientes(context, dni: prefs.dni, deviceId: prefs.deviceId);
+    solicitudesPendientes = await GetFriendsService().obtenerCantidadNotificaciones(context, dni: prefs.dni, deviceId: prefs.deviceId);
     setState(() {});
   }
 
@@ -143,7 +143,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
       IconButton(icon: Icon(Icons.notifications,color: Colors.white,), onPressed: (){
         Navigator.pushNamed(context, 'notifications');
       }),
-      (solicitudesPendientes.length > 0)?Positioned(
+      (solicitudesPendientes > 0)?Positioned(
       right: 0,
       top: 0,
       child: Container(
@@ -151,7 +151,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
         width: 15,
         child: CircleAvatar(
           backgroundColor: Colors.red,
-          child: AutoSizeText(solicitudesPendientes.length.toString()),
+          child: AutoSizeText(solicitudesPendientes.toString()),
         ),
       )):Container()
     ],
@@ -296,7 +296,7 @@ class MyDrawer extends StatelessWidget {
         leading: getIcon(item['icon']),
         trailing: Icon(Icons.keyboard_arrow_right),
         onTap: () {
-          Navigator.pushNamed(context, item['ruta']);
+          Navigator.pushNamed(context, item['ruta'], arguments: (item['ruta'] == 'ajustes')?{'logueado':true}:{});
         },
       );
       opciones..add(widgetTemp);

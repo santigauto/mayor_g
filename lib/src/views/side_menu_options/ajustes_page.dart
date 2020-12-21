@@ -2,12 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/commons/camara.dart';
 import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 import 'package:mayor_g/src/services/filterServices/arma_service.dart';
 import 'package:mayor_g/src/services/filterServices/curso_service.dart';
 import 'package:mayor_g/src/services/filterServices/materia_service.dart';
 import 'package:mayor_g/src/services/filterServices/organismo_service.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/imagen_perfil.dart';
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
 
@@ -17,6 +19,9 @@ class AjustesPartidaPage extends StatefulWidget {
 }
 
 class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
+
+  
+
   final _formKey = GlobalKey<FormState>();
   final player = BackgroundMusic.backgroundAudioPlayer;
   final prefs = new PreferenciasUsuario();
@@ -25,6 +30,8 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
   String selectedColegio;
   String selectedCurso;
   String nickNuevo;
+  String imagen;
+  Camara camaraController = new Camara();
 
   String auxArma;
   String auxMateria;
@@ -50,13 +57,24 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
           _isLoading = true;
         });
 
-        await GetFriendsService()
-            .cambiarNick(context,
-                dni: prefs.dni, deviceId: prefs.deviceId, nickname: nickNuevo)
-            .then((value) {
-          if (value) prefs.nickname = nickNuevo;
-        });
-
+        if (nickNuevo.isNotEmpty)
+          await GetFriendsService()
+              .cambiarNick(context,
+                  dni: prefs.dni, deviceId: prefs.deviceId, nickname: nickNuevo)
+              .then((value) {
+            if (value) prefs.nickname = nickNuevo;
+          });
+        if (imagen.isNotEmpty){
+          imagen = imagen.replaceFirst('data:image/jpeg;base64,', '');
+          if(imagen.length < 2){imagen = '';}
+        bool validado = false;
+          validado = await GetFriendsService().cambiarFoto(context,
+              dni: prefs.dni, deviceId: prefs.deviceId, imagen: imagen).then((value){ if(validado){
+                prefs.foto = imagen;
+              }
+              return true;
+              });
+        }
         setState(() {
           _isLoading = false;
         });
@@ -66,6 +84,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map routeData = ModalRoute.of(context).settings.arguments;
     print(prefs.nickname);
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -81,14 +100,10 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
               children: <Widget>[
                 SafeArea(child: Container()),
                 //NICKNAME
-                ExpansionTile(
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        'Aquí puede modificar su Nickname',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+                (routeData['logueado'])?ExpansionTile(
+                  subtitle: Text(
+                    'Aquí puede modificar su Nickname y foto de perfil',
+                    style: TextStyle(color: Colors.white),
                   ),
                   title: Row(
                     children: [
@@ -107,26 +122,56 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Form(
                         key: _formKey,
-                        child: TextInput(
-                          label: (prefs.nickname == null)
-                              ? "Actual: " + prefs.nombre + " " + prefs.apellido
-                              : prefs.nickname,
-                          inputIcon: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                          color: Colors.white,
-                          validator: (String text) {
-                            if (text.isEmpty) {
-                              return 'Por favor completar el campo';
-                            }
-                            nickNuevo = text;
-                          },
+                        child: Row(
+                          children: [
+                            Stack(
+                              children: [
+                                ImagenPerfil(photoData: (imagen != null)?imagen:prefs.foto,radius: size.width * 0.1,),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: CircleAvatar(
+                                    radius: size.width*0.05,
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor.withOpacity(0.7),
+                                    child: IconButton(
+                                      icon: Icon(Icons.camera_alt),
+                                      onPressed: uploadImage,
+                                      color: Colors.white,
+                                      splashColor: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: size.width * 0.7,
+                              child: TextInput(
+                                label: (prefs.nickname == null)
+                                    ? "Actual: " +
+                                        prefs.nombre +
+                                        " " +
+                                        prefs.apellido
+                                    : prefs.nickname,
+                                inputIcon: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                                color: Colors.white,
+                                validator: (String text) {
+                                  if (text.isEmpty) {
+                                    return 'Por favor completar el campo';
+                                  }
+                                  nickNuevo = text;
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
-                ),
+                ):Container(),
 
                 Divider(color: Colors.white.withOpacity(0.2)),
                 //FILTROS
@@ -281,7 +326,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                                       fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
-                            onTap: () {
+                            onTap: () async{
                               _submit();
                               Navigator.pop(context);
                             },
@@ -380,6 +425,13 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
       String selectedValues,
       String hint,
       Future future}) {
+    int detalle = 0;
+    if (title == 'Materia')
+      detalle = 3;
+    else if (title == 'Arma')
+      detalle = 1;
+    else if (title == 'Curso') detalle = 2;
+    print(detalle);
     return FutureBuilder(
         future: future,
         builder: (context, snapshot) {
@@ -435,33 +487,65 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                   ),
                 ),
                 ExpansionTile(
-                  title: Container(),
-                  childrenPadding: EdgeInsets.symmetric(vertical:7.0, horizontal: 25.0),
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Theme.of(context).primaryColor,width: 3.0),
-                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(25),bottomLeft: Radius.circular(25)),
-                        color: Colors.white,
-                      ),
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      child: ListView(
-                        children: getItems(snapshot.data, hint),
-                      ),
-                    )
-                  ]),
+                    title: Container(),
+                    childrenPadding:
+                        EdgeInsets.symmetric(vertical: 7.0, horizontal: 25.0),
+                    children: [
+                      (prefs.arma == 'General' &&
+                              (title != 'Arma' && title != 'Organismo'))
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 3.0),
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(25),
+                                    bottomLeft: Radius.circular(25)),
+                                color: Colors.white,
+                              ),
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              child: ListView(
+                                children:
+                                    getItems(snapshot.data, hint, detalle),
+                              ),
+                            )
+                    ]),
               ],
             ),
           );
         });
   }
 
-  List<Widget> getItems(data, String hint) {
+  List<Widget> getItems(data, String hint, int detalle) {
     List<Widget> lista = new List();
 
     if (data.isNotEmpty) {
       data.forEach((item) {
         lista.add(ListTile(
+            onTap: () {
+              switch (detalle) {
+                case 0:
+                  prefs.colegio = item.nombre;
+                  break;
+                case 1:
+                  prefs.arma = item.nombre;
+                  if (prefs.arma == 'General') {
+                    prefs.curso = '';
+                    prefs.materia = '';
+                  }
+                  break;
+                case 2:
+                  prefs.curso = item.nombre;
+                  break;
+                case 3:
+                  prefs.materia = item.nombre;
+                  break;
+                default:
+              }
+              print(detalle);
+              setState(() {});
+            },
             title: Center(
                 child: Container(
                     color: Colors.white,
@@ -480,5 +564,10 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
       });
     }
     return lista;
+  }
+
+  uploadImage() async {
+    imagen = await camaraController.getImage();
+    setState(() {});
   }
 }
