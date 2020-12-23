@@ -94,7 +94,6 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
   }
 
   int getDuration(){
-    print('longitud: '+ this.longitud.toString());
     switch (longitud) {
       case 1:
         return 20;
@@ -126,5 +125,22 @@ factory PreguntaNueva.fromJson(Map<String,dynamic> jsonDecoded){
   }
   return choices;
   }
+
+}
+///////////////////////////////////////////////////////////////////////////////
+///                 MODELO PREGUNTAS RESPONDIDAS
+///////////////////////////////////////////////////////////////////////////////
+///
+
+class PreguntaRespondida{
+  String id;
+  int puntaje;
+
+  PreguntaRespondida({this.id,this.puntaje});
+
+  Map toJson() => {
+        'IdPregunta': id,
+        'CantCorrectas': puntaje,
+  };
 
 }

@@ -28,18 +28,28 @@ class _Bloc{
 
 class ResultPage extends StatelessWidget {
 
+  static List<PreguntaRespondida> preguntasRespondidas;
+
   @override
   Widget build(BuildContext context) {
+
+  if(preguntasRespondidas == null){
+    preguntasRespondidas = new List();
+  }
 
   final Map mapa = ModalRoute.of(context).settings.arguments;
   bool resultado = mapa['resultado'];
   int n = mapa['n'] + 1;
   ListaPreguntasNuevas questions= mapa['questions'];
+
+  int puntaje = 0;
+  
   PreferenciasUsuario prefs = new PreferenciasUsuario();
   String imagen ;
   _Bloc streamBloc = _Bloc();
 
   if(questions.preguntas[n-1].unirConFlechas) {
+    puntaje = prefs.score;
     switch (prefs.score) {
       case 0:
         imagen = 'assets/MayorGAnimaciones/MayorG-Frustrado.gif';break;
@@ -49,13 +59,21 @@ class ResultPage extends StatelessWidget {
         imagen = 'assets/MayorGAnimaciones/MayorG-aplasta.gif';break;
       case 3:
         imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';break;
-      default: 
+      default:
         imagen = 'assets/MayorGAnimaciones/MayorG-Celebra.gif';
     }
   }
-  else if (resultado) {imagen = 'assets/MayorGAnimaciones/mayorContento.gif';} 
-  else{imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';}
+  else if (resultado) {
+    puntaje = 1;
+    imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
+  } 
+  else{
+    puntaje = 0;
+    imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';
+  }
   
+  PreguntaRespondida preguntaResp = new PreguntaRespondida(id: questions.preguntas[n-1].id, puntaje: puntaje);
+  preguntasRespondidas.add(preguntaResp);
   
   Future<bool> _back() {
     return showDialog(

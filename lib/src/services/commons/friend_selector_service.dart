@@ -176,8 +176,10 @@ class GetFriendsService{
         'nombreArhcivoImagen' : imagen,
         'Imagen' : 'imagen-${dni.toString()}.png'
     }));
+
     print('cambiarFoto'+_decodedJson);
     return _decodedJson;
+    
   }
 
 
