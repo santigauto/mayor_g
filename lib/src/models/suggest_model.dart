@@ -1,52 +1,79 @@
-class Sugerencia {
-  SugerenciaClass sugerencia;
-  int dni;
+import 'dart:convert';
 
-  Sugerencia({
-    this.sugerencia,
-    this.dni,
-  });
+Sugerencia sugerenciaFromJson(String str) => Sugerencia.fromJson(json.decode(str));
+
+String sugerenciaToJson(Sugerencia data) => json.encode(data.toJson());
+
+class Sugerencia {
+    Sugerencia({
+        this.sugerencia,
+        this.dni,
+    });
+
+    SugerenciaClass sugerencia;
+    int dni;
+
+    factory Sugerencia.fromJson(Map<String, dynamic> json) => Sugerencia(
+        sugerencia: SugerenciaClass.fromJson(json["sugerencia"]),
+        dni: json["dni"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "sugerencia": sugerencia.toJson(),
+        "dni": dni,
+    };
 }
 
 class SugerenciaClass {
-  String pregunta;
-  List<String> respuestas;
-  int respuestaCorrecta;
-  bool unirConFlechas;
-  bool verdaderoFalso;
-  String imagen;
-  String arma;
-  dynamic organismo;
-  dynamic curso;
-  dynamic materia;
+    SugerenciaClass({
+        this.pregunta,
+        this.respuestasCorrectas,
+        this.respuestaIncorrectas,
+        this.unirConFlechas,
+        this.verdaderoFalso,
+        this.imagen,
+        this.arma,
+        this.organismo,
+        this.curso,
+        this.materia,
+    });
 
-  SugerenciaClass({
-    this.pregunta,
-    this.respuestas,
-    this.respuestaCorrecta,
-    this.unirConFlechas,
-    this.verdaderoFalso,
-    this.imagen,
-    this.arma,
-    this.organismo,
-    this.curso,
-    this.materia,
-  });
+    String pregunta;
+    List<String> respuestasCorrectas;
+    List<String> respuestaIncorrectas;
+    bool unirConFlechas;
+    bool verdaderoFalso;
+    String imagen;
+    String arma;
+    dynamic organismo;
+    dynamic curso;
+    dynamic materia;
 
-  factory SugerenciaClass.fromSugerenciaPage(Map<String,dynamic> json){
-    return SugerenciaClass(
-      pregunta          : json['pregunta,'],
-      respuestas        : json['respuestas,'].cast<String>(),
-      respuestaCorrecta : json['respuestaCorrecta,'],
-      unirConFlechas    : json['unirConFlechas,'],
-      verdaderoFalso    : json['verdaderoFalso,'],
-      imagen            : json['imagen,'],
-      arma              : json['arma,'],
-      organismo         : json['organismo,'],
-      curso             : json['curso,'],
-      materia           : json['materia,'],      
+    factory SugerenciaClass.fromJson(Map<String, dynamic> json) => SugerenciaClass(
+        pregunta: json["pregunta"],
+        respuestasCorrectas: List<String>.from(json["respuestasCorrectas"].map((x) => x)),
+        respuestaIncorrectas: List<String>.from(json["respuestaIncorrectas"].map((x) => x)),
+        unirConFlechas: json["unirConFlechas"],
+        verdaderoFalso: json["verdaderoFalso"],
+        imagen: json["imagen"],
+        arma: json["arma"],
+        organismo: json["organismo"],
+        curso: json["curso"],
+        materia: json["materia"],
     );
-  }
+
+    Map<String, dynamic> toJson() => {
+        "pregunta": pregunta,
+        "respuestasCorrectas": List<dynamic>.from(respuestasCorrectas.map((x) => x)),
+        "respuestaIncorrectas": List<dynamic>.from(respuestaIncorrectas.map((x) => x)),
+        "unirConFlechas": unirConFlechas,
+        "verdaderoFalso": verdaderoFalso,
+        "imagen": imagen,
+        "arma": arma,
+        "organismo": organismo,
+        "curso": curso,
+        "materia": materia,
+    };
 }
 /*
 
@@ -54,14 +81,18 @@ class SugerenciaClass {
     "sugerencia":
       {
         "pregunta":"¿que es esto?",
-        "respuestas":
+        "respuestasCorrectas":
           [
-            "una lata",
+            "vidrio",
             "una botella",
-            "un vaso",
-            "una copa"
           ],
-        "respuestaCorrecta": 1,
+        "respuestaIncorrectas":
+          [
+            "balde",
+            "zapato",
+            "lata",
+            "chapa",
+          ],
 		    "unirConFlechas": false,
 		    "verdaderoFalso": false,
 		    "imagen":"/9j/4QGWRXhpZgAATU0AKgAAAAgABwEAAAMAAAABA4QAAAEQAAIAAAAKAAAAYgEBAAMAAAABA",
