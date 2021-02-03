@@ -18,7 +18,7 @@ class Camara{
           compressFormat: ImageCompressFormat.jpg,
           androidUiSettings: AndroidUiSettings(
             toolbarColor: Colors.blue,
-            toolbarTitle: "Recortar magen",
+            toolbarTitle: "Recortar imagen",
             backgroundColor: Colors.white,
           )
       );

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
@@ -21,6 +23,7 @@ class NewMatchPage extends StatefulWidget {
 }
 
 class _NewMatchPageState extends State<NewMatchPage> with SingleTickerProviderStateMixin {
+  final player = BackgroundMusic.backgroundAudioPlayer;
   bool _isLoading = false;
   bool _modoClasico = true;
   bool _modoDuelo = true;
@@ -57,6 +60,7 @@ void dispose() {
         var route = new MaterialPageRoute(
             builder: (context) => QuestionPage(questions: preguntas, n: 0));
         Navigator.pushReplacement(context, route);
+        await player.setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
         //bloc.backgroundMusicSink("Art_of_Silence.mp3");
       }
     }
@@ -133,6 +137,7 @@ void dispose() {
               )),
             ),
             onPressed: () {
+
               setState(() {
                 _isLoading = true;
               });

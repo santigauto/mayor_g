@@ -2,8 +2,10 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mayor_g/src/models/background_music.dart';
 
 //MODELOS
 import 'package:mayor_g/src/models/question_model.dart';
@@ -27,6 +29,7 @@ class _QuestionPageState extends State<QuestionPage>
     with TickerProviderStateMixin {
 //--------------- DECLARO VARIABLES UTILES DE LA PAGINA ------------------
 
+  final player = BackgroundMusic.backgroundAudioPlayer;
   AnimationController controller; // CONTROLADOR DEL TEMPORIZADOR
   bool aux = false; // BANDERA DEL CONTROLADOR QUE ME PERMITE GENERAR UN POP EXTRA EN EL CASO DE QUE UN ALERTA NO SE CIERRE CUANDO SE ACABE EL TIEMPO
   ImageProvider imagen; // CONTENDRÁ LA IMAGEN DE LA PREGUNTA
@@ -216,8 +219,9 @@ class _QuestionPageState extends State<QuestionPage>
         content: Text('¡Perderas los puntos de esta pregunta!',textAlign: TextAlign.left,),
         actions: <Widget>[
           FlatButton(
-              onPressed: () {
+              onPressed: () async{
                 Navigator.pop(context, true);
+                await player.setAsset('assets/audios/Background_Music.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
                 aux = false;
               },
               child: Text('Salir')),

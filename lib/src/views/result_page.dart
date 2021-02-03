@@ -5,6 +5,8 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
@@ -37,6 +39,7 @@ class ResultPage extends StatelessWidget {
     preguntasRespondidas = new List();
   }
 
+  final player = BackgroundMusic.backgroundAudioPlayer;
   final Map mapa = ModalRoute.of(context).settings.arguments;
   bool resultado = mapa['resultado'];
   int n = mapa['n'] + 1;
@@ -82,8 +85,9 @@ class ResultPage extends StatelessWidget {
       title: Text('¿Quieres realmente abandonar la partida?'),
       actions: <Widget>[
         FlatButton(
-            onPressed: () {
+            onPressed: () async{
               Navigator.pop(context, true);
+              
             },
             child: Text('Salir')),
         FlatButton(
@@ -102,8 +106,9 @@ class ResultPage extends StatelessWidget {
         title: Text('¿Realmente quiere abandonar la partida?'),
         actions: <Widget>[
           FlatButton(
-              onPressed: () {
+              onPressed: () async{
                 Navigator.pushReplacementNamed(context, '/');
+                await player.setAsset('assets/audios/Background_Music.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
               },
               child: Text('Salir')),
           FlatButton(
