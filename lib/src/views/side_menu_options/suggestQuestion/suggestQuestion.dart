@@ -1,15 +1,19 @@
+//TODO: fijar el esquema de sugerencias a los inputfields para pasar al post
+
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/suggest_model.dart';
 
 
 import 'package:mayor_g/src/services/commons/camara.dart';
 
-import 'package:mayor_g/src/widgets/background_widget.dart';
-
 import 'package:mayor_g/src/models/question_model.dart';
+
+
 import 'package:mayor_g/src/widgets/myInput.dart';
+import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
 class SuggestQuestionPage extends StatefulWidget {
@@ -27,7 +31,9 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   int groupValue = 0;
   Size size;
 
+  TextEditingController textPreguntaController;
   PreguntaNueva _pregunta = new PreguntaNueva();
+
   List<String> _correctas = ['','','','',''];
   List<String> _incorrectas = ['','','','',''];
   bool aux = true;
@@ -143,14 +149,8 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                     state: (currentStep == 1 || aux ) ? StepState.indexed  : ((1 == currentError[1])? StepState.error : StepState.complete ),
                     isActive: currentStep == 1,
                     title: (currentStep == 1) ?  _titulo('Pregunta o Encabezado'):  Container(), 
-                    content: Column( children:
-                      [_createQuestion(),
-                      _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() : Image.memory(
-                        base64Decode(_pregunta.imagen), fit: BoxFit.cover,
-                      ),
-                      SizedBox(height: 25)
-                      ]
-                  )),
+                    content: _createQuestion(),
+                  ),
                   Step(
                     state: (currentStep == 2 || aux ) ? StepState.indexed  : ((2 == currentError[2])? StepState.error : StepState.complete ),
                     title: (currentStep == 2)?_titulo('Respuestas correctas'):Container(), content: _createCorrects(_correctas),isActive: currentStep == 2,),
@@ -160,6 +160,23 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
               ]),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  _imagenEncabezado(){
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Container(
+            width: size.width * 0.5,
+            child: Image.memory(
+              base64Decode(_pregunta.imagen), fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
@@ -198,6 +215,7 @@ _titulo(String text){
     return Column(
       children: [
         Container(
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: Colors.white.withOpacity(0.6),
@@ -208,9 +226,14 @@ _titulo(String text){
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  controller: textPreguntaController,
+                  onChanged: (text){
+                    _pregunta.pregunta = text;
+                  },
+                  initialValue: _pregunta.pregunta,
                   maxLength: 250,
                   validator: (String text) {
-                    if (text.isEmpty){
+                    if (textPreguntaController.text.isEmpty){
                       setState(() {
                         currentError[0] = 0;
                       });
@@ -229,18 +252,31 @@ _titulo(String text){
                   ),
                 ),
               ),
-              Text('¿Desea agregar imagen?',style: TextStyle(color:Theme.of(context).primaryColor),),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical:8.0),
-                child: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.white,
-                        splashColor: Colors.grey,
+                child: _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Text('¿Desea agregar imagen?',style: TextStyle(color:Theme.of(context).primaryColor),):Container(),
+              ),
+              Stack(
+                children: [
+                  _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() : _imagenEncabezado(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: IconButton(
+                            icon: Icon(Icons.camera_alt),
+                            onPressed: uploadImage,
+                            color: Colors.white,
+                            splashColor: Colors.grey,
+                          ),
+                        ),
                       ),
-                ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -289,11 +325,11 @@ _titulo(String text){
                   color: Colors.white,
                   child: Center(
                     child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: uploadImage,
+                      color: Colors.grey,
+                      splashColor: Colors.grey,
+                    ),
                   )
                 ),
               ],
