@@ -35,7 +35,7 @@ class MyImage extends StatelessWidget {
       print(e.toString());
     }
     if(placeholder)
-      return Image(image: AssetImage('assets/images/perfil_placeholder.png'));
+      return Image(image: AssetImage('assets/soldier.png'));
     else
       return Container();
   }

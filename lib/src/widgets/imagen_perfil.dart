@@ -18,11 +18,17 @@ class ImagenPerfil extends StatelessWidget {
   }
 
 ImageProvider _imagen(photoData){
-  if(photoData == null || photoData == 'null' || photoData == ''){
+
+try{
+      if(photoData == null || photoData == 'null' || photoData == ''){
     return AssetImage('assets/soldier.png');
   }else return MemoryImage(
     base64Decode(photoData),
   );
-}
+    }catch (e){
+      print(e.toString());
+    }
+      return AssetImage('assets/soldier.png');
+  }
 
 }

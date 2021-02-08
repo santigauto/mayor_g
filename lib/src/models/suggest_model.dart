@@ -28,7 +28,7 @@ class SugerenciaClass {
     SugerenciaClass({
         this.pregunta,
         this.respuestasCorrectas,
-        this.respuestaIncorrectas,
+        this.respuestasIncorrectas,
         this.unirConFlechas,
         this.verdaderoFalso,
         this.imagen,
@@ -40,7 +40,7 @@ class SugerenciaClass {
 
     String pregunta;
     List<String> respuestasCorrectas;
-    List<String> respuestaIncorrectas;
+    List<String> respuestasIncorrectas;
     bool unirConFlechas;
     bool verdaderoFalso;
     String imagen;
@@ -52,7 +52,7 @@ class SugerenciaClass {
     factory SugerenciaClass.fromJson(Map<String, dynamic> json) => SugerenciaClass(
         pregunta: json["pregunta"],
         respuestasCorrectas: List<String>.from(json["respuestasCorrectas"].map((x) => x)),
-        respuestaIncorrectas: List<String>.from(json["respuestaIncorrectas"].map((x) => x)),
+        respuestasIncorrectas: List<String>.from(json["respuestaIncorrectas"].map((x) => x)),
         unirConFlechas: json["unirConFlechas"],
         verdaderoFalso: json["verdaderoFalso"],
         imagen: json["imagen"],
@@ -65,7 +65,7 @@ class SugerenciaClass {
     Map<String, dynamic> toJson() => {
         "pregunta": pregunta,
         "respuestasCorrectas": List<dynamic>.from(respuestasCorrectas.map((x) => x)),
-        "respuestaIncorrectas": List<dynamic>.from(respuestaIncorrectas.map((x) => x)),
+        "respuestaIncorrectas": List<dynamic>.from(respuestasIncorrectas.map((x) => x)),
         "unirConFlechas": unirConFlechas,
         "verdaderoFalso": verdaderoFalso,
         "imagen": imagen,

@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/suggest_model.dart';
 
 
 import 'package:mayor_g/src/services/commons/camara.dart';
-
-import 'package:mayor_g/src/models/question_model.dart';
 
 
 import 'package:mayor_g/src/widgets/myInput.dart';
@@ -24,7 +23,21 @@ class SuggestQuestionPage extends StatefulWidget {
 }
 
 class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
+
   final _formKey = GlobalKey<FormState>();
+  PreferenciasUsuario prefs = PreferenciasUsuario();
+  Sugerencia sugerencia = new Sugerencia(
+    sugerencia: SugerenciaClass(
+      pregunta: "",
+      imagen: "",
+      respuestasCorrectas: ["","","",""],
+      respuestasIncorrectas: ["","","",""],
+      unirConFlechas: false,
+      verdaderoFalso: false,
+    )
+  );
+  
+  var i = 0;
   bool _isLoading = false;
   TextStyle titleStyle;
   Camara camaraController = new Camara();
@@ -32,10 +45,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   Size size;
 
   TextEditingController textPreguntaController;
-  PreguntaNueva _pregunta = new PreguntaNueva();
 
-  List<String> _correctas = ['','','','',''];
-  List<String> _incorrectas = ['','','','',''];
   bool aux = true;
   int currentStep = 0;
   bool complete = false;
@@ -57,6 +67,29 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     }
   }
   setSelectedRadio(int val){
+    sugerencia = new Sugerencia(
+      sugerencia: SugerenciaClass(
+        pregunta: "",
+        imagen: "",
+        respuestasCorrectas: ["","","","",],
+        respuestasIncorrectas: ["","","","",],
+        unirConFlechas: false,
+        verdaderoFalso: false,
+      )
+    );
+    switch (val) {
+      case 2:
+        sugerencia.sugerencia.unirConFlechas = false;
+        sugerencia.sugerencia.verdaderoFalso = true;
+        break;
+      case 3:
+        sugerencia.sugerencia.unirConFlechas = true;
+        sugerencia.sugerencia.verdaderoFalso = false;
+        break;
+      default:
+        sugerencia.sugerencia.unirConFlechas = false;
+        sugerencia.sugerencia.verdaderoFalso = false;
+    }
     setState(() {
       groupValue = val;
     });
@@ -64,6 +97,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
 
   @override
   Widget build(BuildContext context) {
+    sugerencia.dni = prefs.dni;
     size = MediaQuery.of(context).size;
     titleStyle = Theme.of(context).textTheme.headline6;
     return Container(
@@ -153,10 +187,10 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                   ),
                   Step(
                     state: (currentStep == 2 || aux ) ? StepState.indexed  : ((2 == currentError[2])? StepState.error : StepState.complete ),
-                    title: (currentStep == 2)?_titulo('Respuestas correctas'):Container(), content: _createCorrects(_correctas),isActive: currentStep == 2,),
+                    title: (currentStep == 2)?_titulo('Respuestas correctas'):Container(), content: _createCorrects(sugerencia.sugerencia.respuestasCorrectas),isActive: currentStep == 2,),
                   Step(
                     state: (currentStep == 3 || aux ) ? StepState.indexed  : ((3 == currentError[3])? StepState.error : StepState.complete ),
-                    title: (currentStep == 3)?_titulo('Respuestas Incorrectas'):Container(), content: _createIncorrects(),isActive: currentStep == 3,)
+                    title: (currentStep == 3)?_titulo('Respuestas Incorrectas'):Container(), content: _createIncorrects(sugerencia.sugerencia.respuestasIncorrectas),isActive: currentStep == 3,)
               ]),
             ),
           ],
@@ -174,7 +208,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
           child: Container(
             width: size.width * 0.5,
             child: Image.memory(
-              base64Decode(_pregunta.imagen), fit: BoxFit.cover,
+              base64Decode(sugerencia.sugerencia.imagen), fit: BoxFit.cover,
             ),
           ),
         ),
@@ -190,7 +224,7 @@ _titulo(String text){
   );
 }
   uploadImage()async{
-    _pregunta.imagen = await camaraController.getImage();
+    sugerencia.sugerencia.imagen = await camaraController.getImage();
     setState((){});
   }
 
@@ -228,9 +262,9 @@ _titulo(String text){
                 child: TextFormField(
                   controller: textPreguntaController,
                   onChanged: (text){
-                    _pregunta.pregunta = text;
+                    sugerencia.sugerencia.pregunta = text;
                   },
-                  initialValue: _pregunta.pregunta,
+                  initialValue: sugerencia.sugerencia.pregunta,
                   maxLength: 250,
                   validator: (String text) {
                     if (textPreguntaController.text.isEmpty){
@@ -242,7 +276,7 @@ _titulo(String text){
                     setState(() {
                         currentError[0] = 3;
                       });
-                    this._pregunta.pregunta = text;
+                    this.sugerencia.sugerencia.pregunta = text;
                     return null;
                   },
                   style: TextStyle(fontSize: 18),
@@ -254,11 +288,11 @@ _titulo(String text){
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical:8.0),
-                child: _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Text('¿Desea agregar imagen?',style: TextStyle(color:Theme.of(context).primaryColor),):Container(),
+                child: sugerencia.sugerencia.imagen == null || sugerencia.sugerencia.imagen.isEmpty ? Text('¿Desea agregar imagen?',style: TextStyle(color:Theme.of(context).primaryColor),):Container(),
               ),
               Stack(
                 children: [
-                  _pregunta.imagen == null || _pregunta.imagen.isEmpty ? Container() : _imagenEncabezado(),
+                  sugerencia.sugerencia.imagen == null || sugerencia.sugerencia.imagen.isEmpty ? Container() : _imagenEncabezado(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -296,41 +330,53 @@ _titulo(String text){
               'Debe ingresar al menos 1', maxLines: 2,
               style: TextStyle(color: Colors.white),
             ),
-            Column(children:lista(this._correctas, 'correcta',1, true))
+            Column(children:lista(listaCorrectas, 'correcta',1, true))
           ],
         );
         break;
       case 1: //multiple choice con imagenes
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AutoSizeText(
+              '*Debe ingresar al menos 1', maxLines: 2,
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    width: size.width * 0.4,
+                    height: size.width * 0.4,
+                    color: Colors.white,
+                    child: Center(
+                      child: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: uploadImage,
+                          color: Colors.grey,
+                          splashColor: Colors.grey,
+                        ),
+                    )
+                  ),
                 ),
-                Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: uploadImage,
-                      color: Colors.grey,
-                      splashColor: Colors.grey,
-                    ),
-                  )
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    width: size.width * 0.4,
+                    height: size.width * 0.4,
+                    color: Colors.white,
+                    child: Center(
+                      child: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: uploadImage,
+                          color: Colors.grey,
+                          splashColor: Colors.grey,
+                        ),
+                    )
+                  ),
                 ),
               ],
             ),
@@ -338,40 +384,122 @@ _titulo(String text){
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    width: size.width * 0.4,
+                    height: size.width * 0.4,
+                    color: Colors.white,
+                    child: Center(
+                      child: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: uploadImage,
+                          color: Colors.grey,
+                          splashColor: Colors.grey,
+                        ),
+                    )
+                  ),
                 ),
-                Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    width: size.width * 0.4,
+                    height: size.width * 0.4,
+                    color: Colors.white,
+                    child: Center(
+                      child: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: uploadImage,
+                          color: Colors.grey,
+                          splashColor: Colors.grey,
+                        ),
+                    )
+                  ),
                 ),
               ],
             )
           ],
         );
+      case 2:
+        return Column(
+          children: [
+            RadioListTile(
+              title: Text("Verdadero"),
+              value: 0, 
+              groupValue: i, 
+              onChanged: (value){
+                setState(() => i = value);
+                sugerencia.sugerencia.respuestasCorrectas[0] = "true";
+              }),
+            RadioListTile(
+              title: Text("Falso"),
+              value: 1, 
+              groupValue: i, 
+              onChanged: (value){
+                setState(() => i = value);
+                sugerencia.sugerencia.respuestasCorrectas[0] = "false";
+              }
+              ),
+          ],
+        );
+      case 3:
+        return Column(children: _listaUnir(sugerencia.sugerencia.respuestasCorrectas, sugerencia.sugerencia.respuestasIncorrectas));
       default:
         return Container(child: Text('data'),width: 100,height: 100, color: Colors.blue,);
     }
     
+  }
+
+  List<Widget>_listaUnir(List listaRespuestas, listaRespuestasDos){
+    List<Widget> lista = new List<Widget>();
+    for (var i = 0; i < listaRespuestas.length; i++) {
+      lista.add(Row(
+        children: [
+          Expanded(
+            child: Material(
+                child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
+                  height: size.height*0.1,
+                  color: Colors.white.withOpacity(0.5),
+                  child: Center(
+                    child: TextField(
+                      maxLines: 2,
+                      maxLength: 35,
+                      decoration: InputDecoration.collapsed(hintText: null),
+                      onChanged:(value) => listaRespuestas[i] = value
+                    )
+                    ),
+                )
+              ),
+            ),
+          ),
+          Expanded(
+            child: Material(
+                child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
+                  height: size.height*0.1,
+                  color: Colors.white.withOpacity(0.5),
+                  child: Center(
+                    child: TextField(
+                      maxLines: 2,
+                      maxLength: 35,
+                      decoration: InputDecoration.collapsed(hintText: null),
+                      onChanged:(value) => listaRespuestas[i] = value
+                    )
+                    ),
+                )
+              ),
+            ),
+          ),
+        ],
+      ));
+    lista.add(SizedBox(height: 10,));
+    }
+    return lista;
   }
 
   List<Widget> lista( List listString, String label, int stepItem, bool isCorrect ){
@@ -400,7 +528,7 @@ _titulo(String text){
     return _lista;
   }
 
-  Widget _createIncorrects(){
+  Widget _createIncorrects(List listaIcorrectas){
     switch (groupValue) {
       case 0:
         return Column(
@@ -410,7 +538,7 @@ _titulo(String text){
               'Debe ingresar las 5. Estas deben ser alusivas a la pregunta',maxLines: 2,
               style: TextStyle(color: Colors.white),
             ),
-            Column(children:lista(_incorrectas, 'incorrecta',2, false))
+            Column(children:lista(listaIcorrectas, 'incorrecta',2, false))
           ],
         );
         break;
