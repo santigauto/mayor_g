@@ -257,15 +257,16 @@ _titulo(String text){
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              Container(
+                height: size.height * 0.2,
                 child: TextFormField(
                   controller: textPreguntaController,
                   onChanged: (text){
                     sugerencia.sugerencia.pregunta = text;
                   },
                   initialValue: sugerencia.sugerencia.pregunta,
-                  maxLength: 250,
+                  maxLength: 100,
+                  enabled: (sugerencia.sugerencia.pregunta.length <= 100),
                   validator: (String text) {
                     if (textPreguntaController.text.isEmpty){
                       setState(() {
@@ -474,6 +475,9 @@ _titulo(String text){
                 )
               ),
             ),
+          ),
+          Container(
+            child: Icon(Icons.arrow_forward,color: Colors.white,),
           ),
           Expanded(
             child: Material(

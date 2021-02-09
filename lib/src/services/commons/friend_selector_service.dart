@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,16 @@ import 'package:mayor_g/src/services/http_request_service.dart';
 
 
 class GetFriendsService{
+
+  StreamController _solicitudController = new StreamController();
+
+  Stream get streamSolicitudes => _solicitudController.stream;
+  Function get sinkSolicitudes => _solicitudController.sink.add;
+
+  void disposeStreams(){
+    _solicitudController.close();
+  }
+
 
   enviarSolicitud(BuildContext context,{@required int dni,@required String deviceId, @required int dniAmigo}) async{//devuelve true, es un post
   print('Enviar Solicitud');
@@ -44,6 +55,9 @@ class GetFriendsService{
     if(_decodedJson != null)_decodedJson.forEach((solicitud){
       solicitudes.add(Solicitud.fromJson(solicitud));
     });
+
+    sinkSolicitudes(solicitudes);
+
     return solicitudes;
   }
 
@@ -108,6 +122,8 @@ class GetFriendsService{
       var amigo = Solicitud.fromJson(per);
       if(amigo.fechaAprobado != null)_amigo.add(amigo);
     });
+
+    sinkSolicitudes(_amigo);
 
     return _amigo;
   }

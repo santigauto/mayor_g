@@ -8,6 +8,7 @@ import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 
+
 class BlocSolicitudes{
   StreamController<Solicitud> _controller = StreamController.broadcast();
 
@@ -26,68 +27,48 @@ class SolicitudesPendientesPage extends StatelessWidget {
     List<Solicitud> personas;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
-        children: [
-          BackgroundWidget(),
-          StreamBuilder<Object>(
-              stream: bloc.streamStream,
-              builder: (context, streamSnapshot) {
-                return Scaffold(
-                    body: Stack(children: <Widget>[
-                      BackgroundWidget(),
-                      FutureBuilder(
-                          future: GetFriendsService()
-                              .solicitudesPendientes(context, dni: prefs.dni, deviceId: prefs.deviceId),
-                          builder: (context, futureSnapshot) {
-                            if(futureSnapshot.hasData) personas = futureSnapshot.data;
-                            return (futureSnapshot.hasData)
-                                ? _listItem(context, futureSnapshot.data, bloc, Theme.of(context).primaryColor, size)
-                                : Center(child: CircularProgressIndicator());
-                          }),
-                    ]),
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.centerFloat,
-                    floatingActionButton: Container(
-                      width: size.width,
-                      height: 59,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          Positioned(
-                            right: 10,
-                            child: FloatingActionButton(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                child: Icon(Icons.search),
-                                onPressed: () async {
-                                  /* await GetFriendsService().sugerirPregunta(context,arma: 'General', organismo: 'General', verdaderoFalso: false,deviceId: prefs.deviceId,dni: prefs.dni,imagenPregunta: false,imagenRespuesta: false,nombreArchivoImagen: null,materia: null,curso: null,pregunta: '¿Que es esto?',
-                       respuestas: ["una lata","una botella","un vaso","una copa"],respuestaCorrecta: 1,unirConFlechas: false,
-                       imagen: null); */
-                                  //await GetFriendsService().registrarMilitar(context, dni: 41215183, password: 'asdasd', deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion, esMilitar: true);
-                                  //await GetFriendsService().registrarCivil(context,dni: 21796938, password: 'asdasd123123', deviceId: prefs.deviceId.toString(), deviceName: prefs.deviceName.toString(), deviceVersion: prefs.deviceVersion.toString(), nickname: 'Dieguito',mail: 'asd@gmail.com');
-                                  //await GetFriendsService().reportarFalla(context,dni: prefs.dni, deviceId: prefs.deviceId, descripcion: 'reporte', preguntaId: '05C7818D-617F-43C0-8A9F-AC20562EDCC1');
-                                  //await GetFriendsService().enviarAporte(dni: prefs.dni, deviceId: prefs.deviceId, texto: 'hola');
-                                  //await GetFriendsService().obtenerUsuarioDni(context, dni: 41215183, deviceId: prefs.deviceId,dniBusqueda: 41215183);
-                                  //print('ID ${prefs.deviceId} Name ${prefs.deviceName} Version${prefs.deviceVersion}');
-                                  //await GetFriendsService().generarUserDevice(context,dni: 41215183, deviceId: prefs.deviceId, deviceName: prefs.deviceName, deviceVersion: prefs.deviceVersion);
-                                  //await GetFriendsService().enviarSolicitud(dni: 34495248, dniAmigo: 41215183);
-                                  //await GetFriendsService().solicitudesPendientes(dni: 41215183);
-                                  //await GetFriendsService().rechazarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
-                                  //await GetFriendsService().aprobarSolicitud(idSolicitud: '777881a2-6a19-47f5-bb07-8c7d377b3133');
-                                  //await GetFriendsService().obtenerAmigos(context,dni: 41215183);
-                                  //await GetFriendsService().eliminarAmistad(dni: 41215183, dniAmigo: 34495248);
-                                  //await GetFriendsService().cambiarNick(dni: 41215183, deviceId: prefs.deviceId, nickname: 'Santigol');
-                                  showSearch(context: context, delegate: DataSearch(personas));
-                                  //await GetFriendsService().iniciarJuego(dni: prefs.dni, deviceId: prefs.deviceId);*
-                                }),
-                          ),
-                        ],
-                      ),
-                    ));
-              })
-        ],
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        width: size.width,
+        height: 59,
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              right: 10,
+              child: FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(Icons.search),
+                onPressed: () async {
+                  showSearch(context: context, delegate: DataSearch(personas));
+                }),
+            ),
+          ],
+        ),
       ),
+      body: Stack(children: <Widget>[
+        BackgroundWidget(),
+        StreamBuilder<Object>(
+          stream: bloc.streamStream,
+          builder: (context, snapshot) {
+            return FutureBuilder(
+              future: GetFriendsService()
+                  .solicitudesPendientes(context, dni: prefs.dni, deviceId: prefs.deviceId),
+              builder: (context, futureSnapshot) {
+                if(futureSnapshot.hasData) personas = futureSnapshot.data;
+                return (futureSnapshot.hasData)
+                  ? _listItem(context, futureSnapshot.data, bloc, Theme.of(context).primaryColor, size)
+                  : Center(child: CircularProgressIndicator());
+              });
+          }
+        ),
+      ]),
     );
   }
+
+
+
   Widget _listItem(BuildContext context,List data, bloc, Color color, Size size){
     return (data.length != 0)? ListView.builder(
       itemCount: data.length,
@@ -95,7 +76,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
         return _item(context,x, data, bloc, color, size);
       }): ListTile(title: Center(child: AutoSizeText("No hay solicitudes pendientes en este momento", maxLines: 1, style: TextStyle(color:Colors.white),)),);
   }
-  Widget _item(BuildContext context, int posicion, data, bloc, Color color, Size size){
+  Widget _item(BuildContext context, int posicion,List data, bloc, Color color, Size size){
     return Container(
       color: Colors.white.withOpacity(0.5),
       child: ListTile(
@@ -114,6 +95,8 @@ class SolicitudesPendientesPage extends StatelessWidget {
                 disabledTextColor: Colors.black,
                 onPressed: () {
                   GetFriendsService().aprobarSolicitud(context, idSolicitud: data[posicion].id, deviceId: prefs.deviceId,dni: prefs.dni);
+                  data.removeAt(posicion);
+                  bloc.streamSink(data[posicion].id);
                 },
                 child: Icon(Icons.thumb_up),
               ),
@@ -128,6 +111,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
                 disabledTextColor: Colors.black,
                 onPressed: () {
                   GetFriendsService().rechazarSolicitud(context, idSolicitud: data[posicion].id, dni: prefs.dni,deviceId: prefs.deviceId);
+                  data.removeAt(posicion);
                   bloc.streamSink(data[posicion].id);
                 },
                 child: Icon(Icons.thumb_down),
