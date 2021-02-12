@@ -61,7 +61,7 @@ void dispose() {
             builder: (context) => QuestionPage(questions: preguntas, n: 0));
         Navigator.pushReplacement(context, route);
         await player.setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
-        //bloc.backgroundMusicSink("Art_of_Silence.mp3");
+        //bloc.backgroundMusicSink("Art_of_Silence.mp3");-
       }
     }
   }

@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
               debugShowCheckedModeBanner: false,
               title: 'Mayor G Flutter',
               theme: ThemeData(
+                unselectedWidgetColor: Colors.white,
                 cursorColor: Colors.white38,
                 hintColor: Colors.white54,
                 primarySwatch: Colors.green,

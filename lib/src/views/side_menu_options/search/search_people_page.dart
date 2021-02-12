@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
-import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
+import 'package:mayor_g/src/services/friends/friend_selector_service.dart';
+import 'package:mayor_g/src/services/user/user_service.dart';
 import 'package:mayor_g/src/widgets/MyTextInput.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
@@ -169,12 +170,12 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
 
       List<Persona> gente = [];
       if(_dni != null){
-        Persona p = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
+        Persona p = await GetUserService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: _dni);
         print(p.toString());
         if(p!=null)gente.add(p);
       }
       else if(_apellido != null){
-        List<Persona> lp = await GetFriendsService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
+        List<Persona> lp = await GetUserService().obtenerUsuario(context, dni: prefs.dni, deviceId: prefs.deviceId, datos: _apellido);
         if(lp!=[])gente.addAll(lp);
       }
       setState(() {

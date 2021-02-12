@@ -1,38 +1,22 @@
-
-import 'dart:async';
+  
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/notificacion_model.dart';
-
 import 'package:mayor_g/src/models/persona_model.dart';
-import 'package:mayor_g/src/models/solicitudes_model.dart';
+
 import 'package:mayor_g/src/services/http_request_service.dart';
 
+class GetUserService{
 
-
-
-
-class GetFriendsService{
-
-  StreamController _solicitudController = new StreamController();
-
-  Stream get streamSolicitudes => _solicitudController.stream;
-  Function get sinkSolicitudes => _solicitudController.sink.add;
-
-  void disposeStreams(){
-    _solicitudController.close();
-  }
-
-
-  enviarSolicitud(BuildContext context,{@required int dni,@required String deviceId, @required int dniAmigo}) async{//devuelve true, es un post
-  print('Enviar Solicitud');
-  HttpService().getPost(context,apiRoute: 'api/Amigos/Enviar_Solicitud',queryParameters: {
-    'dni' : dni.toString(),
+  Future generarUserDevice(BuildContext context,{@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
+  print('Generar Device');
+  HttpService().getPost(context,apiRoute: 'api/Usuarios/Generar_Device',queryParameters: {
+    'dni': dni.toString(),
     'deviceId': deviceId,
-    'dniAmigo' : dniAmigo.toString()
-  });
-  }
+    'deviceName': deviceName,
+    'deviceVersion': deviceVersion
+  });}
 
   Future cambiarNick(BuildContext context,{@required int dni, @required String deviceId, @required nickname}) async{//devuelve true, es un post
     print('Cambiar Nickname');
@@ -43,24 +27,6 @@ class GetFriendsService{
     });
     return boolean;
   }
-
-  Future<List<Solicitud>> solicitudesPendientes(BuildContext context,{@required int dni, @required String deviceId}) async{ // devuelve una lista, es un get
-    print('solicitudesPedientes');
-    var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
-      'dni' : dni.toString(),
-      'deviceId' : deviceId
-    });
-    List<Solicitud> solicitudes = [];
-
-    if(_decodedJson != null)_decodedJson.forEach((solicitud){
-      solicitudes.add(Solicitud.fromJson(solicitud));
-    });
-
-    sinkSolicitudes(solicitudes);
-
-    return solicitudes;
-  }
-
 
   Future<Persona> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve usuario con dni coincidente
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
@@ -90,61 +56,6 @@ class GetFriendsService{
 
     return _personas;
   }
-
-  //POST Aprobar_Solicitud(string idSolicitud)
-  Future aprobarSolicitud(BuildContext context,{ @required int dni, @required String deviceId, @required String idSolicitud}) async{//devuelve true, es un post
-  print('Aprobar Solicitud');
-  HttpService().getPost(context,apiRoute: 'api/Amigos/Aprobar_Solicitud',queryParameters: {
-    'dni': dni.toString(),
-    'deviceId': deviceId,
-    'idSolicitud' : idSolicitud
-  });
-  }
-
-  Future rechazarSolicitud(BuildContext context,{@required int dni, @required String deviceId,@required String idSolicitud}) async{//devuelve true, es un post
-  print('Rechazar Solicitud');
-  HttpService().getPost(context,apiRoute: 'api/Amigos/Rechazar_Solicitud',queryParameters: {
-    'dni': dni.toString(),
-    'deviceId': deviceId,
-    'idSolicitud' : idSolicitud
-  });
-  }
-
-  Future obtenerAmigos(BuildContext context,{@required int dni, @required String deviceId})async{
-    print('obtener Amigos');
-    var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Amigos/Listado_Amigos',queryParameters: {
-      'deviceId': deviceId,
-      'dni' : dni.toString()
-    });
-    List<Solicitud> _amigo = [];
-
-    if(_decodedJson.isNotEmpty)_decodedJson.forEach((per){
-      var amigo = Solicitud.fromJson(per);
-      if(amigo.fechaAprobado != null)_amigo.add(amigo);
-    });
-
-    sinkSolicitudes(_amigo);
-
-    return _amigo;
-  }
-
-  Future eliminarAmistad(BuildContext context,{@required int dni, @required int dniAmigo, @required String deviceId})async{
-    print('Eliminar amigo');
-    HttpService().getPost(context,apiRoute: 'api/Amigos/Eliminar_Amigo',queryParameters: {
-      'dni': dni.toString(),
-      'deviceId': deviceId,
-      'dniAmigo' : dniAmigo.toString()
-    });
-  }
-
-  Future generarUserDevice(BuildContext context,{@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
-  print('Generar Device');
-  HttpService().getPost(context,apiRoute: 'api/Usuarios/Generar_Device',queryParameters: {
-    'dni': dni.toString(),
-    'deviceId': deviceId,
-    'deviceName': deviceName,
-    'deviceVersion': deviceVersion
-  });}
 
   Future iniciarJuego(BuildContext context,{@required int dni,@required String deviceId}) async{//devuelve true, es un post
   print('Iniciar Juego');
@@ -197,12 +108,7 @@ class GetFriendsService{
     return _decodedJson;
     
   }
-
-
-
-
-
-
+  
 Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pregunta,List<String> respuestas,
                           int respuestaCorrecta, bool unirConFlechas, bool verdaderoFalso, String arma,String organismo,String curso,
                           String materia, bool imagenPregunta, bool imagenRespuesta, String nombreArchivoImagen, String imagen}) async{
@@ -227,3 +133,6 @@ Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pre
 }
 
 }
+
+
+

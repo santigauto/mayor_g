@@ -30,8 +30,8 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     sugerencia: SugerenciaClass(
       pregunta: "",
       imagen: "",
-      respuestasCorrectas: ["","","",""],
-      respuestasIncorrectas: ["","","",""],
+      respuestaCorrecta: 0,
+      respuestas: ["","","",""],
       unirConFlechas: false,
       verdaderoFalso: false,
     )
@@ -49,7 +49,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   bool aux = true;
   int currentStep = 0;
   bool complete = false;
-  List<int> currentError = [10,10,10,10];
+  List<int> currentError = [10,10];
 
   next(){
     goTo(currentStep + 1);
@@ -57,7 +57,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   goTo(int step){
     setState(() {
       currentStep = step;
-      if (currentStep == 3) complete = true;
+      if (currentStep == 1) complete = true;
       else complete = false;
     });
   }
@@ -71,8 +71,8 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
       sugerencia: SugerenciaClass(
         pregunta: "",
         imagen: "",
-        respuestasCorrectas: ["","","","",],
-        respuestasIncorrectas: ["","","","",],
+        respuestaCorrecta: 0,
+        respuestas: ["","","",""],
         unirConFlechas: false,
         verdaderoFalso: false,
       )
@@ -94,20 +94,32 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
       groupValue = val;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
+
+    _back(){
+    if(currentStep != 0){
+      cancel();
+    }
+    else Navigator.pop(context);
+  }
+
     sugerencia.dni = prefs.dni;
     size = MediaQuery.of(context).size;
     titleStyle = Theme.of(context).textTheme.headline6;
-    return Container(
-      child: Scaffold(
-        appBar: AppBar(title: Text('Sugerir pregunta')),
-        body: Stack(
-          children: <Widget>[
-            BackgroundWidget(),
-            _suggestQuestionPageBody(),
-          ],
+    return WillPopScope(
+      onWillPop: _back,
+      child: Container(
+        child: Scaffold(
+          appBar: AppBar(title: Text('Sugerir pregunta')),
+          body: Stack(
+            children: <Widget>[
+              BackgroundWidget(),
+              _suggestQuestionPageBody(),
+            ],
+          ),
         ),
       ),
     );
@@ -134,20 +146,6 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Row(
                       children: [
-                        currentStep != 0 ?Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              width: 200,
-                              color: Theme.of(context).primaryColor,
-                                child: ListTile(
-                                  title: AutoSizeText("Atrás", maxLines: 1,style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                                  onTap: onStepCancel,
-                              ),
-                            ),
-                          ),
-                        ): Container(),
-                        SizedBox(width: 10,),
                         Expanded(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
@@ -174,7 +172,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 type: StepperType.horizontal,
                 steps: [
                   Step(
-                    state: (0 == currentError[0]) ? StepState.error : (currentStep == 0 || aux ) ? StepState.indexed  :  StepState.complete ,
+                    state: (currentStep == 0) ? StepState.indexed  :  StepState.complete ,
                     isActive: currentStep == 0,
                     title: (currentStep == 0) ? _titulo('Tipo de pregunta'): Container(), 
                     content: Column(children:_listaRadio(['Multiple Choice','Multiple Choice con Imagenes','Verdadero o Falso','Unir con Flechas']),),
@@ -182,15 +180,14 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                   Step(
                     state: (currentStep == 1 || aux ) ? StepState.indexed  : ((1 == currentError[1])? StepState.error : StepState.complete ),
                     isActive: currentStep == 1,
-                    title: (currentStep == 1) ?  _titulo('Pregunta o Encabezado'):  Container(), 
-                    content: _createQuestion(),
+                    title: (currentStep == 1) ?  _titulo('Fábrica'):  Container(), 
+                    content: Column(
+                      children: [
+                        _createQuestion(),
+                        _createAnswers(),
+                      ],
+                    ),
                   ),
-                  Step(
-                    state: (currentStep == 2 || aux ) ? StepState.indexed  : ((2 == currentError[2])? StepState.error : StepState.complete ),
-                    title: (currentStep == 2)?_titulo('Respuestas correctas'):Container(), content: _createCorrects(sugerencia.sugerencia.respuestasCorrectas),isActive: currentStep == 2,),
-                  Step(
-                    state: (currentStep == 3 || aux ) ? StepState.indexed  : ((3 == currentError[3])? StepState.error : StepState.complete ),
-                    title: (currentStep == 3)?_titulo('Respuestas Incorrectas'):Container(), content: _createIncorrects(sugerencia.sugerencia.respuestasIncorrectas),isActive: currentStep == 3,)
               ]),
             ),
           ],
@@ -266,13 +263,17 @@ _titulo(String text){
                   },
                   initialValue: sugerencia.sugerencia.pregunta,
                   maxLength: 100,
-                  enabled: (sugerencia.sugerencia.pregunta.length <= 100),
                   validator: (String text) {
-                    if (textPreguntaController.text.isEmpty){
+                    if (text.isEmpty || text == null){
                       setState(() {
                         currentError[0] = 0;
                       });
                       return 'Por favor completar el campo';
+                    } else if(text.length > 101){
+                      setState(() {
+                        currentError[0] = 0;
+                      });
+                      return 'Mucho texto';
                     }
                     setState(() {
                         currentError[0] = 3;
@@ -320,158 +321,203 @@ _titulo(String text){
     );
   }
 
-  Widget _createCorrects(List listaCorrectas){
-    
+  Widget _createAnswers(){
     switch (groupValue) {
       case 0:   //multiple choice
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            AutoSizeText(
-              'Debe ingresar al menos 1', maxLines: 2,
-              style: TextStyle(color: Colors.white),
-            ),
-            Column(children:lista(listaCorrectas, 'correcta',1, true))
-          ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical:15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              AutoSizeText(
+                'Debe ingresar al menos 1', maxLines: 2,
+                style: TextStyle(color: Colors.white),
+              ),
+              Column(children:lista('correcta',1, true))
+            ],
+          ),
         );
         break;
       case 1: //multiple choice con imagenes
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AutoSizeText(
-              '*Debe ingresar al menos 1', maxLines: 2,
-              style: TextStyle(color: Colors.white),
-            ),
-            SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: size.width * 0.4,
-                    height: size.width * 0.4,
-                    color: Colors.white,
-                    child: Center(
-                      child: IconButton(
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical:15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AutoSizeText(
+                '*Debe ingresar al menos 1', maxLines: 2,
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: size.width * 0.4,
+                      height: size.width * 0.4,
+                      color: Colors.white,
+                      child: Center(
+                        child: IconButton(
                           icon: Icon(Icons.camera_alt),
                           onPressed: uploadImage,
                           color: Colors.grey,
                           splashColor: Colors.grey,
                         ),
-                    )
+                      )
+                    ),
                   ),
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: size.width * 0.4,
-                    height: size.width * 0.4,
-                    color: Colors.white,
-                    child: Center(
-                      child: IconButton(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: size.width * 0.4,
+                      height: size.width * 0.4,
+                      color: Colors.white,
+                      child: Center(
+                        child: IconButton(
                           icon: Icon(Icons.camera_alt),
                           onPressed: uploadImage,
                           color: Colors.grey,
                           splashColor: Colors.grey,
                         ),
-                    )
+                      )
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 15,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: size.width * 0.4,
-                    height: size.width * 0.4,
-                    color: Colors.white,
-                    child: Center(
-                      child: IconButton(
+                ],
+              ),
+              SizedBox(height: 15,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: size.width * 0.4,
+                      height: size.width * 0.4,
+                      color: Colors.white,
+                      child: Center(
+                        child: IconButton(
                           icon: Icon(Icons.camera_alt),
                           onPressed: uploadImage,
                           color: Colors.grey,
                           splashColor: Colors.grey,
                         ),
-                    )
+                      )
+                    ),
                   ),
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: size.width * 0.4,
-                    height: size.width * 0.4,
-                    color: Colors.white,
-                    child: Center(
-                      child: IconButton(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: size.width * 0.4,
+                      height: size.width * 0.4,
+                      color: Colors.white,
+                      child: Center(
+                        child: IconButton(
                           icon: Icon(Icons.camera_alt),
                           onPressed: uploadImage,
                           color: Colors.grey,
                           splashColor: Colors.grey,
                         ),
-                    )
+                      )
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         );
       case 2:
-        return Column(
-          children: [
-            RadioListTile(
-              title: Text("Verdadero"),
-              value: 0, 
-              groupValue: i, 
-              onChanged: (value){
-                setState(() => i = value);
-                sugerencia.sugerencia.respuestasCorrectas[0] = "true";
-              }),
-            RadioListTile(
-              title: Text("Falso"),
-              value: 1, 
-              groupValue: i, 
-              onChanged: (value){
-                setState(() => i = value);
-                sugerencia.sugerencia.respuestasCorrectas[0] = "false";
-              }
+        sugerencia.sugerencia.respuestas = [""];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical:15.0),
+          child: Column(
+            children: [
+              RadioListTile(
+                value: 0, 
+                groupValue: i, 
+                onChanged: (value){
+                  setState(() => i = value);
+                  sugerencia.sugerencia.respuestas[0] = "true";
+                },
+                controlAffinity: ListTileControlAffinity.trailing,
+                title: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FlatButton(
+                  disabledColor: Theme.of(context).primaryColor.withOpacity(0.3),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: i == 0 ?(){} : null,
+                    child: Container(
+                      height: size.height * 0.1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(child: Text('Verdadero',style: TextStyle(color:Colors.white),)),
+                        ],
+                  ),
+                )),
               ),
-          ],
+              ),
+              RadioListTile(
+                value: 1, 
+                groupValue: i, 
+                onChanged: (value){
+                  setState(() => i = value);
+                  sugerencia.sugerencia.respuestas[0] = "false";
+                },
+                controlAffinity: ListTileControlAffinity.trailing,
+                title: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FlatButton(
+                  disabledColor: Colors.red.withOpacity(0.3),
+                  color: Colors.red,
+                  onPressed: i == 1 ?(){} : null,
+                    child: Container(
+                      height: size.height * 0.1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(child: Text('Falso',style: TextStyle(color:Colors.white),)),
+                        ],
+                  ),
+                )),
+              ),
+              ),
+            ],
+          ),
         );
       case 3:
-        return Column(children: _listaUnir(sugerencia.sugerencia.respuestasCorrectas, sugerencia.sugerencia.respuestasIncorrectas));
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical:15.0),
+          child: Column(children: _listaUnir(sugerencia.sugerencia.respuestas)),
+        );
       default:
         return Container(child: Text('data'),width: 100,height: 100, color: Colors.blue,);
     }
     
   }
 
-  List<Widget>_listaUnir(List listaRespuestas, listaRespuestasDos){
+  List<Widget>_listaUnir(listaRespuestas){
     List<Widget> lista = new List<Widget>();
-    for (var i = 0; i < listaRespuestas.length; i++) {
+    for (var i = 0; i < 4; i++) {
       lista.add(Row(
         children: [
           Expanded(
             child: Material(
-                child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
-                  height: size.height*0.1,
-                  color: Colors.white.withOpacity(0.5),
-                  child: Center(
-                    child: TextField(
-                      maxLines: 2,
-                      maxLength: 35,
-                      decoration: InputDecoration.collapsed(hintText: null),
-                      onChanged:(value) => listaRespuestas[i] = value
-                    )
-                    ),
+              child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
+                height: size.height*0.1,
+                color: Colors.white.withOpacity(0.5),
+                child: Center(
+                  child: TextField(
+                    maxLines: 2,
+                    maxLength: 35,
+                    decoration: InputDecoration.collapsed(hintText: null),
+                    onChanged:(value) => listaRespuestas[i] = value
+                  )
+                  ),
                 )
               ),
             ),
@@ -506,15 +552,15 @@ _titulo(String text){
     return lista;
   }
 
-  List<Widget> lista( List listString, String label, int stepItem, bool isCorrect ){
+  List<Widget> lista( String label, int stepItem, bool isCorrect ){
     List<Widget> _lista =[];
-    for (var i = 0; i < listString.length; i++) {
+    for (var i = 0; i < 4; i++) {
       _lista.add(SizedBox(height:12),);
       _lista.add(
         MyInput(
           label: '${i+1}° $label',
           validator: (String text) {
-            if(text.isEmpty || (isCorrect && listString[0] == '')){
+            if(text.isEmpty || (isCorrect)){
               setState(() {
                 currentError[stepItem] = stepItem;
               });
@@ -523,101 +569,13 @@ _titulo(String text){
             setState(() {
                 currentError[stepItem] = 10;
               });
-            listString[i] = text;
+            sugerencia.sugerencia.respuestas[i] = text;
             return null;
           },
         ),
       );
     }
     return _lista;
-  }
-
-  Widget _createIncorrects(List listaIcorrectas){
-    switch (groupValue) {
-      case 0:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            AutoSizeText(
-              'Debe ingresar las 5. Estas deben ser alusivas a la pregunta',maxLines: 2,
-              style: TextStyle(color: Colors.white),
-            ),
-            Column(children:lista(listaIcorrectas, 'incorrecta',2, false))
-          ],
-        );
-        break;
-      case 1: 
-      return Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
-                ),
-                Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
-                ),
-            ],
-          ),
-          SizedBox(height: 15,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
-                ),
-                Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
-                  color: Colors.white,
-                  child: Center(
-                    child: IconButton(
-                        icon: Icon(Icons.camera_alt),
-                        onPressed: uploadImage,
-                        color: Colors.grey,
-                        splashColor: Colors.grey,
-                      ),
-                  )
-                ),
-            ],
-          )
-        ],
-      );
-      break;
-      default: return Container();
-    }
-    
   }
 
   _submit() async {

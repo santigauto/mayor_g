@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
 
 
 class DataSearch extends SearchDelegate{
 
-List<Solicitud> gente;
+List gente;
 
 DataSearch(this.gente);
 

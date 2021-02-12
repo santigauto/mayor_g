@@ -12,7 +12,7 @@ class HttpService{
 
   Future getGet(context,{@required String apiRoute, Map<String, String> queryParameters}) async{
     final __url = Uri.https(_url, apiRoute, queryParameters);
-    final resp = await http.get(__url);
+    final resp = await http.get(__url,headers: Config.HttpHeaders);
     dynamic result;
 
     print("HttpService/getGet:  " + resp.body);

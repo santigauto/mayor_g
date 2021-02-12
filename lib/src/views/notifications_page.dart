@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/notificacion_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
-import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
+import 'package:mayor_g/src/services/user/user_service.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
 
@@ -18,7 +18,7 @@ class NotificationsPage extends StatelessWidget {
         children: [
           BackgroundWidget(),
           FutureBuilder<List<Notificacion>>(
-            future: GetFriendsService().obtenerNotificaciones(context, dni: prefs.dni, deviceId: prefs.deviceId),
+            future: GetUserService().obtenerNotificaciones(context, dni: prefs.dni, deviceId: prefs.deviceId),
             builder: (context, AsyncSnapshot<List<Notificacion>> snapshot) {
               if(snapshot.hasData){
                 return ListView.builder(

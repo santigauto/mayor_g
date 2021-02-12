@@ -11,14 +11,13 @@ import 'package:mayor_g/src/models/auth/user.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/http_request_service.dart';
+import 'package:mayor_g/src/services/user/user_service.dart';
 
 import 'package:meta/meta.dart' show required;
 import 'package:http/http.dart' as http;
 
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/widgets/alert_widget.dart';
-
-import 'commons/friend_selector_service.dart';
 
 
 class AuthService {
@@ -74,13 +73,13 @@ class AuthService {
             apellido: prefs.apellido,
             nombre: prefs.nombre, 
             email:prefs.email
-          ).then((value) async => await GetFriendsService().generarUserDevice(context, 
+          ).then((value) async => await GetUserService().generarUserDevice(context, 
             dni: prefs.dni, 
             deviceId: prefs.deviceId, 
             deviceName: prefs.deviceName, 
             deviceVersion: prefs.deviceVersion
           ).then((value) async{
-            Persona _persona = await GetFriendsService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: prefs.dni);
+            Persona _persona = await GetUserService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: prefs.dni);
             prefs.nickname = _persona.nickname;
           }).then((value) => Navigator.pushReplacementNamed(context, 'menu')));
         } 

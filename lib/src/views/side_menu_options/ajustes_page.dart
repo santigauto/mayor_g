@@ -2,12 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+
 import 'package:mayor_g/src/services/commons/camara.dart';
-import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
-import 'package:mayor_g/src/services/filterServices/arma_service.dart';
-import 'package:mayor_g/src/services/filterServices/curso_service.dart';
-import 'package:mayor_g/src/services/filterServices/materia_service.dart';
-import 'package:mayor_g/src/services/filterServices/organismo_service.dart';
+import 'package:mayor_g/src/services/filters/arma_service.dart';
+import 'package:mayor_g/src/services/filters/curso_service.dart';
+import 'package:mayor_g/src/services/filters/materia_service.dart';
+import 'package:mayor_g/src/services/filters/organismo_service.dart';
+import 'package:mayor_g/src/services/user/user_service.dart';
+import 'package:mayor_g/src/widgets/alert_opciones_widget.dart';
+
 import 'package:mayor_g/src/widgets/background_widget.dart';
 import 'package:mayor_g/src/widgets/imagen_perfil.dart';
 import 'package:mayor_g/src/widgets/input_text_widget.dart';
@@ -58,7 +61,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
         });
 
         if (nickNuevo.isNotEmpty)
-          await GetFriendsService()
+          await GetUserService()
               .cambiarNick(context,
                   dni: prefs.dni, deviceId: prefs.deviceId, nickname: nickNuevo)
               .then((value) {
@@ -68,7 +71,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
           imagen = imagen.replaceFirst('data:image/jpeg;base64,', '');
           if(imagen.length < 2){imagen = '';}
         bool validado = false;
-          validado = await GetFriendsService().cambiarFoto(context,
+          validado = await GetUserService().cambiarFoto(context,
               dni: prefs.dni, deviceId: prefs.deviceId, imagen: imagen).then((value){ if(validado){
                 prefs.foto = imagen;
               }
@@ -95,8 +98,10 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
         children: <Widget>[
           BackgroundWidget(),
           Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.symmetric(horizontal:5.0),
             child: ListView(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
               children: <Widget>[
                 SafeArea(child: Container()),
                 //NICKNAME
@@ -172,7 +177,6 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                     ),
                   ],
                 ):Container(),
-
                 Divider(color: Colors.white.withOpacity(0.2)),
                 //FILTROS
                 ExpansionTile(
@@ -265,7 +269,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                 Divider(color: Colors.white.withOpacity(0.2)),
 
                 Container(
-                  height: 300,
+                  height: 50,
                 )
               ],
             ),
@@ -274,67 +278,78 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: Container()),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: size.width * 0.4,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          color: Theme.of(context).primaryColor,
-                          child: ListTile(
-                            title: AutoSizeText(
-                              "Restablecer",
-                              maxLines: 1,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  .copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 1.0,
+                      blurRadius: 0.9
+                    )
+                  ]
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: size.width * 0.4,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            color: Theme.of(context).primaryColor,
+                            child: ListTile(
+                              title: AutoSizeText(
+                                "Restablecer",
+                                maxLines: 1,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5
+                                    .copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                              onTap: () {
+                                prefs.arma = auxArma;
+                                prefs.materia = auxMateria;
+                                prefs.colegio = auxColegio;
+                                prefs.curso = auxCurso;
+                                Navigator.pop(context);
+                              },
                             ),
-                            onTap: () {
-                              prefs.arma = auxArma;
-                              prefs.materia = auxMateria;
-                              prefs.colegio = auxColegio;
-                              prefs.curso = auxCurso;
-                              Navigator.pop(context);
-                            },
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: size.width * 0.4,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          color: Theme.of(context).primaryColor,
-                          child: ListTile(
-                            title: AutoSizeText(
-                              "Guardar",
-                              maxLines: 1,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  .copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+                      Container(
+                        width: size.width * 0.4,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            color: Theme.of(context).primaryColor,
+                            child: ListTile(
+                              title: AutoSizeText(
+                                "Guardar",
+                                maxLines: 1,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5
+                                    .copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                              onTap: () async{
+                                _submit();
+                                Navigator.pop(context);
+                              },
                             ),
-                            onTap: () async{
-                              _submit();
-                              Navigator.pop(context);
-                            },
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
@@ -412,7 +427,6 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
             });
           },
         ),
-        Divider(color: Colors.white.withOpacity(0.2)),
       ],
     );
   }
@@ -481,14 +495,18 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                                   ),
                                 )),
                               )
-                            : CircularProgressIndicator()
+                            : CircularProgressIndicator(),
+                        IconButton(
+                          icon: Icon(Icons.list_rounded,color: Colors.white,), 
+                          onPressed: () => showDialog(context: context, child: _showOpcionesDialog(_getItems(snapshot.data, hint, detalle), title))
+                        )
                       ],
                     ),
                   ),
                 ),
-                ExpansionTile(
-                    title: Container(),
-                    childrenPadding:
+                
+
+                    /* childrenPadding:
                         EdgeInsets.symmetric(vertical: 7.0, horizontal: 25.0),
                     children: [
                       (prefs.arma == 'General' &&
@@ -509,20 +527,27 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                                 children:
                                     getItems(snapshot.data, hint, detalle),
                               ),
-                            )
-                    ]),
+                            )] */
               ],
             ),
           );
         });
   }
 
-  List<Widget> getItems(data, String hint, int detalle) {
+
+  Widget _showOpcionesDialog(List<Widget> listaOpciones, String title){
+    return AlertaOpcionesWidget(
+      title: title,
+      children: listaOpciones,
+    );
+  }
+  List<Widget> _getItems(data, String hint, int detalle) {
     List<Widget> lista = new List();
 
     if (data.isNotEmpty) {
       data.forEach((item) {
         lista.add(ListTile(
+          contentPadding: EdgeInsets.all(0),
             onTap: () {
               switch (detalle) {
                 case 0:
@@ -547,20 +572,16 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
               setState(() {});
             },
             title: Center(
-                child: Container(
-                    color: Colors.white,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: AutoSizeText(
-                      item.nombre,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize:
-                              Theme.of(context).textTheme.headline6.fontSize),
-                      textAlign: TextAlign.center,
-                    )))));
-        lista.add(Divider());
+                child: AutoSizeText(
+                  item.nombre,
+                  maxLines: 2,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize:
+                          Theme.of(context).textTheme.headline6.fontSize),
+                  textAlign: TextAlign.center,
+                ))));
+        lista.add(Divider(height: 1,));
       });
     }
     return lista;
