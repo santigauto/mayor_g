@@ -7,7 +7,6 @@ class AlertaOpcionesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return AlertDialog(
     titlePadding: EdgeInsets.all(0),
     contentPadding: EdgeInsets.all(0),

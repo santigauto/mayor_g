@@ -16,8 +16,9 @@ class DraggableAnimatedModal extends StatefulWidget {
   /// [dragHandler] is [true] by default.
   final bool dragHandler;
   ///This [DraggableAnimatedModal] was thought to being used as the content of a [showModalBottomSheet]
+  final Color color;
 ///to obtain the full modal dragging manipulation. However, it also can be implemented as an independent widget.
-  DraggableAnimatedModal({this.trailing, this.leading, this.title, this.modalBody, this.dragHandler});
+  DraggableAnimatedModal({this.trailing, this.leading, this.title, this.modalBody, this.dragHandler, this.color});
 
   @override
   _DraggableAnimatedModalState createState() => _DraggableAnimatedModalState();
@@ -31,6 +32,9 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
   @override
   Widget build(BuildContext context) {
     bool auxDragHandler = true;
+    Color auxColor;
+    if(widget.color == null) auxColor = Theme.of(context).primaryColor;
+    else auxColor = widget.color;
     if(widget.dragHandler == false) auxDragHandler = false;
     print(auxDragHandler);
     double initialPercentage = 0.4;
@@ -61,7 +65,7 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color:Theme.of(context).primaryColor,
+                    color:auxColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(auxBorder),
                       topRight: Radius.circular(auxBorder),)

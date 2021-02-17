@@ -29,7 +29,6 @@ class _NewMatchPageState extends State<NewMatchPage> with SingleTickerProviderSt
   bool _modoDuelo = true;
   bool _selecOponente = true;
   bool _selecAlAzar = true;
-  bool _canPlay = false;
   ListaPreguntasNuevas preguntas;
   AnimationController _animationController;
   Animation tamanio;
@@ -49,28 +48,33 @@ void dispose() {
   Modal modal = new Modal();
 
   void _playAction() async {
-    if (_canPlay == true) {
-      preguntas =
-          await QuestionServicePrueba().getNewQuestions(context, cantidad: 10);
-      if (preguntas == null) {
-        setState(() {
-          _isLoading = false;
-        });
-      } else {
-        var route = new MaterialPageRoute(
-            builder: (context) => QuestionPage(questions: preguntas, n: 0));
-        Navigator.pushReplacement(context, route);
-        await player.setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
-        //bloc.backgroundMusicSink("Art_of_Silence.mp3");-
-      }
+
+    Navigator.pop(context);
+
+    preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 10);
+
+    if (preguntas == null) {
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+
+      var route = new MaterialPageRoute(
+          builder: (context) => QuestionPage(questions: preguntas, n: 0));
+      Navigator.pushReplacement(context, route);
+      await player.setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+
     }
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     Color _noSeleccionado = Theme.of(context).primaryColor.withOpacity(0.2);
     Color _seleccionado = Theme.of(context).primaryColor;
+
     return Container(
       child: Scaffold(
         body: Stack(
@@ -80,10 +84,6 @@ void dispose() {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _initMatchButton(context),
-                  SizedBox(
-                    height: 20,
-                  ),
                   _modoDeJuego(_seleccionado, _noSeleccionado, size),
                   SizedBox(
                     height: 20,
@@ -107,8 +107,7 @@ void dispose() {
     );
   }
 
-  Widget _initMatchButton(context) {
-    if (_canPlay) {
+  Widget _initMatchButton(context){
       return AnimatedBuilder(
         animation: _animationController,
         builder: (context, _) {
@@ -123,10 +122,7 @@ void dispose() {
                   image: DecorationImage(
                     image: AssetImage('assets/shape15.png'),
                   ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        offset: Offset(0, 0), color: Colors.black, blurRadius: 5),
-                  ]),
+                  ),
               child: Center(
                   child: PulseAnimatorWidget(
                 begin: 0.5,
@@ -137,20 +133,15 @@ void dispose() {
               )),
             ),
             onPressed: () {
-
               setState(() {
                 _isLoading = true;
               });
               _playAction();
             },
-            shape: CircleBorder(),
             disabledTextColor: Colors.grey,
           );
         }
       );
-    } else {
-      return Container();
-    }
   }
 
   Widget _modoDeJuego(Color colorSelec, Color colorNoSelec, Size size) {
@@ -175,7 +166,7 @@ void dispose() {
             children: <Widget>[
               _boton(size, _modoClasico, "CLÁSICO", () {
                 setState(() {
-                  _canPlay = true;
+                  showDialog(context: context, child: _initMatchButton(context),);
                   _animationController.forward();
                   _modoClasico = true;
                   _modoDuelo = false;
@@ -183,8 +174,7 @@ void dispose() {
               }),
               _boton(size, _modoDuelo, "DUELO", () {
                 setState(() {
-                  if(_canPlay)_animationController.reset();
-                  _canPlay = false;
+                  _animationController.reset();
                   _modoDuelo = true;
                   _modoClasico = false;
                 });
@@ -219,8 +209,7 @@ void dispose() {
             children: <Widget>[
               _boton(size, _selecOponente, "AMIGOS", () {
                   setState(() {
-                    if(_canPlay)_animationController.reset();
-                    _canPlay = false;
+                    _animationController.reset();
                     _selecOponente = true;
                   });
                   modal.mainBottomSheet(context, preguntas);
@@ -229,7 +218,7 @@ void dispose() {
                   setState(() {
                     _selecOponente = false;
                     _animationController.forward();
-                    _canPlay = true;
+                    showDialog(context: context, child: _initMatchButton(context),);
                     _selecAlAzar = true;
                   });
                 }),
