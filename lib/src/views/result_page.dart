@@ -16,110 +16,116 @@ import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/widgets/loading_widget.dart';
 import 'package:mayor_g/src/widgets/pulse_animator.dart';
 
-class _Bloc{
+class _Bloc {
   StreamController _controller = StreamController.broadcast();
 
-    Function get streamSink => _controller.sink.add;
+  Function get streamSink => _controller.sink.add;
 
-    Stream get streamStream => _controller.stream;
+  Stream get streamStream => _controller.stream;
 
-    void disposeStreams() { 
-      _controller.close();
-    }
+  void disposeStreams() {
+    _controller.close();
+  }
 }
 
 class ResultPage extends StatelessWidget {
-
   static List<PreguntaRespondida> preguntasRespondidas;
 
   @override
   Widget build(BuildContext context) {
-
-  if(preguntasRespondidas == null){
-    preguntasRespondidas = new List();
-  }
-
-  final player = BackgroundMusic.backgroundAudioPlayer;
-  final Map mapa = ModalRoute.of(context).settings.arguments;
-  bool resultado = mapa['resultado'];
-  int n = mapa['n'] + 1;
-  ListaPreguntasNuevas questions= mapa['questions'];
-
-  int puntaje = 0;
-  
-  PreferenciasUsuario prefs = new PreferenciasUsuario();
-  String imagen ;
-  _Bloc streamBloc = _Bloc();
-
-  if(questions.preguntas[n-1].unirConFlechas) {
-    puntaje = prefs.score;
-    switch (prefs.score) {
-      case 0:
-        imagen = 'assets/MayorGAnimaciones/MayorG-Frustrado.gif';break;
-      case 1:
-        imagen = 'assets/MayorGAnimaciones/MayorG-Regaña.gif';break;
-      case 2:
-        imagen = 'assets/MayorGAnimaciones/MayorG-aplasta.gif';break;
-      case 3:
-        imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';break;
-      default:
-        imagen = 'assets/MayorGAnimaciones/MayorG-Celebra.gif';
+    if (preguntasRespondidas == null) {
+      preguntasRespondidas = new List();
     }
-  }
-  else if (resultado) {
-    puntaje = 1;
-    imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
-  } 
-  else{
-    puntaje = 0;
-    imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';
-  }
-  
-  PreguntaRespondida preguntaResp = new PreguntaRespondida(id: questions.preguntas[n-1].id, puntaje: puntaje);
-  preguntasRespondidas.add(preguntaResp);
-  
-  Future<bool> _back() {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+
+    final player = BackgroundMusic.backgroundAudioPlayer;
+    final Map mapa = ModalRoute.of(context).settings.arguments;
+    bool resultado = mapa['resultado'];
+    int n = mapa['n'] + 1;
+    ListaPreguntasNuevas questions = mapa['questions'];
+
+    int puntaje = 0;
+
+    PreferenciasUsuario prefs = new PreferenciasUsuario();
+    String imagen;
+    _Bloc streamBloc = _Bloc();
+
+    if (questions.preguntas[n - 1].unirConFlechas) {
+      puntaje = prefs.score;
+      switch (prefs.score) {
+        case 0:
+          imagen = 'assets/MayorGAnimaciones/MayorG-Frustrado.gif';
+          break;
+        case 1:
+          imagen = 'assets/MayorGAnimaciones/MayorG-Regaña.gif';
+          break;
+        case 2:
+          imagen = 'assets/MayorGAnimaciones/MayorG-aplasta.gif';
+          break;
+        case 3:
+          imagen = 'assets/MayorGAnimaciones/MayorG-aplaude.gif';
+          break;
+        default:
+          imagen = 'assets/MayorGAnimaciones/MayorG-Celebra.gif';
+      }
+    } else if (resultado) {
+      puntaje = 1;
+      imagen = 'assets/MayorGAnimaciones/mayorContento.gif';
+    } else {
+      puntaje = 0;
+      imagen = 'assets/MayorGAnimaciones/mayorEnojado.gif';
+    }
+
+    PreguntaRespondida preguntaResp = new PreguntaRespondida(
+        id: questions.preguntas[n - 1].id, puntaje: puntaje);
+    preguntasRespondidas.add(preguntaResp);
+
+Future<bool> _back() {
+
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
       title: Text('¿Quieres realmente abandonar la partida?'),
       actions: <Widget>[
         FlatButton(
-            onPressed: () async{
-              Navigator.pop(context, true);
-              
-            },
-            child: Text('Salir')),
+          onPressed: () async {
+            Navigator.pop(context, true);
+          },
+          child: Text('Salir')),
         FlatButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: Text('Cancelar'))
-      ],
-    ));
-  }  
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+          child: Text('Cancelar'))
+    ],
+  ));
 
-  Future<void> _salir(){
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('¿Realmente quiere abandonar la partida?'),
-        actions: <Widget>[
-          FlatButton(
-              onPressed: () async{
+}
+
+    Future<void> _salir() {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('¿Realmente quiere abandonar la partida?'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () async {
                 Navigator.pushReplacementNamed(context, '/');
-                await player.setAsset('assets/audios/Background_Music.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+                await player
+                  .setAsset('assets/audios/Background_Music.mp3')
+                  .then((value) => player
+                    .setLoopMode(LoopMode.one)
+                    .then((value) => player.play()));
               },
               child: Text('Salir')),
-          FlatButton(
+            FlatButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: Text('Cancelar'))
-        ],
-      ));
-  }
-    
+          ],
+        ));
+    }
+
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _back,
@@ -150,77 +156,101 @@ class ResultPage extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
-            Positioned.fill(
-              top:(resultado) ? size.height * 0.07 : size.height * 0.03,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: size.height * 0.4,
-                    width: size.height * 0.4,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(image: AssetImage(imagen),fit: BoxFit.fill),
+            Center(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: size.height * 0.4,
+                      width: size.height * 0.4,
+                      decoration: BoxDecoration(
+                        //color: Colors.amber,
+                        image: DecorationImage(
+                            image: AssetImage(imagen), fit: BoxFit.fill),
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Card(
-                        color: Theme.of(context).primaryColor,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 15),
-                          child: _resultadoText(questions, n, resultado, context, prefs, size),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
+                          color: Theme.of(context).primaryColor,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 15),
+                            child: _resultadoText(questions, n, resultado,
+                                context, prefs, size),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 30,)
+                  ],
+                ),
               ),
             ),
             Positioned(
               bottom: 20,
               right: 30,
-              child: RaisedButton.icon(
-                color: Theme.of(context).primaryColor,
-                shape: StadiumBorder(),
-                onPressed: () async{
-                  streamBloc.streamSink(true);
-                  int largo = questions.preguntas.length;
-                  if (n == (largo-5)){
-                    var aux = await QuestionServicePrueba().getNewQuestions(context, cantidad: 10);
-                    questions.preguntas.addAll(aux.preguntas);
-                    for(int i = 0; i < (largo - 5) ; i++){
-                      questions.preguntas.removeAt(0);
-                      n--;
+              child: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 25,
+                    spreadRadius: 5,
+                  )
+                ]),
+                child: RaisedButton.icon(
+                  color: Theme.of(context).primaryColor,
+                  shape: StadiumBorder(),
+                  onPressed: () async {
+                    streamBloc.streamSink(true);
+                    int largo = questions.preguntas.length;
+                    if (n == (largo - 5)) {
+                      var aux = await QuestionServicePrueba()
+                          .getNewQuestions(context, cantidad: 10);
+                      questions.preguntas.addAll(aux.preguntas);
+                      for (int i = 0; i < (largo - 5); i++) {
+                        questions.preguntas.removeAt(0);
+                        n--;
+                      }
                     }
-                  }
-                  var route = MaterialPageRoute(builder: (context)=>QuestionPage(questions: questions,n:n));
-                  Navigator.pushReplacement(context,route);
-                },
-                textColor: Colors.white,
-                label: PulseAnimatorWidget(begin:0.5,child: Icon(Icons.arrow_forward_ios)),
-                icon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: PulseAnimatorWidget(
-                    begin: 0.5,
-                    child: Text('Continuar')),
+                    var route = MaterialPageRoute(
+                        builder: (context) =>
+                            QuestionPage(questions: questions, n: n));
+                    Navigator.pushReplacement(context, route);
+                  },
+                  textColor: Colors.white,
+                  label: PulseAnimatorWidget(
+                      begin: 0.5, child: Icon(Icons.arrow_forward_ios)),
+                  icon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PulseAnimatorWidget(
+                        begin: 0.5, child: Text('Continuar')),
+                  ),
                 ),
               ),
-            ),  
+            ),
             StreamBuilder(
-              stream: streamBloc.streamStream ,
+              stream: streamBloc.streamStream,
               initialData: false,
-              builder: (BuildContext context, AsyncSnapshot snapshot){
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return Container(
                   child: (snapshot.data)
-                  ? LoadingWidget(
-                    caption: Text('Cargando pregunta, aguarde...',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 16)),
-                  ) 
-                  : Container(),
+                      ? LoadingWidget(
+                          caption: Text('Cargando pregunta, aguarde...',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16)),
+                        )
+                      : Container(),
                 );
               },
             ),
@@ -230,8 +260,9 @@ class ResultPage extends StatelessWidget {
     );
   }
 
-  Widget _resultadoText(ListaPreguntasNuevas questions, n, resultado, context, prefs, size) {
-    var paquete = questions.preguntas[n-1];
+  Widget _resultadoText(
+      ListaPreguntasNuevas questions, n, resultado, context, prefs, size) {
+    var paquete = questions.preguntas[n - 1];
     if (resultado) {
       return BorderedText(
         strokeColor: Colors.green,
@@ -239,7 +270,7 @@ class ResultPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 30, color: Colors.white)),
       );
-    } else if (!paquete.unirConFlechas){
+    } else if (!paquete.unirConFlechas) {
       return Column(
         children: <Widget>[
           BorderedText(
@@ -250,15 +281,16 @@ class ResultPage extends StatelessWidget {
               style: TextStyle(fontSize: 30, color: Colors.white),
             ),
           ),
-          Text('La respuesta era:', style: TextStyle(color: Colors.white),),
-          Hero(
-            tag: (questions.preguntas[n-1].respuestaCorrecta * (n))+n-1,
-              child: _respuesta(questions.preguntas[n-1], context, size)
+          Text(
+            'La respuesta era:',
+            style: TextStyle(color: Colors.white),
           ),
+          Hero(
+              tag: (questions.preguntas[n - 1].respuestaCorrecta * (n)) + n - 1,
+              child: _respuesta(questions.preguntas[n - 1], context, size)),
         ],
       );
-    }
-    else{
+    } else {
       return Column(
         children: [
           BorderedText(
@@ -269,15 +301,19 @@ class ResultPage extends StatelessWidget {
               style: TextStyle(fontSize: 30, color: Colors.white),
             ),
           ),
-          Text('${prefs.score}/4', style: TextStyle(color: Colors.white),),
+          Text(
+            '${prefs.score}/4',
+            style: TextStyle(color: Colors.white),
+          ),
         ],
       );
     }
   }
-  Widget _respuesta(PreguntaNueva question, BuildContext context, Size size){
-    if(question.imagenRespuesta == false){
+
+  Widget _respuesta(PreguntaNueva question, BuildContext context, Size size) {
+    if (question.imagenRespuesta == false) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical:20.0, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8),
         child: Container(
           width: double.infinity,
           child: FlatButton(
@@ -299,22 +335,21 @@ class ResultPage extends StatelessWidget {
       );
     } else {
       return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(width: 3,color: Theme.of(context).primaryColor),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: FadeInImage(
-          fit: BoxFit.fill,
-          placeholder: AssetImage('assets/soldier.png'), 
-          image: (MemoryImage(base64Decode(question.respuestas[question.respuestaCorrecta])))
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 3, color: Theme.of(context).primaryColor),
         ),
-      ),
-      height: size.width*0.45,
-      width: size.width*0.45,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: FadeInImage(
+              fit: BoxFit.fill,
+              placeholder: AssetImage('assets/soldier.png'),
+              image: (MemoryImage(base64Decode(
+                  question.respuestas[question.respuestaCorrecta])))),
+        ),
+        height: size.width * 0.45,
+        width: size.width * 0.45,
       );
     }
-      
   }
 }

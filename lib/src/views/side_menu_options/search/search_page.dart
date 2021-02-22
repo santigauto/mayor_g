@@ -14,12 +14,16 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _tabController = new TabController(length: 3, vsync: this);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final Map mapa = ModalRoute.of(context).settings.arguments;
+    print(mapa['index'].toString());
+    _tabController = new TabController(length: 3, vsync: this,initialIndex: mapa['index']);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Buscador"),

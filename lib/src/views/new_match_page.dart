@@ -93,14 +93,14 @@ void dispose() {
               ),
             ),
             (_isLoading)
-                ? LoadingWidget(
-                    caption: Text('Cargando partida, aguarde...',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16)),
-                  )
-                : Container()
+            ? LoadingWidget(
+              caption: Text('Cargando partida, aguarde...',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16)),
+              )
+            : Container()
           ],
         ),
       ),
@@ -113,24 +113,33 @@ void dispose() {
         builder: (context, _) {
           return RaisedButton(
             color: Colors.transparent,
-            child: Container(
-              height: tamanio.value,
-              width: tamanio.value,
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(200),
-                  image: DecorationImage(
-                    image: AssetImage('assets/shape15.png'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('¿Preparado?',style:Theme.of(context).textTheme.headline4.copyWith(color: Colors.white)),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  height: tamanio.value,
+                  width: tamanio.value,
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(200),
+                    image: DecorationImage(
+                      image: AssetImage('assets/shape15.png'),
+                    ),
+                    ),
+                  child: Center(
+                    child: PulseAnimatorWidget(
+                      begin: 0.5,
+                      child: AutoSizeText(
+                        '¡PRESIONE PARA JUGAR!', maxLines: 2,
+                        style: TextStyle(fontSize: 30, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                  ),
-              child: Center(
-                  child: PulseAnimatorWidget(
-                begin: 0.5,
-                child: AutoSizeText(
-                  '¡JUGAR!', maxLines: 1,
-                  style: TextStyle(fontSize: 35, color: Colors.white),
                 ),
-              )),
+              ],
             ),
             onPressed: () {
               setState(() {

@@ -22,16 +22,22 @@ class _RankingOptionsPageState extends State<RankingOptionsPage> with SingleTick
 
   @override
   void initState() {
+    
     profilePic =(_prefs.foto == null || _prefs.foto == '')
       ?AssetImage('assets/soldier.png')
       :MemoryImage(base64Decode(_prefs.foto));
     
-    _tabController = new TabController(length: 4, vsync: this);
+    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final Map mapa = ModalRoute.of(context).settings.arguments;
+    print(mapa['index'].toString());
+    _tabController = new TabController(length: 4, vsync: this,initialIndex: mapa['index']);
+
     return Scaffold(
       appBar: AppBar(
         leading: Padding(

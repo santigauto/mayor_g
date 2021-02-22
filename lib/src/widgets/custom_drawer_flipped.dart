@@ -125,6 +125,11 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                   child: IconButton(icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: fade), onPressed: toggle, color: Colors.white,),
                 ),
                 Positioned(
+                  bottom: -10.0 + MediaQuery.of(context).padding.top,
+                  left: 4.0 + animationController.value * maxSlide,
+                  child: IconButton(icon: Icon(Icons.error_outline_rounded), onPressed: ()=>Navigator.pushNamed(context, 'about'), color: Colors.white.withOpacity(0.4),),
+                ),
+                Positioned(
                   top: 4.0 + MediaQuery.of(context).padding.top,
                   right: 4.0 - animationController.value * maxSlide,
                   child: solicitudesNuevas()
@@ -296,7 +301,7 @@ class MyDrawer extends StatelessWidget {
         leading: getIcon(item['icon']),
         trailing: Icon(Icons.keyboard_arrow_right),
         onTap: () {
-          Navigator.pushNamed(context, item['ruta'], arguments: (item['ruta'] == 'ajustes')?{'logueado':true}:{});
+          Navigator.pushNamed(context, item['ruta'], arguments: (item['ruta'] == 'ajustes')?{'logueado':true}:{'index':0});
         },
       );
       opciones..add(widgetTemp);

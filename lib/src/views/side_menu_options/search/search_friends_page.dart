@@ -102,6 +102,7 @@ Widget _showAlertDialog(context, List listaAmigos, int indexAmigo){
       ListTile(
         title: Center(child: Text('Eliminar de Amigos')),
         onTap: (){
+          GetFriendsService().eliminarAmistad(context, dni: prefs.dni, dniAmigo: user.dni, deviceId: prefs.deviceId);
           Navigator.pop(context);
         },
         /*TODO: cambiar el servicio de eliminar amistad (cambiar parametro dniAmigo por IdAmigo desde el backend)*/

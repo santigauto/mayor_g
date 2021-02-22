@@ -1,12 +1,14 @@
 
 class Solicitud {
   String id;
+  int dni;
   String jugador;
   String fechaEnviado;
   dynamic fechaAprobado;
 
   Solicitud({
     this.id,
+    this.dni,
     this.jugador,
     this.fechaEnviado,
     this.fechaAprobado,
@@ -15,6 +17,7 @@ class Solicitud {
   factory Solicitud.fromJson(Map<String,dynamic> json){
     return Solicitud(
       id: json['Id'],
+      dni: json['dni'],
       jugador: json['Jugador'],
       fechaEnviado: json['FechaEnviado'],
       fechaAprobado: json['FechaAprobado'],

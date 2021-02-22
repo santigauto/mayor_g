@@ -65,6 +65,8 @@ class GetUserService{
   });
   }
 
+  //          ------------------------------ NOTIFICACIONES -------------------------------
+
   Future<List<Notificacion>> obtenerNotificaciones(BuildContext context,{@required int dni,@required String deviceId})async{
     print('Empieza ObtenerNotificaciones');
     var _decodedJson = await HttpService().getGet(context, apiRoute: 'api/Usuarios/Obtener_Notificaciones',queryParameters: {
@@ -89,11 +91,23 @@ class GetUserService{
       'deviceId': deviceId
     });
     int notificaciones = 0;
-    print("FriendsService/obtenerNotificaciones():  " +_decodedJson.toString());
+    print("FriendsService/obtenerCantNotificaciones():  " +_decodedJson.toString());
     if(_decodedJson != null) notificaciones = _decodedJson;
 
     return notificaciones;
   }
+
+  Future borrarNotificacion(BuildContext context,{@required int dni,@required String deviceId, @required String idNotificacion})async{
+    print('Borrar Notificacion');
+    var _decodedJson = await HttpService().getPost(context, apiRoute: 'api/Usuarios/Borrar_Notificacion',queryParameters: {
+      'dni': dni.toString(),
+      'deviceId': deviceId,
+      'idNotificacion': idNotificacion
+    });
+    print("FriendsService/BorrarNotificaciones():  " +_decodedJson.toString());
+  }
+
+  //             ----------------------- FOTO PERFIL ----------------------
   
   Future cambiarFoto(BuildContext context, { @required int dni, @required String deviceId,@required String imagen})async{
     var _decodedJson = await HttpService().getPost(context, apiRoute: 'api/Usuarios/Cambiar_Foto',queryParameters: {
@@ -108,7 +122,7 @@ class GetUserService{
     return _decodedJson;
     
   }
-  
+//      ---------------------------- SUGERIR PREGUNTA ---------------------------
 Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pregunta,List<String> respuestas,
                           int respuestaCorrecta, bool unirConFlechas, bool verdaderoFalso, String arma,String organismo,String curso,
                           String materia, bool imagenPregunta, bool imagenRespuesta, String nombreArchivoImagen, String imagen}) async{

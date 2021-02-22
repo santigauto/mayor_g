@@ -31,6 +31,10 @@ class NotificationsPage extends StatelessWidget {
                           color: Colors.white.withOpacity(0.7),
                         ),
                         child: ListTile(
+                          onTap: (){
+                            if( snapshot.data[i].titulo == "Nueva Solicitud de Amistad") Navigator.pushNamed(context, 'solicitudes',arguments: {'index': 1});
+                            GetUserService().borrarNotificacion(context, dni: prefs.dni, deviceId: prefs.deviceId, idNotificacion: snapshot.data[i].id);
+                          },
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

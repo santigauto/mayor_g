@@ -1,6 +1,8 @@
 //IMPORTS
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/views/about_page.dart';
 import 'package:mayor_g/src/views/notifications_page.dart';
+import 'package:mayor_g/src/views/side_menu_options/search/solicitudes_pendientes_page.dart';
 //PAGINAS
 import 'package:mayor_g/src/views/side_menu_options/suggestQuestion/suggestQuestion.dart';
 import 'package:mayor_g/src/views/side_menu_options/ranking/ranking_options_page.dart';
@@ -29,6 +31,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'rank'            : (BuildContext context) => RankingPage(),
     'collab'          : (BuildContext context) => CollabPage(),
     'friends'         : (BuildContext context) => FriendsPage(),
+    'solicitudes'     : (BuildContext context) => SolicitudesPendientesPage(),
     'splash'          : (BuildContext context) => SplashPage(),
     'login'           : (BuildContext context) => LoginPage(),
     'question'        : (BuildContext context) => QuestionPage(),
@@ -38,6 +41,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'suggestQuestion' : (BuildContext context) => SuggestQuestionPage(),
     'ajustes'         : (BuildContext context) => AjustesPartidaPage(),
     'notifications'   : (BuildContext context) => NotificationsPage(),
+    'about'           : (BuildContext context) => AboutPage()
   };
 }
 

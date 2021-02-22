@@ -9,6 +9,7 @@ import 'package:mayor_g/src/models/suggest_model.dart';
 
 
 import 'package:mayor_g/src/services/commons/camara.dart';
+import 'package:mayor_g/src/widgets/filtros_widget.dart';
 
 
 import 'package:mayor_g/src/widgets/myInput.dart';
@@ -41,6 +42,10 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   bool _isLoading = false;
   TextStyle titleStyle;
   Camara camaraController = new Camara();
+  Camara camaraRespuesta1Controller = new Camara();
+  Camara camaraRespuesta2Controller = new Camara();
+  Camara camaraRespuesta3Controller = new Camara();
+  Camara camaraRespuesta4Controller = new Camara();
   int groupValue = 0;
   Size size;
 
@@ -57,7 +62,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   goTo(int step){
     setState(() {
       currentStep = step;
-      if (currentStep == 1) complete = true;
+      if (currentStep == 2) complete = true;
       else complete = false;
     });
   }
@@ -131,14 +136,14 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Column(
-          
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            
             Expanded(
               child: Stepper(
-                physics: ClampingScrollPhysics(),
+                type: StepperType.horizontal,
+                physics: BouncingScrollPhysics(),
                 currentStep: currentStep,
+                onStepTapped: (step)=> goTo(step),
                 onStepCancel: cancel,
                 onStepContinue: next,
                 controlsBuilder: (BuildContext context, { VoidCallback onStepContinue, VoidCallback onStepCancel }) {
@@ -168,19 +173,27 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                       ],
                     ));
                   },
-                onStepTapped: (step)=> goTo(step),
-                type: StepperType.horizontal,
                 steps: [
                   Step(
                     state: (currentStep == 0) ? StepState.indexed  :  StepState.complete ,
                     isActive: currentStep == 0,
-                    title: (currentStep == 0) ? _titulo('Tipo de pregunta'): Container(), 
+                    title: (currentStep == 0) ? _titulo('Filtros'): Container(), 
+                    content: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:[
+                        Text('Seleccione la especialidad a la que pertenece esta pregunta',style: TextStyle(color: Colors.white),maxLines: 2,),
+                        FiltrosWidget(),]),
+                  ),
+                  Step(
+                    state: (currentStep <= 1 ) ? StepState.indexed  :  StepState.complete ,
+                    isActive: currentStep == 1,
+                    title: (currentStep == 1) ? _titulo('Tipo de pregunta'): Container(), 
                     content: Column(children:_listaRadio(['Multiple Choice','Multiple Choice con Imagenes','Verdadero o Falso','Unir con Flechas']),),
                   ),
                   Step(
-                    state: (currentStep == 1 || aux ) ? StepState.indexed  : ((1 == currentError[1])? StepState.error : StepState.complete ),
-                    isActive: currentStep == 1,
-                    title: (currentStep == 1) ?  _titulo('Fábrica'):  Container(), 
+                    state: (currentStep <= 2 ) ? StepState.indexed  : ((2 == currentError[2])? StepState.error : StepState.complete ),
+                    isActive: currentStep == 2,
+                    title: (currentStep == 2) ?  _titulo('Fábrica'):  Container(), 
                     content: Column(
                       children: [
                         _createQuestion(),
@@ -196,17 +209,15 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     );
   }
 
-  _imagenEncabezado(){
+  Widget _imagenEncabezado(String image){
+    print(image);
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: Container(
-            width: size.width * 0.5,
-            child: Image.memory(
-              base64Decode(sugerencia.sugerencia.imagen), fit: BoxFit.cover,
-            ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15.0),
+        child: Container(
+          width: size.width * 0.5,
+          child: Image.memory(
+            base64Decode(image), fit: BoxFit.cover,
           ),
         ),
       ),
@@ -220,9 +231,27 @@ _titulo(String text){
     style: TextStyle(fontSize: 13, color: Colors.white),
   );
 }
-  uploadImage()async{
-    sugerencia.sugerencia.imagen = await camaraController.getImage();
-    setState((){});
+
+ uploadImage(int i)async{
+    switch (i) {
+      case 0:
+        sugerencia.sugerencia.imagen = await camaraController.getImage();
+        break;
+      case 1:
+        sugerencia.sugerencia.respuestas[0] = await camaraRespuesta1Controller.getImage();
+        break;
+      case 2:
+        sugerencia.sugerencia.respuestas[1] = await camaraRespuesta2Controller.getImage();
+        break;
+      case 3:
+        sugerencia.sugerencia.respuestas[2] = await camaraRespuesta3Controller.getImage();
+        break;
+      case 4:
+        sugerencia.sugerencia.respuestas[3] = await camaraRespuesta4Controller.getImage();
+        break;
+    }
+    setState((){}); 
+    
   }
 
  List<Widget> _listaRadio(List<String>listaOpciones){
@@ -249,7 +278,7 @@ _titulo(String text){
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.grey[100],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -281,9 +310,10 @@ _titulo(String text){
                     this.sugerencia.sugerencia.pregunta = text;
                     return null;
                   },
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 18,color: Colors.grey[700]),
                   maxLines: 7,
                   decoration: InputDecoration(
+                    labelStyle: TextStyle(color:Colors.grey),
                     labelText: 'Pregunta a sugerir',
                   ),
                 ),
@@ -294,7 +324,7 @@ _titulo(String text){
               ),
               Stack(
                 children: [
-                  sugerencia.sugerencia.imagen == null || sugerencia.sugerencia.imagen.isEmpty ? Container() : _imagenEncabezado(),
+                  sugerencia.sugerencia.imagen == null || sugerencia.sugerencia.imagen.isEmpty || sugerencia.sugerencia.imagen == "" ? Container() : _imagenEncabezado(sugerencia.sugerencia.imagen),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -304,8 +334,8 @@ _titulo(String text){
                           backgroundColor: Theme.of(context).primaryColor,
                           child: IconButton(
                             icon: Icon(Icons.camera_alt),
-                            onPressed: uploadImage,
-                            color: Colors.white,
+                            onPressed: () =>uploadImage(0),
+                            color: Colors.grey[100],
                             splashColor: Colors.grey,
                           ),
                         ),
@@ -323,111 +353,71 @@ _titulo(String text){
 
   Widget _createAnswers(){
     switch (groupValue) {
-      case 0:   //multiple choice
+
+      // CASO 0 = MULTIPLE CHOICE / CASO 1 = MULT CHOICE CON IMAGENES / CASO 2 = V o F / CASO 3 = UNIR CON FLECHAS
+
+      case 0:   // --multiple choice--
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical:15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              AutoSizeText(
-                'Debe ingresar al menos 1', maxLines: 2,
-                style: TextStyle(color: Colors.white),
-              ),
-              Column(children:lista('correcta',1, true))
-            ],
+            children: lista('correcta',1, true)
           ),
         );
         break;
-      case 1: //multiple choice con imagenes
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical:15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AutoSizeText(
-                '*Debe ingresar al menos 1', maxLines: 2,
-                style: TextStyle(color: Colors.white),
+
+      case 1: // ---multiple choice con imagenes---
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10,),
+            AutoSizeText(
+              '*La imagen de marco verde será la correcta', maxLines: 2,
+              style: TextStyle(color: Colors.white),
+            ),
+            
+            Container(
+              height: 360,
+              // GRID DE IMAGENES
+              child: GridView.count(
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                children: List.generate(4, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () => uploadImage(index+1),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          border: Border.all(
+                            color: index == 0 ? Theme.of(context).primaryColor : Colors.red,
+                            width: 2.5
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Stack(
+                          children: [
+                            sugerencia.sugerencia.respuestas[index] == null || sugerencia.sugerencia.respuestas[index].isEmpty || sugerencia.sugerencia.respuestas[index] == "" 
+                              ? Container() 
+                              : _imagenEncabezado(sugerencia.sugerencia.respuestas[index]),
+                            Center(child: Icon(Icons.camera_alt, color: Colors.grey,)),
+                          ],
+                        )
+                      ),
+                    ),
+                  );
+                }),
               ),
-              SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: size.width * 0.4,
-                      height: size.width * 0.4,
-                      color: Colors.white,
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(Icons.camera_alt),
-                          onPressed: uploadImage,
-                          color: Colors.grey,
-                          splashColor: Colors.grey,
-                        ),
-                      )
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: size.width * 0.4,
-                      height: size.width * 0.4,
-                      color: Colors.white,
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(Icons.camera_alt),
-                          onPressed: uploadImage,
-                          color: Colors.grey,
-                          splashColor: Colors.grey,
-                        ),
-                      )
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: size.width * 0.4,
-                      height: size.width * 0.4,
-                      color: Colors.white,
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(Icons.camera_alt),
-                          onPressed: uploadImage,
-                          color: Colors.grey,
-                          splashColor: Colors.grey,
-                        ),
-                      )
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: size.width * 0.4,
-                      height: size.width * 0.4,
-                      color: Colors.white,
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(Icons.camera_alt),
-                          onPressed: uploadImage,
-                          color: Colors.grey,
-                          splashColor: Colors.grey,
-                        ),
-                      )
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         );
-      case 2:
+        break;
+
+      case 2: // ---VERDADERO O FALSO---
+
         sugerencia.sugerencia.respuestas = [""];
         return Padding(
           padding: const EdgeInsets.symmetric(vertical:15.0),
@@ -486,12 +476,15 @@ _titulo(String text){
             ],
           ),
         );
-      case 3:
+      
+      case 3: // --- unir con flechas ---
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical:15.0),
           child: Column(children: _listaUnir(sugerencia.sugerencia.respuestas)),
         );
-      default:
+
+     default:
         return Container(child: Text('data'),width: 100,height: 100, color: Colors.blue,);
     }
     
@@ -509,12 +502,24 @@ _titulo(String text){
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
                 height: size.height*0.1,
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.grey[100],
                 child: Center(
-                  child: TextField(
+                  child: TextFormField(
+                    validator: (String text) {
+                      if(text == null){
+                        return 'Llene  este campo';
+                      }
+                      return null;
+                    },
+                    maxLengthEnforced: true,
+                    style: TextStyle(color:Colors.grey[700]),
                     maxLines: 2,
                     maxLength: 35,
-                    decoration: InputDecoration.collapsed(hintText: null),
+                    cursorColor: Colors.grey[700],
+                    decoration: InputDecoration.collapsed(
+                      hintText: 'union ${i+1}, parte 1',
+                      hintStyle: TextStyle(color:Colors.grey),
+                      ),
                     onChanged:(value) => listaRespuestas[i] = value
                   )
                   ),
@@ -523,30 +528,31 @@ _titulo(String text){
             ),
           ),
           Container(
-            child: Icon(Icons.arrow_forward,color: Colors.white,),
+            child: Icon(Icons.arrow_forward,color: Colors.grey[100],),
           ),
           Expanded(
             child: Material(
-                child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
-                  height: size.height*0.1,
-                  color: Colors.white.withOpacity(0.5),
-                  child: Center(
-                    child: TextField(
-                      maxLines: 2,
-                      maxLength: 35,
-                      decoration: InputDecoration.collapsed(hintText: null),
-                      onChanged:(value) => listaRespuestas[i] = value
-                    )
-                    ),
-                )
-              ),
+              child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal:15, vertical: 10),
+                height: size.height*0.1,
+                color: Colors.grey[100],
+                child: Center(
+                  child: TextField(
+                    style: TextStyle(color:Colors.grey[700]),
+                    maxLines: 2,
+                    maxLength: 35,
+                    decoration: InputDecoration.collapsed(hintText: 'union ${i+1}, parte 2',hintStyle:TextStyle(color:Colors.grey) ),
+                    onChanged:(value) => listaRespuestas[i] = value
+                  )
+                ),
+              )
             ),
           ),
-        ],
-      ));
+        ),
+      ],
+    ));
     lista.add(SizedBox(height: 10,));
     }
     return lista;
@@ -557,21 +563,30 @@ _titulo(String text){
     for (var i = 0; i < 4; i++) {
       _lista.add(SizedBox(height:12),);
       _lista.add(
-        MyInput(
-          label: '${i+1}° $label',
-          validator: (String text) {
-            if(text.isEmpty || (isCorrect)){
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: i == 0 ? Theme.of(context).primaryColor : Colors.red,
+              width: 4
+            ),
+            borderRadius: BorderRadius.circular(20)
+          ),
+          child: MyInput(
+            label: i == 0 ? 'Respuesta Correcta' : 'Respuesta Incorrecta',
+            validator: (String text) {
+              if(text.isEmpty){
+                setState(() {
+                  currentError[stepItem] = stepItem;
+                });
+                return "Por favor llene este campo";
+              }
               setState(() {
-                currentError[stepItem] = stepItem;
-              });
-              return "Por favor llene este campo";
-            }
-            setState(() {
-                currentError[stepItem] = 10;
-              });
-            sugerencia.sugerencia.respuestas[i] = text;
-            return null;
-          },
+                  currentError[stepItem] = 10;
+                });
+              sugerencia.sugerencia.respuestas[i] = text;
+              return null;
+            },
+          ),
         ),
       );
     }

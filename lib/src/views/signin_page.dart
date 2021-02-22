@@ -2,6 +2,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
 //import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
@@ -32,10 +33,7 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
 
   var _username;
   var _password;
-  String dni;
-  String email;
-  String nombre;
-  String apellido;
+  Persona persona = new Persona();
 
   bool _isLoading = false;
   Size size;
@@ -55,7 +53,7 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
         if(booleanAccept){
-          await AuthService().registrarCivil(context,dni: dni,mail: email,surname: apellido,nickname: _username,password: _password,name: nombre);
+          await AuthService().registrarCivil(context,dni: persona.dni.toString(),mail: persona.email,nickname: _username,password: _password);
           setState(() {
             _isLoading = true;
           });
@@ -146,47 +144,6 @@ Widget _militarForm(){
                     return x;
                   },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: size.width *0.4,
-                      child: TextInput(
-                        label: 'Nombre',
-                        color: Colors.white,
-                        inputType: TextInputType.text,
-                        inputIcon: Icon(
-                          Icons.person,
-                            color: Colors.white,
-                        ),
-                        validator: (String text) {
-                          String x;
-                          if (text.isEmpty) {
-                            x='Por favor completar el campo';
-                          }
-                          this.nombre = text;
-                          return x;
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: size.width *0.4,
-                      child: TextInput(
-                        label: 'Apellido',
-                        color: Colors.white,
-                        inputType: TextInputType.text,
-                        validator: (String text) {
-                          String x;
-                          if (text.isEmpty) {
-                            x='Por favor completar el campo';
-                          }
-                          this.apellido = text;
-                          return x;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
 
                 SizedBox(
                   height: 30,
@@ -200,11 +157,11 @@ Widget _militarForm(){
                     Icons.person,
                     color: Colors.white,
                   ),
-                  validator: (String text) {
-                    if (text.isEmpty) {
+                  validator: (String number) {
+                    if (number.isEmpty) {
                       return 'Por favor completar el campo';
                     }
-                    this.dni = text;
+                    persona.dni = int.parse(number);
                     return null;
                   },
                 ),
@@ -222,7 +179,7 @@ Widget _militarForm(){
                     if (text.isEmpty) {
                       x='Por favor completar el campo';
                     }
-                    this.email = text;
+                    persona.email = text;
                     return x;
                   },
                 ),
@@ -278,6 +235,7 @@ Widget _militarForm(){
                 ),
                 
                 CheckboxListTile(
+                  subtitle: (checkflag)?Text('Debe aceptar los terminos y condiciones.', style: TextStyle(color: Colors.red),textAlign: TextAlign.left,):Container(),
                   value: booleanAccept,
                   onChanged: (boolean){
                     setState(() {
@@ -288,14 +246,6 @@ Widget _militarForm(){
                     title: AutoSizeText('Acepto terminos y condiciones',
                               maxLines: 1,style: TextStyle(color: Colors.white,),textAlign: TextAlign.left,),
                 ),
-                (checkflag)?Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left:15.0),
-                      child: Text('Debe aceptar los terminos y condiciones.', style: TextStyle(color: Colors.red),textAlign: TextAlign.left,),
-                    ),
-                  ],
-                ):Container(),
               ],
             ),
           ),
@@ -310,7 +260,6 @@ Widget _militarForm(){
                 child: AutoSizeText("Registrarme",
                     style:Theme.of(context).textTheme.headline5.copyWith(color:Colors.white))),
               onTap: () {
-                //GetFriendsService().solicitudesPendientes(dni: 41215183);
                 _submit();
               },
             ),

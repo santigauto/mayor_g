@@ -140,8 +140,8 @@ Future registrarCivil(BuildContext context,{String name,String surname,String dn
   await getDeviceDetails().then((value) async  {
     print(prefs.deviceId);
    result = await HttpService().getPost(context,apiRoute: 'api/Usuarios/Registrar_Civil',jsonEncode: jsonEncode({
-    "Apellido":surname,
-	  "Nombre":name,
+    "Apellido":"",
+	  "Nombre":"",
 	  "Email":mail,
 	  "DNI":dni,
 	  "Password": password,
