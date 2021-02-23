@@ -32,7 +32,7 @@ class NotificationsPage extends StatelessWidget {
                         ),
                         child: ListTile(
                           onTap: (){
-                            if( snapshot.data[i].titulo == "Nueva Solicitud de Amistad") Navigator.pushNamed(context, 'solicitudes',arguments: {'index': 1});
+                            if( snapshot.data[i].titulo == "Nueva Solicitud de Amistad") Navigator.pushNamed(context, 'search',arguments: {'index': 1});
                             GetUserService().borrarNotificacion(context, dni: prefs.dni, deviceId: prefs.deviceId, idNotificacion: snapshot.data[i].id);
                           },
                           title: Column(

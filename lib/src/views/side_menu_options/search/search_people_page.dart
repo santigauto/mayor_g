@@ -1,11 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/friends/friend_selector_service.dart';
 import 'package:mayor_g/src/services/user/user_service.dart';
 import 'package:mayor_g/src/widgets/MyTextInput.dart';
+import 'package:mayor_g/src/widgets/alert_opciones_widget.dart';
 import 'package:mayor_g/src/widgets/background_widget.dart';
 
 
@@ -30,12 +31,6 @@ class SearchPeoplePage extends StatefulWidget {
 }
 
 class _SearchPeoplePageState extends State<SearchPeoplePage> {
-  /* List<Map<String,dynamic>> gente = [
-    {'nombre': 'Mara'  ,'grado':'VP'}, 
-    {'nombre':'Esteban','grado':'CT'}, 
-    {'nombre': 'Juan'  ,'grado':'SP'}, 
-    {'nombre': 'Roger' ,'grado':'TC'}, 
-    {'nombre':'Rodrigo','grado':'CI'}]; */
   final _formKey = GlobalKey<FormState>();
   String _apellido = '';
   int _dni;
@@ -139,28 +134,56 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
       decoration: BoxDecoration(
       color: Colors.white.withOpacity(0.5),
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
-      child: ListTile(
-        onTap: () {},
-        title: Text('${_gente[x].nickname}'),
-        leading: Icon(Icons.face),
-        trailing: FlatButton(
-          color: Theme.of(context).primaryColor,
-          textColor: Colors.white,
-          disabledColor: Colors.grey,
-          disabledTextColor: Colors.black,
-          onPressed: () {
-            /*...*/
-            print(_gente[x].dni);
-            GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni, deviceId: prefs.deviceId);
-          },
+      child:(_gente[x].esAmigo)
+        ? ListTile(
+          title: Text('${_gente[x].nickname}'),
+          leading: Icon(Icons.face),
+          trailing: IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,child: _showAlertDialog(context, _gente, x))))
+        :ListTile(
+          onTap: () {},
+          title: Text('${_gente[x].nickname}'),
+          leading: Icon(Icons.face),
+          trailing: FlatButton(
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Colors.grey,
+            disabledTextColor: Colors.black,
+            onPressed: () {
+              /*...*/
+              print(_gente[x].dni);
+              GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni, deviceId: prefs.deviceId);
+            },
           child: Text("Invitar",),
+          ),
         ),
-      ),
     )
     : ListTile(
       title: Text("No se encontraron coincidencias"),
     );
   }
+
+  Widget _showAlertDialog(context, List listaAmigos, int indexAmigo){
+  Persona user = listaAmigos[indexAmigo];
+  return AlertaOpcionesWidget(
+    title: user.nickname.isEmpty ? user.nombre : user.nickname ,
+    children: [
+      ListTile(
+        title: Center(child: Text('Retar a Duelo')),
+        onTap: null,
+        //TODO: accion retar a duelo
+      ),
+      Divider(height: 1,),
+      ListTile(
+        title: Center(child: Text('Eliminar de Amigos')),
+        onTap: (){
+          GetFriendsService().eliminarAmistad(context, dni: prefs.dni, dniAmigo: user.dni, deviceId: prefs.deviceId);
+          Navigator.pop(context);
+        },
+        /*TODO: cambiar el servicio de eliminar amistad (cambiar parametro dniAmigo por IdAmigo desde el backend)*/
+      )
+    ],
+  );
+}
 
   _submit() async {
     if(!_loading && _formKey.currentState.validate()) {
