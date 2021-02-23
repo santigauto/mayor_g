@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/widgets/pulse_animator.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class TimerWidget extends StatefulWidget {
   final AnimationController controller;

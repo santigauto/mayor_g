@@ -17,7 +17,7 @@ import 'package:meta/meta.dart' show required;
 import 'package:http/http.dart' as http;
 
 import 'package:mayor_g/config.dart';
-import 'package:mayor_g/src/widgets/alert_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 class AuthService {

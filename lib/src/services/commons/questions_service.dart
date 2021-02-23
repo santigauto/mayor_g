@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:mayor_g/src/models/question_model.dart';
-import 'package:mayor_g/src/widgets/alert_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 /*  NUEVO MODELO DE SERVICIO DE PREGUNTAS*/

@@ -7,14 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/suggest_model.dart';
 
-
 import 'package:mayor_g/src/services/commons/camara.dart';
-import 'package:mayor_g/src/widgets/filtros_widget.dart';
 
-
-import 'package:mayor_g/src/widgets/myInput.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/pulse_animator.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class SuggestQuestionPage extends StatefulWidget {
   SuggestQuestionPage({Key key}) : super(key: key);

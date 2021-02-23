@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mayor_g/src/widgets/animated_progress_bar_widget.dart';
 
-import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class LevelPage extends StatelessWidget {
   final Map<String, double> dataMap = {'right': 5, 'wrong': 3};

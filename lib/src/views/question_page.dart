@@ -11,10 +11,7 @@ import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 
 //WIDGETS PERSONALIZADOS
-import 'package:mayor_g/src/widgets/answers_widget.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/custom_header_widget.dart';
-import 'package:mayor_g/src/widgets/timer_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class QuestionPage extends StatefulWidget {
   final ListaPreguntasNuevas questions;

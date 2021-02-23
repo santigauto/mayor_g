@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+
 import 'package:mayor_g/src/services/friends/friend_selector_service.dart';
 import 'package:mayor_g/src/services/user/user_service.dart';
-import 'package:mayor_g/src/widgets/MyTextInput.dart';
-import 'package:mayor_g/src/widgets/alert_opciones_widget.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
+
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 class BlocSearch{

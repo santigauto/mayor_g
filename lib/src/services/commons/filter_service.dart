@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:mayor_g/src/widgets/alert_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 abstract class ServiceFiltros<T>{
   String apiRoute;

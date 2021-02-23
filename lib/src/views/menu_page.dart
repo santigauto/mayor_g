@@ -2,10 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:mayor_g/src/widgets/background_widget.dart';
-//import 'package:mayor_g/src/widgets/boton_widget.dart';
-import 'package:mayor_g/src/widgets/custom_header_widget.dart';
-import 'package:mayor_g/src/widgets/pulse_animator.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class MenuPage extends StatelessWidget{
   

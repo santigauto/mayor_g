@@ -3,7 +3,7 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/commons/collab_service.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class CollabPage extends StatefulWidget {
   final String collabOrReport;

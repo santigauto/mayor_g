@@ -7,7 +7,7 @@ import 'package:mayor_g/src/views/side_menu_options/ranking/friends_rank_page.da
 import 'package:mayor_g/src/views/side_menu_options/ranking/global_page.dart';
 import 'package:mayor_g/src/views/side_menu_options/ranking/level_page.dart';
 import 'package:mayor_g/src/views/side_menu_options/ranking/ranking_page.dart';
-import 'package:mayor_g/src/widgets/imagen_perfil.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class RankingOptionsPage extends StatefulWidget {
   @override

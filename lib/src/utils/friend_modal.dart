@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/scrolleable_animated_bottom_sheet.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 

@@ -4,15 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/views/signin_page.dart';
 //DEPENDENCIAS
 import 'package:auto_size_text/auto_size_text.dart';
-//import 'package:flutter_svg/flutter_svg.dart';
 //WIDGETS
-//import 'package:mayor_g/src/widgets/custom_header_widget.dart';
-import 'package:mayor_g/src/widgets/input_text_widget.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/loading_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 //SERVICIOS
 import 'package:mayor_g/src/services/auth_service.dart';
-//import 'package:mayor_g/src/widgets/loading_widget.dart';
 import '../services/auth_service.dart';
 
 

@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 //WIDGETS
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:mayor_g/src/services/user/user_service.dart';
-import 'package:mayor_g/src/widgets/boton_widget.dart';
+
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 import 'package:mayor_g/src/utils/icon_string_util.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
 //SERVICES
-import 'imagen_perfil.dart';
+import 'package:mayor_g/src/services/user/user_service.dart';
 import 'package:mayor_g/src/services/auth_service.dart';
 import 'package:mayor_g/src/services/commons/drawer_service.dart';
 

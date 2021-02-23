@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/notificacion_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/user/user_service.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 class NotificationsPage extends StatelessWidget {

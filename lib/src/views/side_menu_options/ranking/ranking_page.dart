@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-import 'package:mayor_g/src/widgets/background_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class RankingPage extends StatelessWidget {
   final Map<String, double> dataMap = {'Correcto': 5, 'Incorrecto': 3};

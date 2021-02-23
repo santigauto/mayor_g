@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/models/collab_model.dart';
 import 'package:mayor_g/src/services/http_request_service.dart';
-import 'package:mayor_g/src/widgets/alert_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 class CollabService{

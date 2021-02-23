@@ -8,17 +8,8 @@ import 'package:mayor_g/src/services/auth_service.dart';
 //import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 
 //DEPENDENCIAS
-//import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:mayor_g/src/widgets/boton_widget.dart';
 //WIDGETS
-//import 'package:mayor_g/src/widgets/custom_header_widget.dart';
-import 'package:mayor_g/src/widgets/input_text_widget.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/loading_widget.dart';
-//SERVICIOS
-//import 'package:mayor_g/src/services/auth_service.dart';
-//import 'package:mayor_g/src/widgets/loading_widget.dart';
-//import '../services/auth_service.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 
 class SignInPage extends StatefulWidget {

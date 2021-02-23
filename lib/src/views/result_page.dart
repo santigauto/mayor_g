@@ -1,20 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bordered_text/bordered_text.dart';
-import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+
 import 'package:mayor_g/src/models/background_music.dart';
+import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+
 import 'package:mayor_g/src/services/commons/questions_service.dart';
+
 import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/views/side_menu_options/collab_page.dart';
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/models/question_model.dart';
-import 'package:mayor_g/src/widgets/loading_widget.dart';
-import 'package:mayor_g/src/widgets/pulse_animator.dart';
+
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class _Bloc {
   StreamController _controller = StreamController.broadcast();

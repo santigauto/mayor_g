@@ -6,11 +6,7 @@ import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/commons/camara.dart';
 import 'package:mayor_g/src/services/user/user_service.dart';
 
-import 'package:mayor_g/src/widgets/background_widget.dart';
-import 'package:mayor_g/src/widgets/filtros_widget.dart';
-import 'package:mayor_g/src/widgets/imagen_perfil.dart';
-import 'package:mayor_g/src/widgets/input_text_widget.dart';
-import 'package:mayor_g/src/widgets/loading_widget.dart';
+import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class AjustesPartidaPage extends StatefulWidget {
   @override
