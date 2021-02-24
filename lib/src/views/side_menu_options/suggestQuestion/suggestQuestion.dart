@@ -1,12 +1,15 @@
 //TODO: fijar el esquema de sugerencias a los inputfields para pasar al post
 
-import 'dart:convert';
 
-import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+
+//paquetes de 3ros
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/suggest_model.dart';
 
+//servicios
 import 'package:mayor_g/src/services/commons/camara.dart';
 
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
@@ -49,6 +52,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   bool aux = true;
   int currentStep = 0;
   bool complete = false;
+  bool completed = true;
   List<int> currentError = [10,10];
 
   next(){
@@ -407,13 +411,12 @@ _titulo(String text){
                 }),
               ),
             ),
+            (completed)?Container():Text('Llene todas las imagenenes', style: TextStyle(color:Colors.red),)
           ],
         );
         break;
 
       case 2: // ---VERDADERO O FALSO---
-
-        sugerencia.sugerencia.respuestas = [""];
         return Padding(
           padding: const EdgeInsets.symmetric(vertical:15.0),
           child: Column(
@@ -422,8 +425,11 @@ _titulo(String text){
                 value: 0, 
                 groupValue: i, 
                 onChanged: (value){
-                  setState(() => i = value);
-                  sugerencia.sugerencia.respuestas[0] = "true";
+                  setState((){
+                    sugerencia.sugerencia.respuestas = ["true"];
+                    i = value;
+                  });
+                  print(sugerencia.sugerencia.respuestas[0]);
                 },
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: ClipRRect(
@@ -431,7 +437,7 @@ _titulo(String text){
                 child: FlatButton(
                   disabledColor: Theme.of(context).primaryColor.withOpacity(0.3),
                   color: Theme.of(context).primaryColor,
-                  onPressed: i == 0 ?(){} : null,
+                  onPressed: i == 0 ?(){sugerencia.sugerencia.respuestas = ["true"];} : null,
                     child: Container(
                       height: size.height * 0.1,
                       child: Row(
@@ -447,8 +453,11 @@ _titulo(String text){
                 value: 1, 
                 groupValue: i, 
                 onChanged: (value){
-                  setState(() => i = value);
-                  sugerencia.sugerencia.respuestas[0] = "false";
+                  setState((){
+                    sugerencia.sugerencia.respuestas = ["false"];
+                    i = value;
+                  });
+                  print(sugerencia.sugerencia.respuestas[0]);
                 },
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: ClipRRect(
@@ -456,7 +465,7 @@ _titulo(String text){
                 child: FlatButton(
                   disabledColor: Colors.red.withOpacity(0.3),
                   color: Colors.red,
-                  onPressed: i == 1 ?(){} : null,
+                  onPressed: i == 1 ?(){sugerencia.sugerencia.respuestas = ["false"];} : null,
                     child: Container(
                       height: size.height * 0.1,
                       child: Row(
@@ -501,9 +510,11 @@ _titulo(String text){
                 child: Center(
                   child: TextFormField(
                     validator: (String text) {
-                      if(text == null){
+                      if(text.isEmpty){
+                        setState(() {});
                         return 'Llene  este campo';
                       }
+                      sugerencia.sugerencia.respuestas[i] = text;
                       return null;
                     },
                     maxLengthEnforced: true,
@@ -534,7 +545,17 @@ _titulo(String text){
                 height: size.height*0.1,
                 color: Colors.grey[100],
                 child: Center(
-                  child: TextField(
+                  child: TextFormField(
+                    validator: (String text) {
+                      if(text.isEmpty){
+                        setState(() {});
+                        return 'Llene  este campo';
+                      }
+                      sugerencia.sugerencia.respuestas[i] = sugerencia.sugerencia.respuestas[i].replaceFirst(
+                        RegExp(sugerencia.sugerencia.respuestas[i]), 
+                        '{'+sugerencia.sugerencia.respuestas[i].trim()+":"+text.trim()+'}');
+                      return null;
+                    },
                     style: TextStyle(color:Colors.grey[700]),
                     maxLines: 2,
                     maxLength: 35,
@@ -560,6 +581,7 @@ _titulo(String text){
       _lista.add(
         Container(
           decoration: BoxDecoration(
+            color: Colors.grey[100],
             border: Border.all(
               color: i == 0 ? Theme.of(context).primaryColor : Colors.red,
               width: 4
@@ -575,6 +597,7 @@ _titulo(String text){
                 });
                 return "Por favor llene este campo";
               }
+              print('pasa por aca');
               setState(() {
                   currentError[stepItem] = 10;
                 });
@@ -589,13 +612,24 @@ _titulo(String text){
   }
 
   _submit() async {
+    completed=true;
     if (!_isLoading) {
-      if (_formKey.currentState.validate()) {
+      if(groupValue == 1){
+        sugerencia.sugerencia.respuestas.forEach((element) {
+          if (element.isEmpty || element == "") completed = false;
+        });
+      }
+      if (_formKey.currentState.validate() && completed) {
         setState(() {
           aux = false;
           _isLoading = true;
         });
-        await Future.delayed(Duration(seconds: 3));
+
+        sugerencia.sugerencia.respuestas.forEach((element) {
+          print(element);
+        });
+        
+        await Future.delayed(Duration(seconds: 2));
 
         await _sended();
         setState(() {
@@ -606,6 +640,7 @@ _titulo(String text){
       print('object');
         
       });}
+      
   }
 
   Future<void> _sended() async {
