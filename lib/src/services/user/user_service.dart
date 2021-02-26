@@ -9,6 +9,7 @@ import 'package:mayor_g/src/services/http_request_service.dart';
 
 class GetUserService{
 
+//GENERAR DETALLES DEVICE
   Future generarUserDevice(BuildContext context,{@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post
   print('Generar Device');
   HttpService().getPost(context,apiRoute: 'api/Usuarios/Generar_Device',queryParameters: {
@@ -18,6 +19,7 @@ class GetUserService{
     'deviceVersion': deviceVersion
   });}
 
+//CAMBIAR NICKNAME
   Future cambiarNick(BuildContext context,{@required int dni, @required String deviceId, @required nickname}) async{//devuelve true, es un post
     print('Cambiar Nickname');
     bool boolean = await HttpService().getPost(context, apiRoute: 'api/Usuarios/Cambiar_Nickname',queryParameters: {
@@ -27,7 +29,8 @@ class GetUserService{
     });
     return boolean;
   }
-
+//                ------------------------------ BUSQUEDA ---------------------------------
+//OBTENER USUARIO POR DNI
   Future<Persona> obtenerUsuarioDni(BuildContext context,{@required int dni, @required String deviceId, @required int dniBusqueda}) async{//devuelve usuario con dni coincidente
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario_DNI',queryParameters: {
       'dni'         : dni.toString(),
@@ -40,6 +43,7 @@ class GetUserService{
     return persona;
   }
 
+//OBTENER USUARIO POR NOMBRE/NICK
   Future obtenerUsuario(BuildContext context,{@required int dni, @required String deviceId, @required String datos}) async{//devuelve datosUsuario
     
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Usuarios/Obtener_Usuario',queryParameters: {
@@ -57,6 +61,7 @@ class GetUserService{
     return _personas;
   }
 
+//INICIAR PARTIDA
   Future iniciarJuego(BuildContext context,{@required int dni,@required String deviceId}) async{//devuelve true, es un post
   print('Iniciar Juego');
   HttpService().getPost(context,apiRoute: 'api/Usuarios/Iniciar_Juego',queryParameters: {
@@ -80,7 +85,6 @@ class GetUserService{
       var notificacion = Notificacion.fromJson(noti);
       if(notificacion.fechaDeCreacion != null)notificaciones.add(notificacion);
     });
-
     return notificaciones;
   }
 

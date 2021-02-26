@@ -1,6 +1,7 @@
 //BASICS
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/views/signin_page.dart';
 //DEPENDENCIAS
 import 'package:auto_size_text/auto_size_text.dart';
@@ -19,6 +20,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin{
+
+  final player = BackgroundMusic.backgroundAudioPlayer;
   final _formKey = GlobalKey<FormState>();
   var _username;
   var _password;
@@ -26,6 +29,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   bool _recuperandoContrasenia = false;
   Size size;
   TextStyle style;
+  bool musicaSwitch = true;
 
   @override
   void didChangeDependencies() {
@@ -34,6 +38,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     super.didChangeDependencies();
   }
   
+  IconData musicaTernario(){
+    return (musicaSwitch)? Icons.music_note_rounded:Icons.music_off_rounded;
+  }
+
   _submit() async {
     if (!_isLoading) {
       if (_formKey.currentState.validate()) {
@@ -104,6 +112,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                     alignment: Alignment.center,
                     child: SingleChildScrollView(child: _militarForm(size))),
                 ),
+                
                 (_isLoading)?LoadingWidget(
                   caption: Text('Aguarde... Usted \nestá ingresando a MayorG', style: Theme.of(context).textTheme.headline6.copyWith(color:Colors.white),textAlign: TextAlign.center,),
                 ):Container()
@@ -151,18 +160,18 @@ Widget _militarForm(Size size){
           password: true,
           color: Colors.white,
           inputIcon: Icon(
-        Icons.lock,
-        color: Colors.white,
+            Icons.lock,
+            color: Colors.white,
           ),
           validator: (String text) {
-        if (text.isEmpty) {
-          return 'Por favor completar el campo';
-        }
-        this._password = text;
-        return null;
+            if (text.isEmpty) {
+              return 'Por favor completar el campo';
+            }
+            this._password = text;
+            return null;
           },
         ),
-            ],
+      ],
           ),
         ),
         Padding(
@@ -206,7 +215,18 @@ Widget _militarForm(Size size){
             ],
           ),
         ),
-        
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(musicaTernario(),color: Colors.white.withOpacity(0.5),), 
+              onPressed: (){
+                musicaSwitch = !musicaSwitch;
+                setState(() {});
+                player.setVolume((musicaSwitch)?1:0);
+              }
+            ),
+          ],
+        )
       ],
     ),
   );

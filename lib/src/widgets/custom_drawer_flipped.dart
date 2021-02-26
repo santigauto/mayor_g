@@ -45,7 +45,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
       vsync: this,
       duration: Duration(milliseconds: 350),
     );
-    rotation = Tween( begin: 0.0, end: math.pi/2).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
+    rotation = Tween( begin: 0.0, end: math.pi/2).animate(animationController);
     fade = Tween(begin:0.0,end:1.0).animate(CurvedAnimation(parent:animationController, curve: Curves.bounceIn));
   }
   @override
@@ -85,7 +85,10 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
             color: Colors.white,
             child: Stack(
               children: <Widget>[
-                BackgroundWidget(),
+                GestureDetector(
+                  onTap: toggle,
+                  child: BackgroundWidget()
+                ),
                 Transform.translate(
                   offset: Offset(maxSlide * animationController.value, 0),
                   child: Transform(
@@ -98,14 +101,16 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                 ),
                 Positioned(
                   top: MediaQuery.of(context).size.height*0.25,
-                  left: (-200) + animationController.value * (maxSlide + 100)  ,
+                  left: -200 + animationController.value * (maxSlide + 100)  ,
                   child: Transform.rotate(
-                    angle:rotation.value,
-                    child: Container(
-                      height: 250,
-                      child: Image.asset(
-                        'assets/MayorGAnimaciones/MayorG-Menu.gif',
-                      ),),
+                    angle: rotation.value,
+                    child: IgnorePointer(
+                      child: Container(
+                        height: 250,
+                        child: Image.asset(
+                          'assets/MayorGAnimaciones/MayorG-Menu.gif',
+                        ),),
+                    ),
                     ),
                 ),
                 Transform.translate(
@@ -126,7 +131,7 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                 Positioned(
                   bottom: -10.0 + MediaQuery.of(context).padding.top,
                   left: 4.0 + animationController.value * maxSlide,
-                  child: IconButton(icon: Icon(Icons.error_outline_rounded), onPressed: ()=>Navigator.pushNamed(context, 'about'), color: Colors.white.withOpacity(0.4),),
+                  child: IconButton(icon: Icon(Icons.help_outline_outlined), onPressed: ()=>Navigator.pushNamed(context, 'about'), color: Colors.white.withOpacity(0.4),),
                 ),
                 Positioned(
                   top: 4.0 + MediaQuery.of(context).padding.top,

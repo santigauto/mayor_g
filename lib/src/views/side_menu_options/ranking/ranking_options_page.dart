@@ -1,5 +1,4 @@
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
@@ -17,15 +16,13 @@ class RankingOptionsPage extends StatefulWidget {
 class _RankingOptionsPageState extends State<RankingOptionsPage> with SingleTickerProviderStateMixin{
 
   TabController _tabController;
-  ImageProvider profilePic;
+  ImagenPerfil profilePic;
   PreferenciasUsuario _prefs = PreferenciasUsuario();  
 
   @override
   void initState() {
     
-    profilePic =(_prefs.foto == null || _prefs.foto == '')
-      ?AssetImage('assets/soldier.png')
-      :MemoryImage(base64Decode(_prefs.foto));
+    profilePic = ImagenPerfil(photoData: _prefs.foto,radius: 30,);
     
     
     super.initState();

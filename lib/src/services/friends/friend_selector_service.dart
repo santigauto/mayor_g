@@ -23,7 +23,7 @@ class GetFriendsService{
   List _solicitudes = new List();
   List _amigos = new List();
 
-
+//ENVIAR SOLICITUD 
   enviarSolicitud(BuildContext context,{@required int dni,@required String deviceId, @required int dniAmigo}) async{//devuelve true, es un post
   print('Enviar Solicitud');
   HttpService().getPost(context,apiRoute: 'api/Amigos/Enviar_Solicitud',queryParameters: {
@@ -34,7 +34,7 @@ class GetFriendsService{
   }
 
 
-
+//BUSCAR SOLICITUDES PENDIENTES
   Future solicitudesPendientes(BuildContext context,{@required int dni, @required String deviceId}) async{ // devuelve una lista, es un get
     print('solicitudesPedientes');
     var _decodedJson = await HttpService().getGet(context,apiRoute: 'api/Amigos/Solicitudes_Pendientes',queryParameters: {
@@ -50,11 +50,7 @@ class GetFriendsService{
   }
 
 
-
-
-
-
-  //POST Aprobar_Solicitud(string idSolicitud)
+  //POST APROBAR SOLICITUD DE AMISTAD
   Future aprobarSolicitud(BuildContext context,{ @required int dni, @required String deviceId, @required String idSolicitud}) async{//devuelve true, es un post
   print('Aprobar Solicitud');
   HttpService().getPost(context,apiRoute: 'api/Amigos/Aprobar_Solicitud',queryParameters: {
@@ -64,6 +60,7 @@ class GetFriendsService{
   });
   }
 
+//RECHAZAR SOLICITUD
   Future rechazarSolicitud(BuildContext context,{@required int dni, @required String deviceId,@required String idSolicitud}) async{//devuelve true, es un post
   print('Rechazar Solicitud');
   HttpService().getPost(context,apiRoute: 'api/Amigos/Rechazar_Solicitud',queryParameters: {
@@ -73,6 +70,7 @@ class GetFriendsService{
   });
   }
 
+//OBTENER LISTADO DE AMIGOS
   Future obtenerAmigos(BuildContext context,{@required int dni, @required String deviceId})async{
     
     print('obtener Amigos');
@@ -90,6 +88,7 @@ class GetFriendsService{
 
   }
 
+//ELIMINAR AMISTAD
   Future eliminarAmistad(BuildContext context,{@required int dni, @required int dniAmigo, @required String deviceId})async{
     print('Eliminar amigo');
     HttpService().getPost(context,apiRoute: 'api/Amigos/Eliminar_Amigo',queryParameters: {

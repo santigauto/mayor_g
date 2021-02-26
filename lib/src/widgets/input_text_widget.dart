@@ -17,18 +17,25 @@ class TextInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<TextInput> {
+  bool ocultarPassword = true;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: TextStyle(color: widget.color),
       keyboardType: widget.inputType,
-      obscureText: widget.password,
+      obscureText: widget.password ? ocultarPassword : false,
       validator: widget.validator,
       decoration: InputDecoration(
         prefixIcon: widget.inputIcon != null ? widget.inputIcon : null,
         errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         labelText: widget.label,
         labelStyle: TextStyle(color: widget.color),
+        suffixIcon: !widget.password ? null :
+          IconButton(
+            color: Colors.white,
+            icon: Icon(ocultarPassword ? Icons.visibility : Icons.visibility_off),
+            onPressed: () => setState(() => ocultarPassword = !ocultarPassword)
+          ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: widget.color

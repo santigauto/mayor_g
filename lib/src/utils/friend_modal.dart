@@ -84,7 +84,7 @@ class Modal{
                   Icons.search,
                   color: Colors.white,
                 ),
-                onPressed: () =>Navigator.popAndPushNamed(context, 'search')
+                onPressed: () =>Navigator.popAndPushNamed(context, 'search', arguments: {'index':0})
               ),
               title: Text(
                 'Amigos',
