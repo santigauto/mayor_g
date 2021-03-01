@@ -31,6 +31,7 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
 
   @override
   Widget build(BuildContext context) {
+
     bool auxDragHandler = true;
     Color auxColor;
     if(widget.color == null) auxColor = Theme.of(context).primaryColor;
@@ -39,6 +40,7 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
     double initialPercentage = 0.4;
     double border = 20.0;
     double size = 17.0;
+    
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (notification) {
         notification.disallowGlow();

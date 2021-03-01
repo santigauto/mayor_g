@@ -19,6 +19,9 @@ import 'package:http/http.dart' as http;
 import 'package:mayor_g/config.dart';
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
+/*TODO: Backend! el servicio de logueo deberia cumplir con la funcion ternaria de ingresar como civil o militar, 
+en este momento solo puedo loguearme como militar y tengo que pasar por un monton de otras funciones que deberian
+estar del lado del back*/
 
 class AuthService {
 
@@ -29,6 +32,7 @@ class AuthService {
 //------------------------------ FUNCION DE LOGEO ------------------------------------
 
   login(BuildContext context, { @required String username, @required String password}) async {
+    
     try{
       
       final http.Response response = await http.post(
@@ -223,7 +227,7 @@ recuperarContrasenia(BuildContext context, {@required String dni}) async {
       if (Platform.isAndroid) {
         var build = await deviceInfoPlugin.androidInfo;
         deviceName = build.model;
-        deviceVersion = build.version.toString();
+        deviceVersion = build.version.sdkInt.toString();
         identifier = build.androidId;  //UUID for Android
       } else if (Platform.isIOS) {
         var data = await deviceInfoPlugin.iosInfo;

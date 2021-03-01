@@ -65,6 +65,13 @@ void dispose() {
 
   }
 
+  _back(){
+    print('hola que haces');
+    setState(() {
+      _animationController.reset();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -105,48 +112,51 @@ void dispose() {
   }
 
   Widget _initMatchButton(context){
-      return AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, _) {
-          return RaisedButton(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('¿Preparado?',style:Theme.of(context).textTheme.headline4.copyWith(color: Colors.white)),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  height: tamanio.value,
-                  width: tamanio.value,
-                  margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(200),
-                    image: DecorationImage(
-                      image: AssetImage('assets/shape15.png'),
-                    ),
-                    ),
-                  child: Center(
-                    child: PulseAnimatorWidget(
-                      begin: 0.5,
-                      child: AutoSizeText(
-                        '¡PRESIONE PARA JUGAR!', maxLines: 2,
-                        style: TextStyle(fontSize: 30, color: Colors.white),
-                        textAlign: TextAlign.center,
+      return WillPopScope(
+        onWillPop: _back(),
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, _) {
+            return RaisedButton(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('¿Preparado?',style:Theme.of(context).textTheme.headline4.copyWith(color: Colors.white)),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: tamanio.value,
+                    width: tamanio.value,
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(200),
+                      image: DecorationImage(
+                        image: AssetImage('assets/shape15.png'),
+                      ),
+                      ),
+                    child: Center(
+                      child: PulseAnimatorWidget(
+                        begin: 0.5,
+                        child: AutoSizeText(
+                          '¡PRESIONE PARA JUGAR!', maxLines: 2,
+                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            onPressed: () {
-              setState(() {
-                _isLoading = true;
-              });
-              _playAction();
-            },
-            disabledTextColor: Colors.grey,
-          );
-        }
+                ],
+              ),
+              onPressed: () {
+                setState(() {
+                  _isLoading = true;
+                });
+                _playAction();
+              },
+              disabledTextColor: Colors.grey,
+            );
+          }
+        ),
       );
   }
 
@@ -172,7 +182,7 @@ void dispose() {
             children: <Widget>[
               _boton(size, _modoClasico, "CLÁSICO", () {
                 setState(() {
-                  showDialog(context: context, child: _initMatchButton(context),);
+                  showDialog(context: context, child: _initMatchButton(context));
                   _animationController.forward();
                   _modoClasico = true;
                   _modoDuelo = false;
@@ -224,7 +234,8 @@ void dispose() {
                   setState(() {
                     _selecOponente = false;
                     _animationController.forward();
-                    showDialog(context: context, child: _initMatchButton(context),);
+                    showDialog(context: context, child: _initMatchButton(context));
+                      _animationController.forward();
                     _selecAlAzar = true;
                   });
                 }),

@@ -62,13 +62,13 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
         if (imagen.isNotEmpty){
           imagen = imagen.replaceFirst('data:image/jpeg;base64,', '');
           if(imagen.length < 2){imagen = '';}
-        bool validado = false;
+          bool validado = false;
           validado = await GetUserService().cambiarFoto(context,
-              dni: prefs.dni, deviceId: prefs.deviceId, imagen: imagen).then((value){ if(validado){
-                prefs.foto = imagen;
-              }
-              return true;
-              });
+            dni: prefs.dni, deviceId: prefs.deviceId, imagen: imagen).then((value){ if(validado){
+              prefs.foto = imagen;
+            }
+            return true;
+          });
         }
         setState(() {
           _isLoading = false;
