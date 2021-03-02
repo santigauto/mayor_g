@@ -24,7 +24,8 @@ class QuestionPage extends StatefulWidget {
 
 class _QuestionPageState extends State<QuestionPage>
     with TickerProviderStateMixin {
-//--------------- DECLARO VARIABLES UTILES DE LA PAGINA ------------------
+
+//          ---------------        DECLARO VARIABLES UTILES DE LA PAGINA           ------------------
 
   final player = BackgroundMusic.backgroundAudioPlayer;
   AnimationController controller; // CONTROLADOR DEL TEMPORIZADOR
@@ -48,7 +49,7 @@ class _QuestionPageState extends State<QuestionPage>
     _controller.close();
   }
 
-//-------- EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR ----------
+//           --------      EL INIT STATE SE ENCARGA DE ARRANCAR EL TEMPORIZADOR        ----------
 
   @override
   void initState() {
@@ -169,11 +170,17 @@ class _QuestionPageState extends State<QuestionPage>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+            (questions.preguntas[n].unirConFlechas)? Column(
+              children: [
+                AutoSizeText('Arrastrar cada opcion de la primera columna con la correspondiente de la segunda', textAlign: TextAlign.center,),
+                Divider(height: 1,)
+              ],
+            ):Container(),
             Center(
               child: AutoSizeText(
-                questions.preguntas[n].pregunta,
+                 questions.preguntas[n].pregunta,
                 maxLines: (questions.preguntas[n].imagenPregunta)? 2:7,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 17),
@@ -205,7 +212,7 @@ class _QuestionPageState extends State<QuestionPage>
     }
   }
 
-  //--------- FUNCION QUE DISPARA ALERTA EN CASO DE QUE SE PRESIONE EL BOTON 'ATRAS' DEL DISPOSITIVO  ---------
+  //      ---------       FUNCION QUE DISPARA ALERTA EN CASO DE QUE SE PRESIONE EL BOTON 'ATRAS' DEL DISPOSITIVO     ---------
 
   Future<bool> _back() {
     aux = true;

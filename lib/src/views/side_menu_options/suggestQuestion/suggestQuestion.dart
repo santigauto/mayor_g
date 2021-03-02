@@ -24,7 +24,9 @@ class SuggestQuestionPage extends StatefulWidget {
 class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
 
   final _formKey = GlobalKey<FormState>();
+
   PreferenciasUsuario prefs = PreferenciasUsuario();
+
   Sugerencia sugerencia = new Sugerencia(
     sugerencia: SugerenciaClass(
       pregunta: "",
@@ -54,6 +56,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
   bool complete = false;
   bool completed = true;
   List<int> currentError = [10,10];
+
 
   next(){
     goTo(currentStep + 1);
@@ -109,6 +112,10 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     }
     else Navigator.pop(context);
   }
+    sugerencia.sugerencia.arma = prefs.arma;
+    sugerencia.sugerencia.curso = prefs.curso;
+    sugerencia.sugerencia.materia = prefs.materia;
+    sugerencia.sugerencia.organismo = prefs.colegio;
 
     sugerencia.dni = prefs.dni;
     size = MediaQuery.of(context).size;
@@ -624,10 +631,16 @@ _titulo(String text){
           aux = false;
           _isLoading = true;
         });
-
+        print(sugerencia.sugerencia.pregunta);
         sugerencia.sugerencia.respuestas.forEach((element) {
-          print(element);
+          print('respuesta:$element');
         });
+        print('organismo: '+ sugerencia.sugerencia.organismo.toString());
+        print('materia '+ sugerencia.sugerencia.materia);
+        print('curso '+ sugerencia.sugerencia.curso);
+        print('arma '+ sugerencia.sugerencia.arma);
+        print('es unir con flechas?: '+ sugerencia.sugerencia.unirConFlechas.toString());
+        print('es vof?: '+ sugerencia.sugerencia.verdaderoFalso.toString());
         
         await Future.delayed(Duration(seconds: 2));
 

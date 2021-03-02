@@ -79,7 +79,9 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
 
   @override
   Widget build(BuildContext context) {
+
     Map routeData = ModalRoute.of(context).settings.arguments;
+
     print(prefs.nickname);
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -97,103 +99,110 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
               children: <Widget>[
                 SafeArea(child: Container()),
                 //NICKNAME
-                (routeData['logueado'])?ExpansionTile(
-                  subtitle: Text(
-                    'Aquí puede modificar su Nickname y foto de perfil',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  title: Row(
-                    children: [
-                      Text(
-                        'Usuario',
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+                (routeData['logueado'])?Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Row(
-                          children: [
-                            Stack(
+                    ExpansionTile(
+                      subtitle: Text(
+                        'Aquí puede modificar su Nickname y foto de perfil',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      title: Row(
+                        children: [
+                          Text(
+                            'Usuario',
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            key: _formKey,
+                            child: Row(
                               children: [
-                                ImagenPerfil(photoData: (imagen != null)?imagen:prefs.foto,radius: size.width * 0.1,),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: CircleAvatar(
-                                    radius: size.width*0.05,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor.withOpacity(0.7),
-                                    child: IconButton(
-                                      icon: Icon(Icons.camera_alt),
-                                      onPressed: uploadImage,
-                                      color: Colors.white,
-                                      splashColor: Colors.grey,
+                                Stack(
+                                  children: [
+                                    ImagenPerfil(photoData: (imagen != null)?imagen:prefs.foto,radius: size.width * 0.1,),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: CircleAvatar(
+                                        radius: size.width*0.05,
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor.withOpacity(0.7),
+                                        child: IconButton(
+                                          icon: Icon(Icons.camera_alt),
+                                          onPressed: uploadImage,
+                                          color: Colors.white,
+                                          splashColor: Colors.grey,
+                                        ),
+                                      ),
                                     ),
+                                  ],
+                                ),
+                                Container(
+                                  width: size.width * 0.7,
+                                  child: TextInput(
+                                    label: (prefs.nickname == null)
+                                        ? "Actual: " +
+                                            prefs.nombre +
+                                            " " +
+                                            prefs.apellido
+                                        : prefs.nickname,
+                                    inputIcon: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                    color: Colors.white,
+                                    validator: (String text) {
+                                      if (text.isEmpty) {
+                                        return 'Por favor completar el campo';
+                                      }
+                                      nickNuevo = text;
+                                    },
                                   ),
                                 ),
                               ],
                             ),
-                            Container(
-                              width: size.width * 0.7,
-                              child: TextInput(
-                                label: (prefs.nickname == null)
-                                    ? "Actual: " +
-                                        prefs.nombre +
-                                        " " +
-                                        prefs.apellido
-                                    : prefs.nickname,
-                                inputIcon: Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                ),
-                                color: Colors.white,
-                                validator: (String text) {
-                                  if (text.isEmpty) {
-                                    return 'Por favor completar el campo';
-                                  }
-                                  nickNuevo = text;
-                                },
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Divider(color: Colors.white.withOpacity(0.2)),
+                      ],
                     ),
                   ],
                 ):Container(),
-                Divider(color: Colors.white.withOpacity(0.2)),
                 //FILTROS
-                ExpansionTile(
-                  title: Row(
-                    children: <Widget>[
-                      Text(
-                        'Filtros',
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    'Filtre a su criterio las características de las preguntas',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                (routeData['logueado'])?Column(
                   children: [
-                    FiltrosWidget(),
+                    ExpansionTile(
+                      title: Row(
+                        children: <Widget>[
+                          Text(
+                            'Filtros',
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(
+                        'Filtre a su criterio las características de las preguntas',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      children: [
+                        FiltrosWidget(),
+                      ],
+                    ),
+                    Divider(color: Colors.white.withOpacity(0.2)),
                   ],
-                ),
-
-                Divider(color: Colors.white.withOpacity(0.2)),
+                ):Container(),
                 //SONIDOS
                 ExpansionTile(
                   title: Row(

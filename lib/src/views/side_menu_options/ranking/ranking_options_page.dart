@@ -39,7 +39,7 @@ class _RankingOptionsPageState extends State<RankingOptionsPage> with SingleTick
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Hero(tag:1,child: ImagenPerfil(photoData: _prefs.foto))
+          child: Hero(tag:1,child: GestureDetector(onTap:()=>Navigator.pop(context),child: ImagenPerfil(photoData: _prefs.foto)))
         ),
         title: Text('${_prefs.apellido}, ${_prefs.nombre}'),
         automaticallyImplyLeading: false,

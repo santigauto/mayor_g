@@ -151,6 +151,3 @@ Future sugerirPregunta(BuildContext context,{int dni, String deviceId,String pre
 }
 
 }
-
-
-
