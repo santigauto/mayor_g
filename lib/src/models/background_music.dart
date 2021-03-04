@@ -1,9 +1,11 @@
-import 'package:just_audio/just_audio.dart';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BackgroundMusic{
 
-  static final AudioPlayer backgroundAudioPlayer = new AudioPlayer();
+  
+  static final AssetsAudioPlayer backgroundAssetsAudioPlayer = new AssetsAudioPlayer();
 
   SharedPreferences backgroundMusic;
 

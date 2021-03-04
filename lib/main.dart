@@ -1,9 +1,9 @@
 import 'dart:io';
 
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:mayor_g/src/models/background_music.dart';
 
 import 'package:mayor_g/src/models/profileInfo.dart';
@@ -25,7 +25,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  final player = BackgroundMusic.backgroundAudioPlayer;
+
+
+  final AssetsAudioPlayer player = BackgroundMusic.backgroundAssetsAudioPlayer;
   @override
   void initState(){
     playMusic();
@@ -33,7 +35,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   playMusic() async{
-    await player.setAsset('assets/audios/Background_Music.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+    player.open(
+      Audio("assets/audios/Background_Music.mp3"),
+      loopMode: LoopMode.none,
+      showNotification: true,
+    ).then((value) => player.play());
   }
 
   @override

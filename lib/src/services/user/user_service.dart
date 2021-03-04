@@ -1,4 +1,5 @@
   
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,15 @@ import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/services/http_request_service.dart';
 
 class GetUserService{
+
+  StreamController _streamController = new StreamController.broadcast();
+
+  Stream get stream => _streamController.stream;
+  Function get sink => _streamController.sink.add;
+
+  void disposeStreams(){
+    _streamController.close();
+  }
 
 //GENERAR DETALLES DEVICE
   Future generarUserDevice(BuildContext context,{@required int dni,@required String deviceId, @required String deviceName, @required deviceVersion}) async{//devuelve true, es un post

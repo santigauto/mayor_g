@@ -21,7 +21,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin{
 
-  final player = BackgroundMusic.backgroundAudioPlayer;
+  final player = BackgroundMusic.backgroundAssetsAudioPlayer;
   final _formKey = GlobalKey<FormState>();
   var _username;
   var _password;

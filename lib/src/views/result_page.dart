@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bordered_text/bordered_text.dart';
-import 'package:just_audio/just_audio.dart';
 
 import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/question_model.dart';
@@ -39,7 +39,7 @@ class ResultPage extends StatelessWidget {
       preguntasRespondidas = new List();
     }
 
-    final player = BackgroundMusic.backgroundAudioPlayer;
+    final player = BackgroundMusic.backgroundAssetsAudioPlayer;
     final Map mapa = ModalRoute.of(context).settings.arguments;
     bool resultado = mapa['resultado'];
     int n = mapa['n'] + 1;
@@ -113,10 +113,8 @@ Future<bool> _back() {
               onPressed: () async {
                 Navigator.pushReplacementNamed(context, '/');
                 await player
-                  .setAsset('assets/audios/Background_Music.mp3')
-                  .then((value) => player
-                    .setLoopMode(LoopMode.one)
-                    .then((value) => player.play()));
+                  .open(Audio('assets/audios/Background_Music.mp3'),loopMode: LoopMode.none)
+                  .then((value) => player.play());
               },
               child: Text('Salir')),
             FlatButton(
@@ -148,7 +146,7 @@ Future<bool> _back() {
               child: Text('Reportar', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 var route = MaterialPageRoute(builder: (context) {
-                  return CollabPage(collabOrReport: 'Reportar', id: 3);
+                  return CollabPage(isCollab: false, id: questions.preguntas[n - 1].id);
                 });
                 Navigator.push(context, route);
               },

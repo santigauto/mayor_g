@@ -29,7 +29,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(){
     'new_match'       : (BuildContext context) => NewMatchPage(),
     'ranking'         : (BuildContext context) => RankingOptionsPage(),
     'rank'            : (BuildContext context) => RankingPage(),
-    'collab'          : (BuildContext context) => CollabPage(),
+    'collab'          : (BuildContext context) => CollabPage(isCollab: true,),
     'friends'         : (BuildContext context) => FriendsPage(),
     'solicitudes'     : (BuildContext context) => SolicitudesPendientesPage(),
     'splash'          : (BuildContext context) => SplashPage(),

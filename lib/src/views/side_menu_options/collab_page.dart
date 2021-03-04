@@ -6,9 +6,9 @@ import 'package:mayor_g/src/services/commons/collab_service.dart';
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class CollabPage extends StatefulWidget {
-  final String collabOrReport;
-  final double id;
-  CollabPage({Key key, this.collabOrReport, this.id});
+  final bool isCollab;
+  final String id;
+  CollabPage({Key key, this.isCollab, this.id});
 
   @override
   _CollabPageState createState() => _CollabPageState();
@@ -18,6 +18,7 @@ class _CollabPageState extends State<CollabPage> {
   final _formKey = GlobalKey<FormState>();
   var _collab;
   bool _isLoading = false;
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
 
   _submit() async {
     if (!_isLoading) {
@@ -26,7 +27,9 @@ class _CollabPageState extends State<CollabPage> {
           _isLoading = true;
         });
 
-        await CollabService().sendCollab(context,dni: PreferenciasUsuario().dni,sugerencia: _collab,idPregunta: 0);
+        (widget.isCollab)
+            ?await CollabService().sendCollab(context,dni: prefs.dni,sugerencia: _collab,idPregunta: 0)
+            :await CollabService().reportarFalla(context, dni: prefs.dni, deviceId: prefs.deviceId, descripcion: _collab, preguntaId: widget.id);
 
         setState(() {
           _isLoading = false;
@@ -38,12 +41,10 @@ class _CollabPageState extends State<CollabPage> {
   @override
   Widget build(BuildContext context) {
     String aux;
-    if (widget.collabOrReport == null) {
-      setState(() {
-        aux = 'colaborar';
-      });
+    if (widget.isCollab) {
+      aux = 'colaborar';
     } else
-      aux = widget.collabOrReport.toLowerCase();
+      aux = 'reportar';
 
     var size = MediaQuery.of(context).size;
 

@@ -2,9 +2,10 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:just_audio/just_audio.dart';
+
 import 'package:mayor_g/src/models/background_music.dart';
 
 //MODELOS
@@ -27,7 +28,7 @@ class _QuestionPageState extends State<QuestionPage>
 
 //          ---------------        DECLARO VARIABLES UTILES DE LA PAGINA           ------------------
 
-  final player = BackgroundMusic.backgroundAudioPlayer;
+  final player = BackgroundMusic.backgroundAssetsAudioPlayer;
   AnimationController controller; // CONTROLADOR DEL TEMPORIZADOR
   bool aux = false; // BANDERA DEL CONTROLADOR QUE ME PERMITE GENERAR UN POP EXTRA EN EL CASO DE QUE UN ALERTA NO SE CIERRE CUANDO SE ACABE EL TIEMPO
   ImageProvider imagen; // CONTENDRÁ LA IMAGEN DE LA PREGUNTA
@@ -225,7 +226,7 @@ class _QuestionPageState extends State<QuestionPage>
           FlatButton(
               onPressed: () async{
                 Navigator.pop(context, true);
-                await player.setAsset('assets/audios/Background_Music.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+                await player.open(Audio('assets/audios/Background_Music.mp3'),loopMode: LoopMode.none).then((value) => player.play());
                 aux = false;
               },
               child: Text('Salir')),

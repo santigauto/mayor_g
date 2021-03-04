@@ -130,7 +130,10 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
   }
   
   Widget _listItem(int x){
-    return(_gente[0].apellido != null)? Container(
+    return(_gente.length == 0)
+      ?ListTile(
+        title: Text("No se encontraron coincidencias"),)
+      :(_gente[x].dni != prefs.dni)? Container(
       decoration: BoxDecoration(
       color: Colors.white.withOpacity(0.5),
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
@@ -148,18 +151,16 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
             textColor: Colors.white,
             disabledColor: Colors.grey,
             disabledTextColor: Colors.black,
-            onPressed: () {
-              /*...*/
-              print(_gente[x].dni);
+            onPressed:
+              () {
               GetFriendsService().enviarSolicitud(context, dni: prefs.dni, dniAmigo: _gente[x].dni, deviceId: prefs.deviceId);
-            },
+              _gente.removeAt(x);
+              setState(() {});},
           child: Text("Invitar",),
           ),
         ),
     )
-    : ListTile(
-      title: Text("No se encontraron coincidencias"),
-    );
+    : Container();
   }
 
   Widget _showAlertDialog(context, List listaAmigos, int indexAmigo){

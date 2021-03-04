@@ -18,7 +18,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
   
 
   final _formKey = GlobalKey<FormState>();
-  final player = BackgroundMusic.backgroundAudioPlayer;
+  final player = BackgroundMusic.backgroundAssetsAudioPlayer;
   final prefs = new PreferenciasUsuario();
   String selectedArma;
   String selectedMateria;
@@ -219,7 +219,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                   ),
                   children: [
                     StreamBuilder<double>(
-                        stream: player.volumeStream,
+                        stream: player.volume,
                         builder: (context, snapshot) {
                           return Container(
                             padding: EdgeInsets.all(10.0),
@@ -254,12 +254,12 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                                   ),
                                 ),
                                 Text(
-                                    '${(snapshot.data * 100).toStringAsFixed(0)}',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Fixed',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24.0)),
+                                  '${(snapshot.data * 100).toStringAsFixed(0)}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Fixed',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24.0)),
                               ],
                             ),
                           );
@@ -275,11 +275,13 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
               ],
             ),
           ),
+          //BOTONES DE GUARDADO Y RESTABLECER
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: Container()),
               Container(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -289,81 +291,69 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                     )
                   ]
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: size.width * 0.4,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            color: Theme.of(context).primaryColor,
-                            child: ListTile(
-                              title: AutoSizeText(
-                                "Restablecer",
-                                maxLines: 1,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    .copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              onTap: () {
-                                prefs.arma = auxArma;
-                                prefs.materia = auxMateria;
-                                prefs.colegio = auxColegio;
-                                prefs.curso = auxCurso;
-                                Navigator.pop(context);
-                              },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: size.width * 0.4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: ListTile(
+                            title: AutoSizeText(
+                              "Restablecer",
+                              maxLines: 1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             ),
+                            onTap: () {
+                              prefs.arma = auxArma;
+                              prefs.materia = auxMateria;
+                              prefs.colegio = auxColegio;
+                              prefs.curso = auxCurso;
+                              Navigator.pop(context);
+                            },
                           ),
                         ),
                       ),
-                      Container(
-                        width: size.width * 0.4,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            color: Theme.of(context).primaryColor,
-                            child: ListTile(
-                              title: AutoSizeText(
-                                "Guardar",
-                                maxLines: 1,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    .copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              onTap: () async{
-                                _submit();
-                                Navigator.pop(context);
-                              },
+                    ),
+                    Container(
+                      width: size.width * 0.4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: ListTile(
+                            title: AutoSizeText(
+                              "Guardar",
+                              maxLines: 1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             ),
+                            onTap: () async{
+                              _submit();
+                              Navigator.pop(context);
+                            },
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )
             ],
           ),
-          (_isLoading)
-              ? LoadingWidget(
-                  caption: Text('Buscando preguntas, aguarde...',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16)),
-                )
-              : Container()
         ],
       ),
     );

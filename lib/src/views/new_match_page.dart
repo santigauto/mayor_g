@@ -1,10 +1,10 @@
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:mayor_g/src/models/background_music.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
@@ -20,7 +20,7 @@ class NewMatchPage extends StatefulWidget {
 }
 
 class _NewMatchPageState extends State<NewMatchPage> with SingleTickerProviderStateMixin {
-  final player = BackgroundMusic.backgroundAudioPlayer;
+  final player = BackgroundMusic.backgroundAssetsAudioPlayer;
   bool _isLoading = false;
   bool _modoClasico = true;
   bool _modoDuelo = true;
@@ -59,7 +59,7 @@ void dispose() {
       var route = new MaterialPageRoute(
           builder: (context) => QuestionPage(questions: preguntas, n: 0));
       Navigator.pushReplacement(context, route);
-      await player.setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+      await player.open(Audio("assets/audios/Art_of_Silence.mp3"),loopMode: LoopMode.none).then((value) => player.play());//setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
 
     }
 

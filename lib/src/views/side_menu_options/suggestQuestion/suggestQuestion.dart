@@ -37,10 +37,16 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
       verdaderoFalso: false,
     )
   );
-  
+
+  String auxArma;
+  String auxMateria;
+  String auxColegio;
+  String auxCurso;
+
   var i = 0;
   bool _isLoading = false;
   TextStyle titleStyle;
+  
   Camara camaraController = new Camara();
   Camara camaraRespuesta1Controller = new Camara();
   Camara camaraRespuesta2Controller = new Camara();
@@ -112,6 +118,11 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     }
     else Navigator.pop(context);
   }
+      auxArma = prefs.arma;
+      auxMateria = prefs.materia;
+      auxColegio = prefs.colegio;
+      auxCurso = prefs.curso;
+
     sugerencia.sugerencia.arma = prefs.arma;
     sugerencia.sugerencia.curso = prefs.curso;
     sugerencia.sugerencia.materia = prefs.materia;
@@ -631,7 +642,12 @@ _titulo(String text){
           aux = false;
           _isLoading = true;
         });
-        print(sugerencia.sugerencia.pregunta);
+
+        prefs.arma = auxArma;
+        prefs.materia = auxMateria;
+        prefs.colegio = auxColegio;
+        prefs.curso = auxCurso;
+        /* print(sugerencia.sugerencia.pregunta);
         sugerencia.sugerencia.respuestas.forEach((element) {
           print('respuesta:$element');
         });
@@ -640,7 +656,7 @@ _titulo(String text){
         print('curso '+ sugerencia.sugerencia.curso);
         print('arma '+ sugerencia.sugerencia.arma);
         print('es unir con flechas?: '+ sugerencia.sugerencia.unirConFlechas.toString());
-        print('es vof?: '+ sugerencia.sugerencia.verdaderoFalso.toString());
+        print('es vof?: '+ sugerencia.sugerencia.verdaderoFalso.toString()); */
         
         await Future.delayed(Duration(seconds: 2));
 
