@@ -146,7 +146,7 @@ List<Widget> _respuestas(Size size, aux) {
               tag: tag,
               child: Container(
                 width: double.infinity,
-                child: FlatButton(
+                child: MaterialButton(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(

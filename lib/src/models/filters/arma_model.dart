@@ -1,5 +1,5 @@
 class ListaArma{
-  List<Arma> listaArma = new List();
+  List<Arma> listaArma =[];
 
   ListaArma();
 

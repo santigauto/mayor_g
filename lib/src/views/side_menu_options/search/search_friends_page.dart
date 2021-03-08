@@ -79,7 +79,7 @@ class FriendsPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(data[x].jugador),
-              IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,child: _showAlertDialog(context, data, x)))
+              IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,builder:(_)=> _showAlertDialog(context, data, x)))
             ]
           )
           : Container(),

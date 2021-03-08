@@ -81,12 +81,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       builder: (context) => AlertDialog(
       title: Text('¿Quieres realmente abandonar la partida?'),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
             onPressed: () {
               Navigator.pop(context, true);
             },
             child: Text('Salir')),
-        FlatButton(
+        TextButton(
             onPressed: () {
               Navigator.pop(context, false);
             },

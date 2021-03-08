@@ -117,11 +117,11 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
       cancel();
     }
     else Navigator.pop(context);
-  }
-      auxArma = prefs.arma;
-      auxMateria = prefs.materia;
-      auxColegio = prefs.colegio;
-      auxCurso = prefs.curso;
+    }
+    auxArma = prefs.arma;
+    auxMateria = prefs.materia;
+    auxColegio = prefs.colegio;
+    auxCurso = prefs.curso;
 
     sugerencia.sugerencia.arma = prefs.arma;
     sugerencia.sugerencia.curso = prefs.curso;
@@ -131,6 +131,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
     sugerencia.dni = prefs.dni;
     size = MediaQuery.of(context).size;
     titleStyle = Theme.of(context).textTheme.headline6;
+
     return WillPopScope(
       onWillPop: _back,
       child: Container(
@@ -452,7 +453,7 @@ _titulo(String text){
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: FlatButton(
+                child: MaterialButton(
                   disabledColor: Theme.of(context).primaryColor.withOpacity(0.3),
                   color: Theme.of(context).primaryColor,
                   onPressed: i == 0 ?(){sugerencia.sugerencia.respuestas = ["true"];} : null,
@@ -480,7 +481,7 @@ _titulo(String text){
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: FlatButton(
+                child: MaterialButton(
                   disabledColor: Colors.red.withOpacity(0.3),
                   color: Colors.red,
                   onPressed: i == 1 ?(){sugerencia.sugerencia.respuestas = ["false"];} : null,
@@ -513,7 +514,7 @@ _titulo(String text){
   }
 
   List<Widget>_listaUnir(listaRespuestas){
-    List<Widget> lista = new List<Widget>();
+    List<Widget> lista = [];
     for (var i = 0; i < 4; i++) {
       lista.add(Row(
         children: [
@@ -535,7 +536,6 @@ _titulo(String text){
                       sugerencia.sugerencia.respuestas[i] = text;
                       return null;
                     },
-                    maxLengthEnforced: true,
                     style: TextStyle(color:Colors.grey[700]),
                     maxLines: 2,
                     maxLength: 35,
@@ -690,7 +690,7 @@ _titulo(String text){
               Container(
                 width: 200,
                 child: Image.asset('assets/capa53x.png')),
-                RaisedButton(
+                MaterialButton(
                 child: Text("Continuar", style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   Navigator.of(context).pop();

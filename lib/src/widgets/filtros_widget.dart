@@ -158,7 +158,7 @@ class _FiltrosWidgetState extends State<FiltrosWidget> {
                             : CircularProgressIndicator(),
                         IconButton(
                           icon: Icon(Icons.list_rounded,color: Colors.white,), 
-                          onPressed: () => showDialog(context: context, child: _showOpcionesDialog(_getItems(snapshot.data, hint, detalle), title))
+                          onPressed: () => showDialog(context: context, builder:(_)=> _showOpcionesDialog(_getItems(snapshot.data, hint, detalle), title))
                         )
                       ],
                     ),
@@ -178,7 +178,7 @@ class _FiltrosWidgetState extends State<FiltrosWidget> {
   }
 
   List<Widget> _getItems(data, String hint, int detalle) {
-    List<Widget> lista = new List();
+    List<Widget> lista = [];
 
     if (data.isNotEmpty) {
       data.forEach((item) {

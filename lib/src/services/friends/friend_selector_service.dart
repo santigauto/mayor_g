@@ -20,8 +20,8 @@ class GetFriendsService{
     _solicitudController.close();
   }
 
-  List _solicitudes = new List();
-  List _amigos = new List();
+  List _solicitudes = [];
+  List _amigos = [];
 
 //ENVIAR SOLICITUD 
   enviarSolicitud(BuildContext context,{@required int dni,@required String deviceId, @required int dniAmigo}) async{//devuelve true, es un post

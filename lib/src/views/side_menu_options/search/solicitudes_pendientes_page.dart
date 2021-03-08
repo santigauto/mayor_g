@@ -77,7 +77,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
             Expanded(child: Container()),
             Container(
               width: size.width * 0.15,
-              child: FlatButton(
+              child: MaterialButton(
                 color: color,
                 textColor: Colors.white,
                 disabledColor: Colors.grey,
@@ -92,7 +92,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
             SizedBox(width: 10,),
             Container(
               width: size.width * 0.15,
-              child: FlatButton(
+              child: MaterialButton(
                 color: color,
                 textColor: Colors.white,
                 disabledColor: Colors.grey,

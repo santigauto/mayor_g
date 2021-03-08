@@ -1,5 +1,5 @@
 class ListaCurso {
-  List<Curso> cursos = new List();
+  List<Curso> cursos = [];
   ListaCurso();
   ListaCurso.fromJsonList(List<dynamic> jsonList){
     if(jsonList == null || jsonList.isEmpty) return;

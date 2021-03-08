@@ -119,10 +119,12 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
               ),
           ),
           SizedBox(height: 8.0,),
-          RaisedButton(
+          Container(
             color: Theme.of(context).primaryColor,
-            child: Text('Buscar', style: TextStyle(color: Colors.white),),
-            onPressed: _submit
+            child: ElevatedButton(
+              child: Text('Buscar', style: TextStyle(color: Colors.white),),
+              onPressed: _submit
+            ),
           ),
         ],
       ),
@@ -141,12 +143,12 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
         ? ListTile(
           title: Text('${_gente[x].nickname}'),
           leading: Icon(Icons.face),
-          trailing: IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,child: _showAlertDialog(context, _gente, x))))
+          trailing: IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,builder:(_)=> _showAlertDialog(context, _gente, x))))
         :ListTile(
           onTap: () {},
           title: Text('${_gente[x].nickname}'),
           leading: Icon(Icons.face),
-          trailing: FlatButton(
+          trailing: MaterialButton(
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Colors.grey,

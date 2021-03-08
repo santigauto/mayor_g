@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
               title: 'Mayor G Flutter',
               theme: ThemeData(
                 unselectedWidgetColor: Colors.white,
-                cursorColor: Colors.white38,
+                textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
                 hintColor: Colors.white54,
                 primarySwatch: Colors.green,
                 primaryColor: Color(0xFF5C8D60),

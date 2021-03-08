@@ -223,14 +223,14 @@ class _QuestionPageState extends State<QuestionPage>
         title: Text('¿Quieres salir de la partida?',textAlign: TextAlign.center,),
         content: Text('¡Perderas los puntos de esta pregunta!',textAlign: TextAlign.left,),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
               onPressed: () async{
                 Navigator.pop(context, true);
                 await player.open(Audio('assets/audios/Background_Music.mp3'),loopMode: LoopMode.none).then((value) => player.play());
                 aux = false;
               },
               child: Text('Salir')),
-          FlatButton(
+          TextButton(
               onPressed: () {
                 Navigator.pop(context, false);
                 aux = false;

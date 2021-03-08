@@ -1,6 +1,6 @@
 
 class ListaOrganismo{
-  List<Organismo> organismos = new List();
+  List<Organismo> organismos = [];
 
   ListaOrganismo();
 

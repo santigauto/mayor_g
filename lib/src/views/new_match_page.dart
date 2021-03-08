@@ -119,8 +119,7 @@ void dispose() {
         child: AnimatedBuilder(
           animation: _animationController,
           builder: (context, _) {
-            return RaisedButton(
-              color: Colors.transparent,
+            return ElevatedButton(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -155,7 +154,6 @@ void dispose() {
                 });
                 _playAction();
               },
-              disabledTextColor: Colors.grey,
             );
           }
         ),
@@ -184,7 +182,7 @@ void dispose() {
             children: <Widget>[
               _boton(size, _modoClasico, "CLÁSICO", () {
                 setState(() {
-                  showDialog(context: context, child: _initMatchButton(context));
+                  showDialog(context: context,  builder: (_)=>_initMatchButton(context));
                   _animationController.forward();
                   _modoClasico = true;
                   _modoDuelo = false;
@@ -236,7 +234,7 @@ void dispose() {
                   setState(() {
                     _selecOponente = false;
                     _animationController.forward();
-                    showDialog(context: context, child: _initMatchButton(context));
+                    showDialog(context: context, builder:(_)=> _initMatchButton(context));
                       _animationController.forward();
                     _selecAlAzar = true;
                   });

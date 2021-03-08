@@ -36,7 +36,7 @@ class ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (preguntasRespondidas == null) {
-      preguntasRespondidas = new List();
+      preguntasRespondidas = [];
     }
 
     final player = BackgroundMusic.backgroundAssetsAudioPlayer;
@@ -88,12 +88,12 @@ Future<bool> _back() {
     builder: (context) => AlertDialog(
       title: Text('¿Quieres realmente abandonar la partida?'),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () async {
             Navigator.pop(context, true);
           },
           child: Text('Salir')),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pop(context, false);
           },
@@ -109,7 +109,7 @@ Future<bool> _back() {
         builder: (context) => AlertDialog(
           title: Text('¿Realmente quiere abandonar la partida?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 Navigator.pushReplacementNamed(context, '/');
                 await player
@@ -117,7 +117,7 @@ Future<bool> _back() {
                   .then((value) => player.play());
               },
               child: Text('Salir')),
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -206,33 +206,36 @@ Future<bool> _back() {
                     spreadRadius: 5,
                   )
                 ]),
-                child: RaisedButton.icon(
+                child: Container(
                   color: Theme.of(context).primaryColor,
-                  shape: StadiumBorder(),
-                  onPressed: () async {
-                    streamBloc.streamSink(true);
-                    int largo = questions.preguntas.length;
-                    if (n == (largo - 5)) {
-                      var aux = await QuestionServicePrueba()
-                          .getNewQuestions(context, cantidad: 10);
-                      questions.preguntas.addAll(aux.preguntas);
-                      for (int i = 0; i < (largo - 5); i++) {
-                        questions.preguntas.removeAt(0);
-                        n--;
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      streamBloc.streamSink(true);
+                      int largo = questions.preguntas.length;
+                      if (n == (largo - 5)) {
+                        var aux = await QuestionServicePrueba()
+                            .getNewQuestions(context, cantidad: 10);
+                        questions.preguntas.addAll(aux.preguntas);
+                        for (int i = 0; i < (largo - 5); i++) {
+                          questions.preguntas.removeAt(0);
+                          n--;
+                        }
                       }
-                    }
-                    var route = MaterialPageRoute(
-                        builder: (context) =>
-                            QuestionPage(questions: questions, n: n));
-                    Navigator.pushReplacement(context, route);
-                  },
-                  textColor: Colors.white,
-                  label: PulseAnimatorWidget(
-                      begin: 0.5, child: Icon(Icons.arrow_forward_ios)),
-                  icon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: PulseAnimatorWidget(
-                        begin: 0.5, child: Text('Continuar')),
+                      var route = MaterialPageRoute(
+                          builder: (context) =>
+                              QuestionPage(questions: questions, n: n));
+                      Navigator.pushReplacement(context, route);
+                    },
+                    label: PulseAnimatorWidget(
+                        begin: 0.5, child: Icon(Icons.arrow_forward_ios)),
+                    icon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: PulseAnimatorWidget(
+                          begin: 0.5, child: Text('Continuar',style: TextStyle(color: Colors.white),)),
+                    ),
                   ),
                 ),
               ),
@@ -316,7 +319,7 @@ Future<bool> _back() {
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8),
         child: Container(
           width: double.infinity,
-          child: FlatButton(
+          child: MaterialButton(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
             disabledColor: Colors.white,
             shape: RoundedRectangleBorder(

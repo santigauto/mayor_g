@@ -64,7 +64,7 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
               ),
               content: Text('Ya eres usuario de MayorG, ahora solo debes iniciar sesión para comenzar nuevas partidas'),
               actions: [
-                FlatButton(onPressed: (){
+                MaterialButton(onPressed: (){
                   Navigator.pop(context);
                   Navigator.pushReplacementNamed(context, 'login');
                 }, child: Text('Aceptar'))

@@ -15,12 +15,12 @@ class MenuPage extends StatelessWidget{
       builder: (context) => AlertDialog(
         title: Text('Quieres realmente salir de Mayor G'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.pop(context, true);
             },
             child: Text('Salir')),
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.pop(context, false);
             },

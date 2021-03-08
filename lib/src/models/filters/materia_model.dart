@@ -1,5 +1,5 @@
 class ListaMateria{
-  List<Materia> materias= new List();
+  List<Materia> materias= [];
   ListaMateria();
   ListaMateria.fromJsonList(List<dynamic> jsonList){
     if(jsonList == null || jsonList.isEmpty) return;
