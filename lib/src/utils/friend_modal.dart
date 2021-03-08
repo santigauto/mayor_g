@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
+import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
+import 'package:mayor_g/src/services/friends/friend_selector_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
@@ -15,20 +18,9 @@ import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class Modal{
 
-  List<Map<String,dynamic>> gente = [   // AUXILIAR HARCODEADO(NO SE VAN A USAR) 
-    {'nombre':'Carlos','grado':'VS'}, 
-    {'nombre':'Raul','grado':'CT'}, 
-    {'nombre':'Octavio','grado':'SG'}, 
-    {'nombre':'Jose','grado':'TT'},
-    {'nombre':'Ramon','grado':'VS'},
-    {'nombre':'Oscar','grado':'VS'}, 
-    {'nombre':'Miguel','grado':'CT'},
-    {'nombre':'Fernando','grado':'VP'}, 
-    {'nombre':'Julieta','grado':'CR'},  
-    {'nombre':'Pedro','grado':'SG'}, 
-    {'nombre':'Uriel','grado':'TT'},];
+  
   bool _isSelected = false;                                            // BANDERA QUE HABILITARA EL FOOTER DE SELECCION DE PERSONA
-  Map<String,dynamic> _personaSeleccionada = {'nombre':'','grado':''}; // CONTENEDOR DEL MAPA DE PERSONA
+  Solicitud _personaSeleccionada; // CONTENEDOR DEL MAPA DE PERSONA
 
 
 //--- PATRON BLOC PARA MANEJO EN DIRECTO DE LOS WIDGETS DEL MODAL ---
@@ -48,10 +40,11 @@ class Modal{
 //---MAIN---
   mainBottomSheet (BuildContext context, ListaPreguntasNuevas preguntas){
     
-//---AGREGO AL MAPA LA KEY BOOLEANA 'SELECCION'--- 
-    gente.forEach((persona){
-      persona.addAll({'seleccion':false});
-    });
+//---AGREGO AL MAPA LA KEY BOOLEANA 'SELECCION'---
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
+    GetFriendsService service = new GetFriendsService();
+    service.obtenerAmigos(context, dni: prefs.dni, deviceId: prefs.deviceId);
+
 //---CUERPO DEL MODAL---
     showModalBottomSheet(
       isScrollControlled: true,
@@ -66,7 +59,16 @@ class Modal{
                 child: Stack(
                   children: [
                     BackgroundWidget(),
-                    listItem(context, gente),
+                    StreamBuilder(
+                      stream: service.streamSolicitudes,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return list(context, snapshot.data);                          
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }
+                    ),
                     _selecionado(context, preguntas)
                   ],
                 )
@@ -95,19 +97,19 @@ class Modal{
   }
 
 //---WIDGET LISTA DE AMIGOS---
-  Widget listItem(context, gente){
-    return 
-        ListView.builder(
-          itemCount: gente.length + 1,
-          itemBuilder: (context, x){
-            return (x == gente.length)?
-             Container(color: Colors.white.withOpacity(0.5),child: ListTile()):
-             _listItem(x);
-          });
+  Widget list(context,List data){
+
+    return(data.length != 0)
+    ? ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, x){
+          return _listItem(x, data);
+      })
+    : ListTile(title: Center(child: Text("Aún no tienes amigos en MayorG", style: TextStyle(color: Colors.white),)),);
   }
 
 //---WIDGETS ITEMS DE LA LISTA---
-  Widget _listItem(int x){
+  Widget _listItem(int x, List gente){
     
     return Container(
       decoration: BoxDecoration(
@@ -118,16 +120,16 @@ class Modal{
         groupValue: _personaSeleccionada,
         onChanged: (value){
           for(var i = 0; i < gente.length; i++ ){
-                gente[i]['seleccion']=false;
-              }
-              gente[x]['seleccion']=true;
-              _isSelected = gente[x]['seleccion'];
-              _personaSeleccionada=gente[x];
-              streamSink(_personaSeleccionada);
+            gente[i].seleccionado=false;
+          }
+          gente[x].seleccionado=true;
+          _isSelected = gente[x].seleccionado;
+          _personaSeleccionada=gente[x];
+          streamSink(_personaSeleccionada);
         },
         value: gente[x],
-        title: Text(gente[x]['grado'] + ' ' + gente[x]['nombre']),
-        selected: gente[x]['seleccion'],
+        title: Text(gente[x].jugador),
+        selected: gente[x].seleccionado,
       ),
     );
   }
@@ -145,12 +147,12 @@ Widget _selecionado(BuildContext context, ListaPreguntasNuevas preguntas){
             leading: IconButton(
               icon: Icon(Icons.cancel), 
               onPressed: (){
-                _personaSeleccionada['seleccion']=false;
-                _personaSeleccionada={'nombre':'','grado':'','seleccion':false};
+                _personaSeleccionada.seleccionado=false;
+                _personaSeleccionada=null;
                 streamSink(_personaSeleccionada);
                 _isSelected=false;}
             ),
-            title: Text(_personaSeleccionada['nombre'],textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
+            title: Text(_personaSeleccionada.jugador,textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
             trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
               //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
               preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);

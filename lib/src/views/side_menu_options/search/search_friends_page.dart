@@ -35,7 +35,7 @@ class FriendsPage extends StatelessWidget {
             builder: (context,streamSnapshot) {
               if(streamSnapshot.hasData){
                 personas = streamSnapshot.data;
-                return _listItem(context, streamSnapshot.data, streamSnapshot.data);
+                return _listItem(context, streamSnapshot.data);
               }else{
                 return Center(child: CircularProgressIndicator());
               }
@@ -57,18 +57,18 @@ class FriendsPage extends StatelessWidget {
   }
 
 
-  Widget _listItem(BuildContext context,List data,streamSnapshot){
+  Widget _listItem(BuildContext context,List data){
     return(data.length != 0)
     ? ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, x){
-          return _item(context, x, data,streamSnapshot);
+          return _item(context, x, data);
       })
     : ListTile(title: Center(child: Text("Aún no tienes amigos en MayorG", style: TextStyle(color: Colors.white),)),);
   }
 
 
-  Widget _item(BuildContext context, int x,List data, streamSnapshot){
+  Widget _item(BuildContext context, int x,List data){
     return Container(
       decoration: BoxDecoration(
       color: Colors.white,

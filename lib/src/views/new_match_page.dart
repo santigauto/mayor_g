@@ -6,6 +6,7 @@ import 'dart:ui';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:mayor_g/src/models/background_music.dart';
+import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/utils/friend_modal.dart';
@@ -29,6 +30,7 @@ class _NewMatchPageState extends State<NewMatchPage> with SingleTickerProviderSt
   ListaPreguntasNuevas preguntas;
   AnimationController _animationController;
   Animation tamanio;
+  PreferenciasUsuario prefs = PreferenciasUsuario();
   //static BackgroundMusicBloc bloc;
 
   @override
@@ -223,7 +225,7 @@ void dispose() {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              _boton(size, _selecOponente, "AMIGOS", () {
+              _boton(size, _selecOponente, "AMIGOS", () async{
                   setState(() {
                     _animationController.reset();
                     _selecOponente = true;
