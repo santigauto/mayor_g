@@ -362,7 +362,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
   
 
   uploadImage() async {
-    imagen = await camaraController.getImage();
+    imagen = await camaraController.getImage(context);
     setState(() {});
   }
 }

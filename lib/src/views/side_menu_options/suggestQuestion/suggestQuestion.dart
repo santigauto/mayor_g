@@ -253,19 +253,19 @@ _titulo(String text){
  uploadImage(int i)async{
     switch (i) {
       case 0:
-        sugerencia.sugerencia.imagen = await camaraController.getImage();
+        sugerencia.sugerencia.imagen = await camaraController.getImage(context);
         break;
       case 1:
-        sugerencia.sugerencia.respuestas[0] = await camaraRespuesta1Controller.getImage();
+        sugerencia.sugerencia.respuestas[0] = await camaraRespuesta1Controller.getImage(context);
         break;
       case 2:
-        sugerencia.sugerencia.respuestas[1] = await camaraRespuesta2Controller.getImage();
+        sugerencia.sugerencia.respuestas[1] = await camaraRespuesta2Controller.getImage(context);
         break;
       case 3:
-        sugerencia.sugerencia.respuestas[2] = await camaraRespuesta3Controller.getImage();
+        sugerencia.sugerencia.respuestas[2] = await camaraRespuesta3Controller.getImage(context);
         break;
       case 4:
-        sugerencia.sugerencia.respuestas[3] = await camaraRespuesta4Controller.getImage();
+        sugerencia.sugerencia.respuestas[3] = await camaraRespuesta4Controller.getImage(context);
         break;
     }
     setState((){}); 

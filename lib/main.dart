@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
     player.open(
       Audio("assets/audios/Background_Music.mp3"),
       loopMode: LoopMode.none,
-      showNotification: true,
+      showNotification: false,
     ).then((value) => player.play());
   }
 

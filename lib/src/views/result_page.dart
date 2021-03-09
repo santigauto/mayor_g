@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
+//PKGS 3rds
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bordered_text/bordered_text.dart';
 
@@ -198,44 +199,45 @@ Future<bool> _back() {
             Positioned(
               bottom: 20,
               right: 30,
-              child: Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 25,
-                    spreadRadius: 5,
-                  )
-                ]),
+              child: MaterialButton(
+                onPressed: () async {
+                  streamBloc.streamSink(true);
+                  int largo = questions.preguntas.length;
+                  if (n == (largo - 5)) {
+                    var aux = await QuestionServicePrueba()
+                        .getNewQuestions(context, cantidad: 10);
+                    questions.preguntas.addAll(aux.preguntas);
+                    for (int i = 0; i < (largo - 5); i++) {
+                      questions.preguntas.removeAt(0);
+                      n--;
+                    }
+                  }
+                  var route = MaterialPageRoute(
+                      builder: (context) =>
+                          QuestionPage(questions: questions, n: n));
+                  Navigator.pushReplacement(context, route);
+                },
                 child: Container(
-                  color: Theme.of(context).primaryColor,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20)
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 25,
+                        spreadRadius: 5,
+                      )
+                    ]
                   ),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      streamBloc.streamSink(true);
-                      int largo = questions.preguntas.length;
-                      if (n == (largo - 5)) {
-                        var aux = await QuestionServicePrueba()
-                            .getNewQuestions(context, cantidad: 10);
-                        questions.preguntas.addAll(aux.preguntas);
-                        for (int i = 0; i < (largo - 5); i++) {
-                          questions.preguntas.removeAt(0);
-                          n--;
-                        }
-                      }
-                      var route = MaterialPageRoute(
-                          builder: (context) =>
-                              QuestionPage(questions: questions, n: n));
-                      Navigator.pushReplacement(context, route);
-                    },
-                    label: PulseAnimatorWidget(
-                        begin: 0.5, child: Icon(Icons.arrow_forward_ios)),
-                    icon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: PulseAnimatorWidget(
+                  child: Row(
+                    children: [
+                      PulseAnimatorWidget(begin: 0.5, child: Icon(Icons.arrow_forward_ios,color: Colors.white,)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: PulseAnimatorWidget(
                           begin: 0.5, child: Text('Continuar',style: TextStyle(color: Colors.white),)),
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),

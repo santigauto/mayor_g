@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:mayor_g/src/models/auth/obtain_password.dart';
@@ -46,13 +47,19 @@ class AuthService {
           })
         );
         if(!response.headers['content-type'].contains('application/json; charset=utf-8')) {
-          return Alert.alert(context, body: Text('Ups! Algo salió mal. Por favor vuelva a intentar.'));
+          return Alert.alert(
+            context, 
+            body: Text('Ups! Algo salió mal. Por favor vuelva a intentar.'),
+            );
         }
 
         final dynamic _decodedJson = jsonDecode(response.body); 
 
         if(_decodedJson['status'].toString().isEmpty || _decodedJson['status'] != 200) {
-          return Alert.alert(context, body: Text('Usuario o contraseña incorrectos.'));
+          return Alert.alert(
+            context, 
+            body: Text('Usuario o contraseña incorrectos.'),
+            );
         }
 
         final User _user = User.fromJson(_decodedJson);
@@ -90,7 +97,15 @@ class AuthService {
         
         print('${[_user.token.generatedAt,_user.toString()]}');
     }catch(e){
-      return Alert.alert(context, body: Text("${e.toString()}\nPor favor vuelva a intentarlo, en caso de que persista el error intente recuperar su contraseña."));
+      return Alert.alert(
+        context, 
+        body: Text("${e.toString()}\nPor favor vuelva a intentarlo, en caso de que persista el error intente recuperar su contraseña."),
+        actions: [
+          BotonWidget(
+            text: Text('ok'),
+            onTap: ()=>Navigator.pop(context),)
+        ]
+        );
     } /* on SocketException { print('SocketException');} on FormatException{print('FormatException');} on HttpException{print('HttpException');} */
 
 
@@ -200,18 +215,36 @@ recuperarContrasenia(BuildContext context, {@required String dni}) async {
       })
     );
     if (!response.headers['content-type'].contains('application/json; charset=utf-8')) {
-      return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'));
+      return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'),
+      actions: [
+        BotonWidget(
+          text: Text('ok'),
+          onTap: ()=>Navigator.pop(context),
+        )
+      ]);
     }
 
     final dynamic _decodedJson = jsonDecode(response.body);
 
     if (_decodedJson['status'].toString().isEmpty || _decodedJson['status'] != 200) {
-      return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'));
+      return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'),
+      actions: [
+        BotonWidget(
+          text: Text('ok'),
+          onTap: ()=>Navigator.pop(context),
+        )
+      ]);
     }
 
     final RecuperarContrasenia _recuperarContrasenia = RecuperarContrasenia.fromJsonMap(_decodedJson);
 
-    return Alert.alert(context, body: Text(_recuperarContrasenia.mensaje));
+    return Alert.alert(context, body: Text(_recuperarContrasenia.mensaje),
+    actions: [
+      BotonWidget(
+        text: Text('ok'),
+        onTap: ()=>Navigator.pop(context),
+      )
+    ]);
   }
 
 

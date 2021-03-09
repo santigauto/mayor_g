@@ -15,7 +15,7 @@ class BotonWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        color: (colorPrimario != null)?colorPrimario: Colors.blue,
+        color: (colorPrimario != null)?colorPrimario: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

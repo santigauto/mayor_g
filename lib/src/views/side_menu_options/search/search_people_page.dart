@@ -119,11 +119,13 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
               ),
           ),
           SizedBox(height: 8.0,),
-          Container(
-            color: Theme.of(context).primaryColor,
-            child: ElevatedButton(
-              child: Text('Buscar', style: TextStyle(color: Colors.white),),
-              onPressed: _submit
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              color: Theme.of(context).primaryColor,
+              child: MaterialButton(
+                onPressed: _submit,
+                child: Text('Buscar', style: TextStyle(color: Colors.white),)),
             ),
           ),
         ],

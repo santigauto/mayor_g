@@ -6,7 +6,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Camara{
-  getImage() async {
+  getImage(BuildContext context) async {
     ImageSource source = ImageSource.gallery;
     File image = await ImagePicker.pickImage(source: source);
     if(image != null){
@@ -18,7 +18,7 @@ class Camara{
           maxHeight: 900,
           compressFormat: ImageCompressFormat.jpg,
           androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.blue,
+            toolbarColor: Theme.of(context).primaryColor,
             toolbarTitle: "Recortar imagen",
             backgroundColor: Colors.white,
           )
