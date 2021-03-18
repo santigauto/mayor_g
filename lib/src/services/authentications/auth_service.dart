@@ -37,7 +37,7 @@ class AuthService {
     try{
       
       final http.Response response = await http.post(
-        '${Config.ApiURL}/musuario/login',
+        Uri.https(Config.ApiURL, '/api/musuario/Login'),
         headers: Config.HttpHeaders,
         body: jsonEncode({
             'usu_dni' : username,
@@ -61,11 +61,12 @@ class AuthService {
             body: Text('Usuario o contraseña incorrectos.'),
             );
         }
+        print(_decodedJson);
 
         final User _user = User.fromJson(_decodedJson);
 
         await user.set(_decodedJson);
-        _profile =await getUserProfile(await getAccessToken());
+        _profile =await getUserProfile(_decodedJson['mut_uat']);
         
         prefs.apellido=_profile.apellido;
         prefs.nombre=_profile.nombre;
@@ -110,14 +111,15 @@ class AuthService {
 
 
   }
+
 //---------------- ACCESO AL TOKEN --------------------------
   Future<String> getAccessToken() async {
 
+    print('pasa por getAccesToken');
+
       final result = await user.get();
-      if(result == null) {
-        return null;
-      }
       final String uat = result['mut_uat'] as String;
+      print('uat');
       return uat;
   }
 
@@ -135,10 +137,15 @@ class AuthService {
     User _profile = User();
 
     final http.Response response = await http.get(
-      '${Config.ApiURL}/musuario/Trae_Datos_Usuario?mut_uat=$_uat',
+      Uri.https(Config.ApiURL, '/api/musuario/Trae_Datos_Usuario',
+        {
+          'mut_uat': _uat,
+        }
+      ),
       headers: Config.HttpHeaders,);
     
     final dynamic _decodedJson = jsonDecode(response.body);
+    print(_decodedJson);
     if(_decodedJson['usu_DNI'].toString().isEmpty){
       _profile = null;
       return User(apellido: '',dni: 0,deviceId: '',email: '',grado: '',nombre: '',pushId: '');
@@ -218,7 +225,7 @@ recuperarContrasenia(BuildContext context, {@required String dni}) async {
       return Alert.alert(context, body: Text('Algo salió mal. Por favor volver a intentar.'),
       actions: [
         BotonWidget(
-          text: Text('ok'),
+          text: Text('Ok'),
           onTap: ()=>Navigator.pop(context),
         )
       ]);

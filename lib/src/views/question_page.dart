@@ -226,7 +226,7 @@ class _QuestionPageState extends State<QuestionPage>
           TextButton(
               onPressed: () async{
                 Navigator.pop(context, true);
-                await player.open(Audio('assets/audios/Background_Music.mp3'),loopMode: LoopMode.none).then((value) => player.play());
+                player.open(Audio('assets/audios/Background_Music.mp3'));player.loop = true; player.play();
                 aux = false;
               },
               child: Text('Salir')),

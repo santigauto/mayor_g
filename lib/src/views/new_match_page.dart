@@ -61,7 +61,9 @@ void dispose() {
       var route = new MaterialPageRoute(
           builder: (context) => QuestionPage(questions: preguntas, n: 0));
       Navigator.pushReplacement(context, route);
-      await player.open(Audio("assets/audios/Art_of_Silence.mp3"),loopMode: LoopMode.none).then((value) => player.play());//setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
+      player.open(Audio("assets/audios/Art_of_Silence.mp3"));
+      player.loop=true;
+      player.play();//setAsset('assets/audios/Art_of_Silence.mp3').then((value) =>player.setLoopMode(LoopMode.one).then((value) => player.play()));
 
     }
 

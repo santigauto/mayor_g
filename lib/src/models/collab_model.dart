@@ -10,5 +10,4 @@ factory Collab.fromJson(Map<String,dynamic> parsedJson){
     estado: parsedJson['estado'],
   );
 }
-
 }

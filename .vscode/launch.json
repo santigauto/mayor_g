@@ -7,7 +7,7 @@
         {
             "name": "mayor_g",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
         }
     ]
 }

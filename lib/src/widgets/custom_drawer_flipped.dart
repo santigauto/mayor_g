@@ -9,7 +9,7 @@ import 'package:mayor_g/src/widgets/custom_widgets.dart';
 import 'package:mayor_g/src/utils/icon_string_util.dart';
 //SERVICES
 import 'package:mayor_g/src/services/user/user_service.dart';
-import 'package:mayor_g/src/services/auth_service.dart';
+import 'package:mayor_g/src/services/authentications/auth_service.dart';
 import 'package:mayor_g/src/services/commons/drawer_service.dart';
 
 class CustomFlippedDrawer extends StatefulWidget {

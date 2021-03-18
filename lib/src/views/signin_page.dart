@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
-import 'package:mayor_g/src/services/auth_service.dart';
+import 'package:mayor_g/src/services/authentications/auth_service.dart';
 //import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 
 //DEPENDENCIAS

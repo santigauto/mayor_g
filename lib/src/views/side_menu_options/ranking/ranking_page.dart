@@ -21,18 +21,22 @@ class RankingPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 )),
                 Container(
-                    child: PieChart(
-                  legendStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                  colorList: [Theme.of(context).primaryColor, Colors.red],
-                  dataMap: dataMap,
-                  showChartValueLabel: false,
-                  chartValueStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                  animationDuration: Duration(seconds: 2),
+                  child: PieChart(
+                    legendOptions: LegendOptions(
+                      legendTextStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    colorList: [Theme.of(context).primaryColor, Colors.red],
+                    dataMap: dataMap,
+                    chartValuesOptions: ChartValuesOptions(
+                      chartValueStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                      //showChartValues: false 
+                    ),
+                    animationDuration: Duration(seconds: 2),
                 )),
                 Divider(),
                 Row(

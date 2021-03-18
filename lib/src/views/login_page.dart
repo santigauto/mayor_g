@@ -8,8 +8,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 //WIDGETS
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
 //SERVICIOS
-import 'package:mayor_g/src/services/auth_service.dart';
-import '../services/auth_service.dart';
+import 'package:mayor_g/src/services/authentications/auth_service.dart';
+import '../services/authentications/auth_service.dart';
 
 
 class LoginPage extends StatefulWidget {

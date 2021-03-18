@@ -5,7 +5,7 @@
 
 //PETICIÓN DE UAT
 class Config { 
-  static const ApiURL = "https://somosea.ejercito.mil.ar/api";
+  static const ApiURL = "somosea.ejercito.mil.ar";
   static const ApiURLCGE = "www.cge.mil.ar:81";
 
   static const HttpHeaders = {
@@ -15,7 +15,6 @@ class Config {
     'Access-Control-Allow-Headers': 'Access-Control-*, Origin, X-Requested-With, Content-Type, Accept',
     'Content-Type': 'application/json'
   };
-
 }
 
 //PETICIONES A MADEROSOLUTIONS

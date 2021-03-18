@@ -8,7 +8,8 @@ import 'package:image_picker/image_picker.dart';
 class Camara{
   getImage(BuildContext context) async {
     ImageSource source = ImageSource.gallery;
-    File image = await ImagePicker.pickImage(source: source);
+    // ignore: invalid_use_of_visible_for_testing_member
+    PickedFile image = await ImagePicker.platform.pickImage(source: source);
     if(image != null){
       File cropped = await ImageCropper.cropImage(
           sourcePath: image.path,

@@ -37,9 +37,10 @@ class _MyAppState extends State<MyApp> {
   playMusic() async{
     player.open(
       Audio("assets/audios/Background_Music.mp3"),
-      loopMode: LoopMode.none,
-      showNotification: false,
-    ).then((value) => player.play());
+    );
+    player.loop = true;
+    player.play();
+
   }
 
   @override

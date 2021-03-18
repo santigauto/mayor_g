@@ -28,7 +28,7 @@ class _CollabPageState extends State<CollabPage> {
         });
 
         (widget.isCollab)
-            ?await CollabService().sendCollab(context,dni: prefs.dni,sugerencia: _collab,idPregunta: 0)
+            ?await CollabService().enviarAporte(context,dni: prefs.dni,deviceId: prefs.deviceId, texto: _collab)
             :await CollabService().reportarFalla(context, dni: prefs.dni, deviceId: prefs.deviceId, descripcion: _collab, preguntaId: widget.id);
 
         setState(() {

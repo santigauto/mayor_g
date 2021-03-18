@@ -111,11 +111,14 @@ Future<bool> _back() {
           title: Text('¿Realmente quiere abandonar la partida?'),
           actions: <Widget>[
             TextButton(
-              onPressed: () async {
+              onPressed: () {
                 Navigator.pushReplacementNamed(context, '/');
-                await player
+                player.open(Audio('assets/audios/Background_Music.mp3'));
+                player.loop = true;
+                player.play();
+                /* await player
                   .open(Audio('assets/audios/Background_Music.mp3'),loopMode: LoopMode.none)
-                  .then((value) => player.play());
+                  .then((value) => player.play()); */
               },
               child: Text('Salir')),
             TextButton(
