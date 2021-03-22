@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:mayor_g/src/models/auth/obtain_password.dart';
 import 'package:mayor_g/src/models/auth/user.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
+import 'package:mayor_g/src/services/authentications/device_info_service.dart';
 import 'package:mayor_g/src/services/http_request_service.dart';
 import 'package:mayor_g/src/services/user/user_service.dart';
 
@@ -61,10 +59,6 @@ class AuthService {
             body: Text('Usuario o contraseña incorrectos.'),
             );
         }
-        print(_decodedJson);
-
-        final User _user = User.fromJson(_decodedJson);
-
         await user.set(_decodedJson);
         _profile =await getUserProfile(_decodedJson['mut_uat']);
         
@@ -93,10 +87,9 @@ class AuthService {
           ).then((value) async{
             Persona _persona = await GetUserService().obtenerUsuarioDni(context, dni: prefs.dni, deviceId: prefs.deviceId, dniBusqueda: prefs.dni);
             prefs.nickname = _persona.nickname;
-          }).then((value) => Navigator.pushReplacementNamed(context, 'menu')));
+          }));
         } 
         
-        print('${[_user.token.generatedAt,_user.toString()]}');
     }catch(e){
       return Alert.alert(
         context, 
@@ -108,19 +101,8 @@ class AuthService {
         ]
         );
     } /* on SocketException { print('SocketException');} on FormatException{print('FormatException');} on HttpException{print('HttpException');} */
+    Navigator.pushReplacementNamed(context, 'menu');
 
-
-  }
-
-//---------------- ACCESO AL TOKEN --------------------------
-  Future<String> getAccessToken() async {
-
-    print('pasa por getAccesToken');
-
-      final result = await user.get();
-      final String uat = result['mut_uat'] as String;
-      print('uat');
-      return uat;
   }
 
 //------------------------ LOGOUT -------------------------------
@@ -137,7 +119,7 @@ class AuthService {
     User _profile = User();
 
     final http.Response response = await http.get(
-      Uri.https(Config.ApiURL, '/api/musuario/Trae_Datos_Usuario',
+      Uri.https(Config.ApiURL, '/api/musuario/Trae_Datos_Usuario?',
         {
           'mut_uat': _uat,
         }
@@ -152,7 +134,7 @@ class AuthService {
     }
     else{
       _profile = User.fromJsonProfile(_decodedJson);
-      _profile.deviceId = await getDeviceDetails();
+      _profile.deviceId = await DeviceInfoService().getDeviceDetails();
       return _profile;
     }
 
@@ -163,7 +145,7 @@ class AuthService {
 Future registrarCivil(BuildContext context,{String name,String surname,String dni, String password, String nickname, String mail}) async{//devuelve true, es un post
   print('Registrar Civil');
   var result;
-  await getDeviceDetails().then((value) async  {
+  await DeviceInfoService().getDeviceDetails().then((value) async  {
     print(prefs.deviceId);
    result = await HttpService().getPost(context,apiRoute: 'api/Usuarios/Registrar_Civil',jsonEncode: jsonEncode({
     "Apellido":"",
@@ -254,36 +236,6 @@ recuperarContrasenia(BuildContext context, {@required String dni}) async {
     ]);
   }
 
-
-
-  //----------------------------- OBTENER DEVICE INFO -------------------------------
-
-   Future getDeviceDetails() async {
-    String deviceName;
-    String deviceVersion;
-    String identifier;
-    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
-    try {
-      if (Platform.isAndroid) {
-        var build = await deviceInfoPlugin.androidInfo;
-        deviceName = build.model;
-        deviceVersion = build.version.sdkInt.toString();
-        identifier = build.androidId;  //UUID for Android
-      } else if (Platform.isIOS) {
-        var data = await deviceInfoPlugin.iosInfo;
-        deviceName = data.name;
-        deviceVersion = data.systemVersion;
-        identifier = data.identifierForVendor;  //UUID for iOS
-      }
-    } on PlatformException {
-      print('Failed to get platform version');
-    }
-    prefs.deviceId =  identifier;
-    prefs.deviceVersion = deviceVersion.toString();
-    prefs.deviceName  = deviceName;
-//if (!mounted) return;
-return identifier/* [deviceName, deviceVersion, identifier] */;
-}
 
 
 }
