@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/models/question_model.dart';
-import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/services/commons/questions_service.dart';
 import 'package:mayor_g/src/services/friends/friend_selector_service.dart';
 import 'package:mayor_g/src/views/question_page.dart';
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
-
 
 
 
@@ -19,8 +18,8 @@ import 'package:mayor_g/src/widgets/custom_widgets.dart';
 class Modal{
 
   
-  bool _isSelected = false;                                            // BANDERA QUE HABILITARA EL FOOTER DE SELECCION DE PERSONA
-  Solicitud _personaSeleccionada; // CONTENEDOR DEL MAPA DE PERSONA
+  bool _isSelected = false;       // BANDERA QUE HABILITARA EL FOOTER DE SELECCION DE PERSONA
+  Persona _personaSeleccionada; // CONTENEDOR DEL MAPA DE PERSONA
 
 
 //--- PATRON BLOC PARA MANEJO EN DIRECTO DE LOS WIDGETS DEL MODAL ---
@@ -128,7 +127,7 @@ class Modal{
           streamSink(_personaSeleccionada);
         },
         value: gente[x],
-        title: Text(gente[x].jugador),
+        title: Text(gente[x].nickname),
         selected: gente[x].seleccionado,
       ),
     );
@@ -152,7 +151,7 @@ Widget _selecionado(BuildContext context, ListaPreguntasNuevas preguntas){
                 streamSink(_personaSeleccionada);
                 _isSelected=false;}
             ),
-            title: Text(_personaSeleccionada.jugador,textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
+            title: Text(_personaSeleccionada.nickname,textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
             trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
               //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
               preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);

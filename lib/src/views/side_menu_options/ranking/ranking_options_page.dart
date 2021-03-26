@@ -17,16 +17,16 @@ class _RankingOptionsPageState extends State<RankingOptionsPage> with SingleTick
 
   TabController _tabController;
   ImagenPerfil profilePic;
-  PreferenciasUsuario _prefs = PreferenciasUsuario();  
+  PreferenciasUsuario _prefs = PreferenciasUsuario();
 
   @override
   void initState() {
     
     profilePic = ImagenPerfil(photoData: _prefs.foto,radius: 30,);
     
-    
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

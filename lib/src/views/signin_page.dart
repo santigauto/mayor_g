@@ -2,12 +2,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+//DEPENDENCIAS
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 import 'package:mayor_g/src/services/authentications/auth_service.dart';
-//import 'package:mayor_g/src/services/commons/friend_selector_service.dart';
 
-//DEPENDENCIAS
 //WIDGETS
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
 

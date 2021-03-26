@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 
 import 'package:mayor_g/src/models/solicitudes_model.dart';
 import 'package:mayor_g/src/services/http_request_service.dart';
@@ -81,7 +82,7 @@ class GetFriendsService{
     });
 
     if(_decodedJson.isNotEmpty)_decodedJson.forEach((per){
-      _amigos.add(Solicitud.fromJson(per));
+      _amigos.add(Persona.fromJson(per));
     });
 
     sinkSolicitudes(_amigos);

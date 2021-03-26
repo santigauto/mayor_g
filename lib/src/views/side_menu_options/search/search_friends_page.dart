@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:mayor_g/src/models/persona_model.dart';
 
 import 'package:mayor_g/src/models/profileInfo.dart';
-import 'package:mayor_g/src/models/solicitudes_model.dart';
 
 import 'package:mayor_g/src/services/friends/friend_selector_service.dart';
 
@@ -78,7 +78,7 @@ class FriendsPage extends StatelessWidget {
           ?Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(data[x].jugador),
+              Text(data[x].nickname),
               IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,builder:(_)=> _showAlertDialog(context, data, x)))
             ]
           )
@@ -88,9 +88,9 @@ class FriendsPage extends StatelessWidget {
   }
 
 Widget _showAlertDialog(context, List listaAmigos, int indexAmigo){
-  Solicitud user = listaAmigos[indexAmigo];
+  Persona user = listaAmigos[indexAmigo];
   return AlertaOpcionesWidget(
-    title: user.jugador,
+    title: user.nickname,
     children: [
       ListTile(
         title: Center(child: Text('Retar a Duelo')),

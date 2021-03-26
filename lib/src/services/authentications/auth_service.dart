@@ -119,7 +119,7 @@ class AuthService {
     User _profile = User();
 
     final http.Response response = await http.get(
-      Uri.https(Config.ApiURL, '/api/musuario/Trae_Datos_Usuario?',
+      Uri.https(Config.ApiURL, '/api/musuario/Trae_Datos_Usuario',
         {
           'mut_uat': _uat,
         }

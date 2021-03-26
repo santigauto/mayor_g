@@ -116,9 +116,6 @@ Future<bool> _back() {
                 player.open(Audio('assets/audios/Background_Music.mp3'));
                 player.loop = true;
                 player.play();
-                /* await player
-                  .open(Audio('assets/audios/Background_Music.mp3'),loopMode: LoopMode.none)
-                  .then((value) => player.play()); */
               },
               child: Text('Salir')),
             TextButton(
@@ -202,26 +199,8 @@ Future<bool> _back() {
             Positioned(
               bottom: 20,
               right: 30,
-              child: MaterialButton(
-                onPressed: () async {
-                  streamBloc.streamSink(true);
-                  int largo = questions.preguntas.length;
-                  if (n == (largo - 5)) {
-                    var aux = await QuestionServicePrueba()
-                        .getNewQuestions(context, cantidad: 10);
-                    questions.preguntas.addAll(aux.preguntas);
-                    for (int i = 0; i < (largo - 5); i++) {
-                      questions.preguntas.removeAt(0);
-                      n--;
-                    }
-                  }
-                  var route = MaterialPageRoute(
-                      builder: (context) =>
-                          QuestionPage(questions: questions, n: n));
-                  Navigator.pushReplacement(context, route);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
+              child: Container(
+                decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
@@ -232,14 +211,33 @@ Future<bool> _back() {
                       )
                     ]
                   ),
+                child: MaterialButton(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onPressed: () async {
+                    streamBloc.streamSink(true);
+
+                    int largo = questions.preguntas.length;
+                    if (n == (largo - 5)) {
+                      var aux = await QuestionServicePrueba()
+                          .getNewQuestions(context, cantidad: 10);
+                      questions.preguntas.addAll(aux.preguntas);
+                      for (int i = 0; i < (largo - 5); i++) {
+                        questions.preguntas.removeAt(0);
+                        n--;
+                      }
+                    }
+
+                    var route = MaterialPageRoute(
+                        builder: (context) =>
+                            QuestionPage(questions: questions, n: n));
+                    Navigator.pushReplacement(context, route);
+                  },
                   child: Row(
                     children: [
                       PulseAnimatorWidget(begin: 0.5, child: Icon(Icons.arrow_forward_ios,color: Colors.white,)),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: PulseAnimatorWidget(
-                          begin: 0.5, child: Text('Continuar',style: TextStyle(color: Colors.white),)),
-                      )
+                      PulseAnimatorWidget(
+                        begin: 0.5, child: Text('Continuar',style: TextStyle(color: Colors.white),))
                     ],
                   ),
                 ),

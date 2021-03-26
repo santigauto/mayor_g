@@ -5,7 +5,7 @@ import 'package:mayor_g/src/widgets/custom_widgets.dart';
 
 class RankingPage extends StatelessWidget {
   final Map<String, double> dataMap = {'Correcto': 5, 'Incorrecto': 3};
-
+  //TODO: falta sevicio del back que traiga estadisticas
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,6 +22,7 @@ class RankingPage extends StatelessWidget {
                 )),
                 Container(
                   child: PieChart(
+                    initialAngleInDegree: 0,
                     legendOptions: LegendOptions(
                       legendTextStyle: TextStyle(
                         color: Colors.white,
@@ -30,13 +31,14 @@ class RankingPage extends StatelessWidget {
                     colorList: [Theme.of(context).primaryColor, Colors.red],
                     dataMap: dataMap,
                     chartValuesOptions: ChartValuesOptions(
+                      showChartValueBackground: false,
+                      showChartValuesInPercentage: true,
                       chartValueStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
-                      //showChartValues: false 
                     ),
-                    animationDuration: Duration(seconds: 2),
+                    animationDuration: Duration(milliseconds: 800),
                 )),
                 Divider(),
                 Row(

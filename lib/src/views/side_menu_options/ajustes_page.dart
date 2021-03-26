@@ -92,7 +92,7 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
         children: <Widget>[
           BackgroundWidget(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal:5.0),
+            padding: const EdgeInsets.only(right:5.0, left: 5.0, top: 10.0),
             child: ListView(
               physics: ClampingScrollPhysics(),
               shrinkWrap: true,
@@ -102,21 +102,25 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                 (routeData['logueado'])?Column(
                   children: [
                     ExpansionTile(
-                      subtitle: Text(
-                        'Aquí puede modificar su Nickname y foto de perfil',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      title: Row(
+                      leading: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Usuario',
-                            style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
+                          Icon(Icons.person,color: Colors.white,),
                         ],
+                      ),
+                      title: Text(
+                        'Usuario',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.symmetric(vertical:5.0),
+                        child: Text(
+                          'Aquí puede modificar su Nickname \ny foto de perfil',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       children: [
                         Padding(
@@ -171,30 +175,38 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                             ),
                           ),
                         ),
-                        Divider(color: Colors.white.withOpacity(0.2)),
                       ],
                     ),
+                    Divider(color: Colors.white.withOpacity(0.2)),
                   ],
                 ):Container(),
                 //FILTROS
                 (routeData['logueado'])?Column(
                   children: [
                     ExpansionTile(
+                      leading: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.format_list_bulleted_rounded),
+                        ],
+                      ),
                       title: Row(
                         children: <Widget>[
                           Text(
                             'Filtros',
                             style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
-                      subtitle: Text(
-                        'Filtre a su criterio las características de las preguntas',
-                        style: TextStyle(color: Colors.white),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.symmetric(vertical:8.0),
+                        child: Text(
+                          'Filtre a su criterio las características de las preguntas',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       children: [
                         FiltrosWidget(),
@@ -205,12 +217,13 @@ class _AjustesPartidaPageState extends State<AjustesPartidaPage> {
                 ):Container(),
                 //SONIDOS
                 ExpansionTile(
+                  leading: Icon(Icons.volume_down_rounded),
                   title: Row(
                     children: [
                       Text(
                         'Sonido',
                         style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 25,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,

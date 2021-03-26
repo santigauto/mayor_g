@@ -5,7 +5,7 @@ class Solicitud {
   String jugador;
   String fechaEnviado;
   dynamic fechaAprobado;
-  bool seleccionado;
+  
 
   Solicitud({
     this.id,
@@ -13,7 +13,6 @@ class Solicitud {
     this.jugador,
     this.fechaEnviado,
     this.fechaAprobado,
-    this.seleccionado = false
   });
 
   factory Solicitud.fromJson(Map<String,dynamic> json){
