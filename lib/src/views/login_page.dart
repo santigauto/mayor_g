@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-      title: Text('¿Quieres realmente abandonar la partida?'),
+      title: Text('¿Quieres salir de la aplicación?'),
       actions: <Widget>[
         TextButton(
             onPressed: () {

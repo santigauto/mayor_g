@@ -41,8 +41,8 @@ class _NewMatchPageState extends State<NewMatchPage> with TickerProviderStateMix
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
     tamanio = Tween(begin: 0.0,end: 200.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.bounceOut));
 
-    _animationControllerOponente = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
-    fadeOponente = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationControllerOponente, curve: Curves.bounceIn));
+    _animationControllerOponente = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    fadeOponente = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationControllerOponente, curve: Curves.easeIn));
     translateOponente = Tween(begin: 0.0, end: 180.0).animate(CurvedAnimation(parent: _animationControllerOponente, curve: Curves.easeIn));
     super.initState();
   }
@@ -76,9 +76,19 @@ void dispose() {
 
   }
 
-
   @override
   Widget build(BuildContext context) {
+
+
+    back(){
+      if(_modoDuelo == true && _modoClasico == false){
+        _animationControllerOponente.reverse();
+        _modoClasico = true;
+        _selecOponente = true;
+        _selecAlAzar = true;
+        setState(() {});
+      } else Navigator.pop(context);
+    }
 
 
     Size size = MediaQuery.of(context).size;
@@ -86,21 +96,22 @@ void dispose() {
     Color _seleccionado = Theme.of(context).primaryColor;
 
     
-    return Container(
+    return WillPopScope(
+      onWillPop: back,
       child: Scaffold(
         body: Stack(
           children: <Widget>[
             BackgroundWidget(),
             AnimatedBuilder(
               animation: _animationControllerOponente,
-              builder:(context,_){ 
+              builder:(context,_){
                 return Positioned(
                   top: size.height * 0.35 - translateOponente.value,
                   child: SafeArea(child: _modoDeJuego(_seleccionado, _noSeleccionado, size)));
               }
             ),
             AnimatedBuilder(
-              animation: _animationControllerOponente, 
+              animation: _animationControllerOponente,
               builder: (context,_){
                 return FadeTransition(
                   opacity: fadeOponente,
@@ -186,23 +197,34 @@ void dispose() {
           Container(
             width: size.width,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _boton(size, _modoClasico, "CLÁSICO", () {
-                  showDialog(
-                    context: context,
-                    builder: (context){
+                AnimatedBuilder(
+                    animation: _animationControllerOponente,
+                    builder: (context,_){
+                      return Container(
+                        width: size.width * (0.3 * (1 - fadeOponente.value)),
+                        child: _boton(size, _modoClasico, "CLÁSICO", () {
+                          showDialog(
+                              context: context,
+                              builder: (context){
 
-                      return _initMatchButton(context);
+                                return _initMatchButton(context);
+                              }
+                          );
+                          _animationController.reset();
+                          _animationController.forward();
+                          setState(() {
+                            _modoClasico = true;
+                            _modoDuelo = false;
+                          });
+                        }),
+                      );
                     }
-                  );
-                  _animationController.reset();
-                  _animationController.forward();
-                  setState(() {
-                    _modoClasico = true;
-                    _modoDuelo = false;
-                  });
-                }),
+                ),
+                AnimatedBuilder(
+                    animation: _animationControllerOponente,
+                    builder:(context, _ )=> SizedBox(height: 10,width: size.width * (0.1 * (1 - fadeOponente.value)),)),
                 _boton(size, _modoDuelo, "DUELO", () {
                   _animationControllerOponente.forward();
                   setState(() {
@@ -222,33 +244,32 @@ void dispose() {
   Widget _seleccionOponente(
       Color colorSelec, Color colorNoSelec, ListaPreguntasNuevas preguntas, Size size) {
     if (_modoDuelo && !_modoClasico) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                _botonOponente(size, _selecOponente, "AMIGOS", () async{
-                    setState(() {
-                      _animationController.reset();
-                      _selecOponente = true;
-                    });
-                    modal.mainBottomSheet(context, preguntas);
-                  },),
-                _botonOponente(size, _selecAlAzar, "AL AZAR", () {
-                    setState(() {
-                      _selecOponente = false;
-                      showDialog(context: context, builder:(_)=> _initMatchButton(context));
-                        _animationController.reset();
-                        _animationController.forward();
-                      _selecAlAzar = true;
-                    });
-                  }),
-              ],
-            ),
-          ],
-        ),
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _botonOponente(size, _selecOponente, "AMIGOS",Icons.people_outline_rounded,() async{
+                setState(() {
+                  _animationController.reset();
+                  _selecOponente = true;
+                });
+                modal.mainBottomSheet(context, preguntas);
+              },),
+              SizedBox(height: size.height * 0.1,),
+              _botonOponente(size, _selecAlAzar, "AL AZAR",Icons.loop, () {
+                setState(() {
+                  _selecOponente = false;
+                  showDialog(context: context, builder:(_)=> _initMatchButton(context));
+                  _animationController.reset();
+                  _animationController.forward();
+                  _selecAlAzar = true;
+                });
+              }),
+            ],
+          ),
+        ]
       );
     } else {
       return Container();
@@ -271,19 +292,17 @@ void dispose() {
     );
   }
 
-  Widget _botonOponente(Size size, bool modo, String title, Function onTap){
-    return Center(
-      child: Container(
-        width: size.width*0.5,
-        child: Container(
-          
-          color: (modo) ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.3),
-          child: ListTile(
-            leading: Icon(Icons.vpn_key),
-            title: AutoSizeText(title,maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-            onTap: onTap,
-          ),
-        ),
+  Widget _botonOponente(Size size, bool modo, String title, IconData icon, Function onTap){
+    return Container(
+      decoration: BoxDecoration(
+        color: (modo) ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(10.0)
+      ),
+      width: size.width*0.5,
+      child: ListTile(
+        leading: Icon(icon),
+        title: AutoSizeText(title,maxLines: 1, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+        onTap: onTap,
       ),
     );}
 

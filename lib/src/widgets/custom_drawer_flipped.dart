@@ -130,8 +130,8 @@ class CustomFlippedDrawerState extends State<CustomFlippedDrawer>
                 ),
                 Positioned(
                   bottom: -10.0 + MediaQuery.of(context).padding.top,
-                  left: 4.0 + animationController.value * maxSlide,
-                  child: IconButton(icon: Icon(Icons.help_outline_outlined), onPressed: ()=>Navigator.pushNamed(context, 'about'), color: Colors.white.withOpacity(0.4),),
+                  right: 4.0 - animationController.value * maxSlide,
+                  child: IconButton(icon: Icon(Icons.info_outline_rounded), onPressed: ()=>Navigator.pushNamed(context, 'about'), color: Colors.white.withOpacity(0.4),),
                 ),
                 Positioned(
                   top: 4.0 + MediaQuery.of(context).padding.top,
