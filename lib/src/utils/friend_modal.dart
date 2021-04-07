@@ -100,6 +100,7 @@ class Modal{
 
     return(data.length != 0)
     ? ListView.builder(
+      shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, x){
           return _listItem(x, data);

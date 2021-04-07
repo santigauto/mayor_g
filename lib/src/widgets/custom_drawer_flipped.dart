@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
 //WIDGETS
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:mayor_g/src/views/profile_page.dart';
 
 import 'package:mayor_g/src/widgets/custom_widgets.dart';
 import 'package:mayor_g/src/utils/icon_string_util.dart';
@@ -248,37 +249,43 @@ class MyDrawer extends StatelessWidget {
                   image: DecorationImage(
                       image: AssetImage('assets/mayorG@3x.png'))),
             ),
-            Row(
-              children: <Widget>[
-                Hero(tag:1,child: profilePic),
-                SizedBox(width: 7,),
-                Expanded(child: Container(
-                  child: (prefs.nickname == null)?Column(
-                    mainAxisSize: MainAxisSize.min,
-                    //nombre de usuario
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      AutoSizeText(
-                        '${prefs.apellido}',
+            GestureDetector(
+              onTap: (){
+                var route = MaterialPageRoute(builder: (context)=> ProfilePage(isPersonal: true,));
+                Navigator.push(context, route);
+              },
+              child: Row(
+                children: <Widget>[
+                  Hero(tag:1,child: profilePic),
+                  SizedBox(width: 7,),
+                  Expanded(child: Container(
+                    child: (prefs.nickname == null)?Column(
+                      mainAxisSize: MainAxisSize.min,
+                      //nombre de usuario
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        AutoSizeText(
+                          '${prefs.apellido}',
+                          maxLines: 1,
+                          maxFontSize: 20,
+                          style: TextStyle(fontSize: 20, color: Colors.white),textAlign: TextAlign.center,),
+                        AutoSizeText(
+                          '${prefs.nombre}',
+                          maxLines: 1,
+                          minFontSize: 12,
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    )
+                    : AutoSizeText(
+                        '${prefs.nickname}',
                         maxLines: 1,
                         maxFontSize: 20,
                         style: TextStyle(fontSize: 20, color: Colors.white),textAlign: TextAlign.center,),
-                      AutoSizeText(
-                        '${prefs.nombre}',
-                        maxLines: 1,
-                        minFontSize: 12,
-                        style: TextStyle(fontSize: 15, color: Colors.white),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  )
-                  : AutoSizeText(
-                      '${prefs.nickname}',
-                      maxLines: 1,
-                      maxFontSize: 20,
-                      style: TextStyle(fontSize: 20, color: Colors.white),textAlign: TextAlign.center,),
-                )),
-              ],
+                  )),
+                ],
+              ),
             ), 
           ],
         ),
