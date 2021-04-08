@@ -37,7 +37,7 @@ class _DraggableAnimatedModalState extends State<DraggableAnimatedModal>{
     if(widget.color == null) auxColor = Theme.of(context).primaryColor;
     else auxColor = widget.color;
     if(widget.dragHandler == false) auxDragHandler = false;
-    double initialPercentage = 0.4;
+    double initialPercentage = 0.7;
     double border = 20.0;
     double size = 17.0;
     
