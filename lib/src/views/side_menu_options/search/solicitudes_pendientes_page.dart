@@ -67,7 +67,7 @@ class SolicitudesPendientesPage extends StatelessWidget {
 
   Widget _item(BuildContext context, int posicion,List data, Color color, Size size, GetFriendsService service){
     return Container(
-      color: Colors.white.withOpacity(0.5),
+      color: Colors.white,
       child: ListTile(
         title: Row(
           children: [

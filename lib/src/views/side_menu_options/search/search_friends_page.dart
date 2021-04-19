@@ -75,12 +75,15 @@ class FriendsPage extends StatelessWidget {
       border:BorderDirectional(bottom: BorderSide(color: Colors.black))),
       child: ListTile(
         title: (data.isNotEmpty || data != [])
-          ?Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(data[x].nickname),
-              IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,builder:(_)=> _showAlertDialog(context, data, x)))
-            ]
+          ?Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(data[x].nickname),
+                IconButton(icon: Icon(Icons.more_vert_rounded), onPressed:()=> showDialog(context: context,builder:(_)=> _showAlertDialog(context, data, x)))
+              ]
+            ),
           )
           : Container(),
       ),

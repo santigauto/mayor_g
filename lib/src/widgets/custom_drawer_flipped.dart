@@ -251,7 +251,7 @@ class MyDrawer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: (){
-                var route = MaterialPageRoute(builder: (context)=> ProfilePage(isPersonal: true,));
+                var route = MaterialPageRoute(builder: (context)=> ProfilePage(isPersonal: true));
                 Navigator.push(context, route);
               },
               child: Row(

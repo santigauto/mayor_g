@@ -47,6 +47,7 @@ class Modal{
 //---CUERPO DEL MODAL---
     showModalBottomSheet(
       isScrollControlled: true,
+      isDismissible: true,
       context: context, 
       builder: (context){
         return StreamBuilder<Object>(
@@ -103,13 +104,13 @@ class Modal{
       shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, x){
-          return _listItem(x, data);
+          return _listItem(x, data, context);
       })
     : ListTile(title: Center(child: Text("Aún no tienes amigos en MayorG", style: TextStyle(color: Colors.white),)),);
   }
 
 //---WIDGETS ITEMS DE LA LISTA---
-  Widget _listItem(int x, List gente){
+  Widget _listItem(int x, List gente, context){
     
     return Container(
       decoration: BoxDecoration(
@@ -128,7 +129,9 @@ class Modal{
           streamSink(_personaSeleccionada);
         },
         value: gente[x],
-        title: Text(gente[x].nickname),
+        title: Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            child: Center(child: Text(gente[x].nickname))),
         selected: gente[x].seleccionado,
       ),
     );
@@ -142,24 +145,27 @@ Widget _selecionado(BuildContext context, ListaPreguntasNuevas preguntas){
       children: <Widget>[
         Expanded(child: Container()),
         Container(
+          height: MediaQuery.of(context).size.height * 0.1,
           color:Theme.of(context).primaryColor, 
-          child: ListTile(
-            leading: IconButton(
-              icon: Icon(Icons.cancel), 
-              onPressed: (){
-                _personaSeleccionada.seleccionado=false;
-                _personaSeleccionada=null;
-                streamSink(_personaSeleccionada);
-                _isSelected=false;}
+          child: Center(
+            child: ListTile(
+              leading: IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: (){
+                  _personaSeleccionada.seleccionado=false;
+                  _personaSeleccionada=null;
+                  streamSink(_personaSeleccionada);
+                  _isSelected=false;}
+              ),
+              title: Text(_personaSeleccionada.nickname,textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
+              trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
+                //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
+                preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
+                Navigator.pop(context);
+                var route = MaterialPageRoute(builder: (BuildContext context) => QuestionPage(n: 0,questions: preguntas,));
+                Navigator.pushReplacement(context, route);
+              }),
             ),
-            title: Text(_personaSeleccionada.nickname,textAlign: TextAlign.center,style: TextStyle(color:Colors.white),),
-            trailing: IconButton(icon: Icon(Icons.check_circle), onPressed: ()async{
-              //LLEVAR A PAGINA DE 'QUESTION' CON PARAMETROS CORRESPONDIENTES DE DUELO
-              preguntas = await QuestionServicePrueba().getNewQuestions(context, cantidad: 5);
-              Navigator.pop(context);
-              var route = MaterialPageRoute(builder: (BuildContext context) => QuestionPage(n: 0,questions: preguntas,));
-              Navigator.pushReplacement(context, route);
-            }),
           )
         )
       ],

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mayor_g/src/models/persona_model.dart';
 import 'package:mayor_g/src/models/profileInfo.dart';
@@ -33,11 +34,20 @@ class ProfilePage extends StatelessWidget {
         ),
         SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(30.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(p.nickname, style: Theme.of(context).textTheme.headline4,)
+                AutoSizeText(
+                  (p.nickname == null || p.nickname == '')
+                      ? p.nickname
+                      : p.nombre + ' ' + p.apellido,
+                  style: TextStyle(
+                    
+                  ),
+                  maxLines: 1,
+
+                )
               ],
             ),
           ),
