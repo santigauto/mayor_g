@@ -164,7 +164,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                 onStepTapped: (step)=> goTo(step),
                 onStepCancel: cancel,
                 onStepContinue: next,
-                controlsBuilder: (BuildContext context, { VoidCallback onStepContinue, VoidCallback onStepCancel }) {
+                controlsBuilder: (BuildContext context, details) {
                   return  Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Row(
@@ -178,7 +178,7 @@ class _SuggestQuestionPageState extends State<SuggestQuestionPage> {
                               child: !complete 
                               ?ListTile(
                                 title: AutoSizeText("Continuar", maxLines: 1,style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                                onTap: onStepContinue,
+                                onTap: details.onStepContinue,
                               )
                               :ListTile(
                                 title: PulseAnimatorWidget(
